@@ -17,6 +17,7 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
   - Website and email addresses
   - Social media links (LinkedIn, Twitter/X, Facebook, Instagram, YouTube, TikTok, WhatsApp, and more)
   - Profile photo and company logo uploads
+  - **QR Code Integration**: Generate scannable vCard QR codes for instant contact sharing
 - **Browser Extension Support**: Install extensions for Chrome, Firefox, Safari, and Edge
 - **Export Options**: Copy HTML to clipboard or download as file
 - **Responsive Design**: Works perfectly on desktop and mobile devices
@@ -29,6 +30,7 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 - **Styling**: Tailwind CSS
 - **Icons**: Nuxt Icon (Heroicons)
 - **Authentication**: OAuth 2.0 (Gmail & Outlook)
+- **QR Code Generation**: qrcode library for vCard contact sharing
 - **State Management**: Pinia
 - **TypeScript**: Full type safety
 - **PWA Support**: Progressive Web App capabilities
@@ -134,29 +136,62 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 
 ```
 e-signature-template/
-├── app/
+├── app/                            # Main application directory
+│   ├── app.vue                     # Root Vue component
 │   ├── assets/
 │   │   └── css/
 │   │       └── styles.css          # Main styles with Tailwind
-│   ├── composables/
+│   ├── components/                 # Vue components
+│   │   ├── DesignYourSignature.vue # Template & style customization
+│   │   ├── Footer.vue              # Footer component
+│   │   ├── Header.vue              # Header component
+│   │   ├── SignaturePreviewDialog.vue # Signature preview & export
+│   │   ├── YourInformation.vue     # Contact info form with QR code
+│   │   └── dialogs/                # Modal dialogs
+│   │       ├── ColorSettingsDialog.vue
+│   │       ├── FontSettingsDialog.vue
+│   │       ├── GeneralStylesDialog.vue
+│   │       └── SocialIconsDialog.vue
+│   ├── composables/                # Vue composables
 │   │   ├── useAuth.ts              # Authentication logic
-│   │   ├── useBrowserExtension.ts  # Extension management
-│   │   └── useSignatureGenerator.ts # Signature generation
-│   ├── pages/
+│   │   ├── useBrowserExtension.ts  # Chrome extension integration
+│   │   └── useSignatureGenerator.ts # Signature & QR code generation
+│   ├── layouts/
+│   │   └── default.vue             # Default page layout
+│   ├── pages/                      # Application pages
 │   │   ├── index.vue               # Landing page
 │   │   ├── dashboard.vue           # Main signature builder
 │   │   └── auth/
 │   │       └── callback.vue        # OAuth callback handler
-│   ├── components/                 # Reusable components
-│   ├── layouts/                    # Page layouts
-│   ├── middleware/                 # Route middleware
-│   ├── plugins/                    # Nuxt plugins
-│   ├── public/                     # Static assets
-│   ├── server/                     # API routes
-│   └── utils/                      # Utility functions
+│   ├── services/                   # API services (empty)
+│   └── utils/                      # Utility functions (empty)
+├── chrome-extension/               # Chrome extension files
+│   ├── background.js               # Service worker
+│   ├── content-dashboard.js        # Content script for dashboard
+│   ├── content-working.js          # Content script for email clients
+│   ├── manifest.json               # Extension manifest
+│   ├── popup.js                    # Extension popup logic
+│   ├── popup-vue-compatible.html   # Extension popup UI
+│   ├── icons/                      # Extension icons
+│   └── README.md                   # Extension documentation
+├── public/                         # Static assets
+│   ├── favicon.ico
+│   ├── robots.txt
+│   └── templates/                  # Template assets
+│       ├── creative-preview.svg
+│       ├── generate-previews.html
+│       └── README.md
+├── modules/                        # Nuxt modules
+│   └── @nuxt/
+│       └── ui.ts                   # Nuxt UI module configuration
+├── CHROME_EXTENSION_SETUP.md       # Extension setup guide
+├── extension-manifest-example.json # Example manifest
+├── LICENSE                         # MIT License
 ├── nuxt.config.ts                  # Nuxt configuration
-├── package.json                    # Dependencies
-├── tailwind.config.js              # Tailwind configuration
+├── package.json                    # Dependencies & scripts
+├── pnpm-lock.yaml                  # Package lock file
+├── tailwind.config.js              # Tailwind CSS configuration
+├── tsconfig.json                   # TypeScript configuration
 └── README.md                       # This file
 ```
 
@@ -168,6 +203,33 @@ e-signature-template/
 4. **Glassmorphism**: Modern glass effect design
 5. **Modern**: Contemporary and sleek
 6. **Elegant**: Sophisticated and refined
+
+## 📱 QR Code Integration
+
+### Features
+- **vCard QR Codes**: Generate scannable QR codes containing your contact information
+- **Universal Compatibility**: Works with any smartphone camera or QR code scanner
+- **Automatic Generation**: QR codes update automatically when contact info changes
+- **Email-Safe**: Embedded as base64 data URLs for maximum email client compatibility
+
+### What's Included in QR Code
+- Full name (first, middle, last)
+- Job title and company name
+- Email address
+- Phone numbers (mobile, home, office)
+- Website URL
+
+### How to Use
+1. Fill in your contact information in the form
+2. Check "Include QR Code for Contact Info" checkbox
+3. QR code appears in the signature preview
+4. Recipients can scan to instantly save your contact details
+
+### Technical Implementation
+- Uses industry-standard vCard format
+- Generated with `qrcode` library
+- Optimally sized (60-80px) for email signatures
+- Positioned strategically in each template design
 
 ## 🔧 Customization
 
@@ -283,4 +345,4 @@ For support and questions:
 
 ---
 
-Made with ❤️ by the SignaturePro team
+Made with ❤️ by the SignaturePro team | Abdul Ojulari
