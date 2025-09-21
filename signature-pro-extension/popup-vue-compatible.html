@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signature Generator Pro</title>
+  <style>
+    body {
+      width: 300px;
+      height: 250px;
+      background: #4F46E5;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+      margin: 5px 0 0;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      font-size: 11px;
+      text-align: center;
+      margin-top: 15px;
+      opacity: 0.8;
+    }
+    .signature-preview {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 10px;
+      margin: 10px 0;
+      max-height: 80px;
+      overflow-y: auto;
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="title">Signature Generator Pro</h1>
+    <p class="subtitle">v3.0.0 - Auto-Apply Edition</p>
+  </div>
+  
+  <div id="signature-preview" class="signature-preview">
+    <p>🔄 Checking for signature...</p>
+  </div>
+  
+  <button id="apply-signature">Apply to Current Window</button>
+  <button id="open-dashboard">📝 Create/Edit Signature</button>
+  <button id="save-test">🧪 Save Test Signature</button>
+  
+  <div class="status" id="status">🚀 Initializing enhanced auto-apply...</div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 

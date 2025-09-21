@@ -224,7 +224,14 @@ const generateSignature = async () => {
   try {
     // Generate QR code if enabled and contact info is available
     if (signatureData.includeQRCode && (signatureData.firstName || signatureData.lastName || signatureData.email)) {
+      console.log('Generating QR code for signature...')
       signatureData.qrCodeData = await generateQRCode(signatureData)
+      console.log('QR code data set:', signatureData.qrCodeData ? 'Success' : 'Failed')
+    } else if (signatureData.includeQRCode) {
+      console.log('QR code enabled but missing required data (name or email)')
+    } else {
+      signatureData.qrCodeData = ''
+      console.log('QR code disabled')
     }
     
     const html = generateSignatureFromComposable(signatureData, currentTemplate.value)

@@ -6,36 +6,57 @@
     <div class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            First Name *
+            <span v-if="getValidationIcon('firstName')" class="ml-1">{{ getValidationIcon('firstName') }}</span>
+          </label>
           <input 
             :value="signatureData.firstName"
             @input="updateField('firstName', $event)"
+            @blur="updateField('firstName', $event)"
             type="text" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+            :class="getInputClasses('firstName')"
             placeholder="John"
           >
+          <p v-if="validationErrors.firstName" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.firstName }}
+          </p>
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Middle Name
+            <span v-if="getValidationIcon('middleName')" class="ml-1">{{ getValidationIcon('middleName') }}</span>
+          </label>
           <input 
             :value="signatureData.middleName"
             @input="updateField('middleName', $event)"
+            @blur="updateField('middleName', $event)"
             type="text" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+            :class="getInputClasses('middleName')"
             placeholder="Michael"
           >
+          <p v-if="validationErrors.middleName" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.middleName }}
+          </p>
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Last Name *
+            <span v-if="getValidationIcon('lastName')" class="ml-1">{{ getValidationIcon('lastName') }}</span>
+          </label>
           <input 
             :value="signatureData.lastName"
             @input="updateField('lastName', $event)"
+            @blur="updateField('lastName', $event)"
             type="text" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+            :class="getInputClasses('lastName')"
             placeholder="Doe"
           >
+          <p v-if="validationErrors.lastName" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.lastName }}
+          </p>
         </div>
       </div>
       
@@ -62,61 +83,96 @@
       </div>
       
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Email Address *
+          <span v-if="getValidationIcon('email')" class="ml-1">{{ getValidationIcon('email') }}</span>
+        </label>
         <input 
           :value="signatureData.email"
           @input="updateField('email', $event)"
+          @blur="updateField('email', $event)"
           type="email" 
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+          :class="getInputClasses('email')"
           placeholder="john@example.com"
         >
+        <p v-if="validationErrors.email" class="mt-1 text-sm text-red-600">
+          {{ validationErrors.email }}
+        </p>
       </div>
       
       <!-- Phone Numbers -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Phone</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Mobile Phone
+            <span v-if="getValidationIcon('mobilePhone')" class="ml-1">{{ getValidationIcon('mobilePhone') }}</span>
+          </label>
           <input 
             :value="signatureData.mobilePhone"
             @input="updateField('mobilePhone', $event)"
+            @blur="updateField('mobilePhone', $event)"
             type="tel" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+            :class="getInputClasses('mobilePhone')"
             placeholder="+1 (555) 123-4567"
           >
+          <p v-if="validationErrors.mobilePhone" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.mobilePhone }}
+          </p>
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Home Phone</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Home Phone
+            <span v-if="getValidationIcon('homePhone')" class="ml-1">{{ getValidationIcon('homePhone') }}</span>
+          </label>
           <input 
             :value="signatureData.homePhone"
             @input="updateField('homePhone', $event)"
+            @blur="updateField('homePhone', $event)"
             type="tel" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+            :class="getInputClasses('homePhone')"
             placeholder="+1 (555) 987-6543"
           >
+          <p v-if="validationErrors.homePhone" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.homePhone }}
+          </p>
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Office Phone</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Office Phone
+            <span v-if="getValidationIcon('officePhone')" class="ml-1">{{ getValidationIcon('officePhone') }}</span>
+          </label>
           <input 
             :value="signatureData.officePhone"
             @input="updateField('officePhone', $event)"
+            @blur="updateField('officePhone', $event)"
             type="tel" 
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+            :class="getInputClasses('officePhone')"
             placeholder="+1 (555) 456-7890"
           >
+          <p v-if="validationErrors.officePhone" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.officePhone }}
+          </p>
         </div>
       </div>
       
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Website</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Website
+          <span v-if="getValidationIcon('website')" class="ml-1">{{ getValidationIcon('website') }}</span>
+        </label>
         <input 
           :value="signatureData.website"
           @input="updateField('website', $event)"
+          @blur="updateField('website', $event)"
           type="url" 
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+          :class="getInputClasses('website')"
           placeholder="https://example.com"
         >
+        <p v-if="validationErrors.website" class="mt-1 text-sm text-red-600">
+          {{ validationErrors.website }}
+        </p>
       </div>
       
       <!-- Social Media -->
@@ -150,16 +206,24 @@
           </div>
         </div>
         
-        <div v-if="selectedSocialNetworks.length > 0" class="space-y-2">
-          <input 
-            v-for="network in selectedSocialNetworks" 
-            :key="network"
-            :value="signatureData.socialLinks[network] || ''"
-            @input="updateSocialLink(network, $event)"
-            type="text" 
-            :placeholder="`${getSocialNetworkName(network)} URL`"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-          >
+        <div v-if="selectedSocialNetworks.length > 0" class="space-y-3">
+          <div v-for="network in selectedSocialNetworks" :key="network" class="space-y-1">
+            <label class="block text-xs font-medium text-gray-600">
+              {{ getSocialNetworkName(network) }} URL
+              <span v-if="getValidationIcon(`social_${network}`)" class="ml-1">{{ getValidationIcon(`social_${network}`) }}</span>
+            </label>
+            <input 
+              :value="signatureData.socialLinks[network] || ''"
+              @input="updateSocialLink(network, $event)"
+              @blur="updateSocialLink(network, $event)"
+              type="text" 
+              :placeholder="`${getSocialNetworkName(network)} URL`"
+              :class="getInputClasses(`social_${network}`)"
+            >
+            <p v-if="validationErrors[`social_${network}`]" class="mt-1 text-xs text-red-600">
+              {{ validationErrors[`social_${network}`] }}
+            </p>
+          </div>
         </div>
       </div>
       
@@ -242,17 +306,37 @@
       </button>
       <button 
         @click="generateSignature" 
-        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
+        :disabled="!isFormValid && Object.keys(validationErrors).length > 0"
+        :class="[
+          'px-4 py-2 rounded-md transition-colors text-sm font-medium',
+          isFormValid || Object.keys(validationErrors).length === 0
+            ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+        ]"
       >
+        <span v-if="Object.keys(validationErrors).length > 0" class="mr-2">⚠️</span>
         Generate Signature
       </button>
+      
+      <!-- Validation Summary -->
+      <div v-if="Object.keys(validationErrors).length > 0" class="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
+        <h4 class="text-sm font-medium text-red-800 mb-2">Please fix the following errors:</h4>
+        <ul class="text-sm text-red-700 space-y-1">
+          <li v-for="(error, field) in validationErrors" :key="field" class="flex items-start">
+            <span class="mr-2">•</span>
+            <span>{{ error }}</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { useSignatureGenerator, type SignatureData } from '~/composables/useSignatureGenerator'
+import { useValidation, type ValidationResult } from '~/composables/useValidation'
 
 interface Props {
   signatureData: SignatureData
@@ -271,17 +355,93 @@ const emit = defineEmits<{
 
 // Use composables
 const { socialNetworks, generateQRCode } = useSignatureGenerator()
+const { 
+  validatePhoneNumber, 
+  validateEmail, 
+  validateWebsite, 
+  validateName, 
+  validateSocialUrl,
+  formatPhoneNumber,
+  normalizeWebsiteUrl 
+} = useValidation()
+
+// Validation state
+const validationErrors = ref<Record<string, string>>({})
+const validationSuccess = ref<Record<string, boolean>>({}) 
+
+// Computed validation states
+const isFormValid = computed(() => {
+  return Object.keys(validationErrors.value).length === 0
+})
+
+// Validation helper functions
+const validateField = (field: keyof SignatureData, value: string): ValidationResult => {
+  switch (field) {
+    case 'firstName':
+      return validateName(value, 'First name', true)
+    case 'lastName':
+      return validateName(value, 'Last name', true)
+    case 'middleName':
+      return validateName(value, 'Middle name', false)
+    case 'email':
+      return validateEmail(value)
+    case 'mobilePhone':
+    case 'homePhone':
+    case 'officePhone':
+      return validatePhoneNumber(value)
+    case 'website':
+      return validateWebsite(value)
+    case 'jobTitle':
+    case 'companyName':
+      return { isValid: true, message: '' } // Optional fields, no validation needed
+    default:
+      return { isValid: true, message: '' }
+  }
+}
+
+const updateValidation = (field: keyof SignatureData, validation: ValidationResult) => {
+  if (validation.isValid) {
+    delete validationErrors.value[field]
+    validationSuccess.value[field] = true
+  } else {
+    validationErrors.value[field] = validation.message
+    delete validationSuccess.value[field]
+  }
+}
 
 // Methods
 const updateField = (field: keyof SignatureData, event: Event) => {
   const target = event.target as HTMLInputElement
-  const updatedData = { ...props.signatureData, [field]: target.value }
+  let value = target.value
+  
+  // Format phone numbers on blur for better UX
+  if (['mobilePhone', 'homePhone', 'officePhone'].includes(field) && value) {
+    value = formatPhoneNumber(value)
+  }
+  
+  // Normalize website URLs
+  if (field === 'website' && value) {
+    value = normalizeWebsiteUrl(value)
+  }
+  
+  // Validate the field
+  const validation = validateField(field, value)
+  updateValidation(field, validation)
+  
+  const updatedData = { ...props.signatureData, [field]: value }
   emit('update:signatureData', updatedData)
 }
 
 const updateSocialLink = (network: string, event: Event) => {
   const target = event.target as HTMLInputElement
-  const updatedSocialLinks = { ...props.signatureData.socialLinks, [network]: target.value }
+  const value = target.value
+  
+  // Validate social media URL
+  const validation = validateSocialUrl(value, network)
+  const fieldKey = `social_${network}`
+  updateValidation(fieldKey as keyof SignatureData, validation)
+  
+  const updatedSocialLinks = { ...props.signatureData.socialLinks, [network]: value }
   const updatedData = { ...props.signatureData, socialLinks: updatedSocialLinks }
   emit('update:signatureData', updatedData)
 }
@@ -467,7 +627,59 @@ const resetForm = () => {
 }
 
 const generateSignature = () => {
-  emit('generateSignature')
+  // Validate all fields before generating signature
+  const fieldsToValidate: (keyof SignatureData)[] = [
+    'firstName', 'lastName', 'middleName', 'email', 
+    'mobilePhone', 'homePhone', 'officePhone', 'website'
+  ]
+  
+  fieldsToValidate.forEach(field => {
+    const value = props.signatureData[field] as string
+    const validation = validateField(field, value)
+    updateValidation(field, validation)
+  })
+  
+  // Validate social links
+  Object.keys(props.signatureData.socialLinks).forEach(network => {
+    const value = props.signatureData.socialLinks[network] || ''
+    const validation = validateSocialUrl(value, network)
+    const fieldKey = `social_${network}`
+    updateValidation(fieldKey as keyof SignatureData, validation)
+  })
+  
+  if (isFormValid.value) {
+    emit('generateSignature')
+  } else {
+    // Show error message or highlight invalid fields
+    console.warn('Form has validation errors. Please fix them before generating signature.')
+  }
+}
+
+// Helper functions for CSS classes
+const getInputClasses = (field: keyof SignatureData | string) => {
+  const baseClasses = 'w-full px-3 py-2 border rounded-md focus:outline-none text-sm'
+  const hasError = validationErrors.value[field]
+  const hasSuccess = validationSuccess.value[field]
+  
+  if (hasError) {
+    return `${baseClasses} border-red-300 focus:ring-1 focus:ring-red-500 focus:border-red-500 bg-red-50`
+  } else if (hasSuccess) {
+    return `${baseClasses} border-green-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-green-50`
+  } else {
+    return `${baseClasses} border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white`
+  }
+}
+
+const getValidationIcon = (field: keyof SignatureData | string) => {
+  const hasError = validationErrors.value[field]
+  const hasSuccess = validationSuccess.value[field]
+  
+  if (hasError) {
+    return '❌'
+  } else if (hasSuccess) {
+    return '✅'
+  }
+  return ''
 }
 
 const toggleQRCode = async (event: Event) => {
@@ -477,7 +689,16 @@ const toggleQRCode = async (event: Event) => {
   let qrCodeData = ''
   if (includeQRCode) {
     // Generate QR code when enabled
-    qrCodeData = await generateQRCode(props.signatureData)
+    try {
+      qrCodeData = await generateQRCode(props.signatureData)
+      console.log('QR Code generated:', qrCodeData ? 'Success' : 'Failed')
+    } catch (error) {
+      console.error('Error generating QR code:', error)
+    }
+  } else {
+    // Clear QR code data when disabled
+    qrCodeData = ''
+    console.log('QR Code disabled and cleared')
   }
   
   const updatedData = {

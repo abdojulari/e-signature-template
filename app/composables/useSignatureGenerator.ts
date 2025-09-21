@@ -132,27 +132,28 @@ export const useSignatureGenerator = () => {
 
   const generateSocialIcons = (socialLinks: Record<string, string>) => {
     let iconsHtml = ''
-    const socialPlatforms: Record<string, { icon: string, color: string }> = {
-      linkedin: { icon: 'in', color: '#0077B5' },
-      twitter: { icon: '𝕏', color: '#000000' },
-      facebook: { icon: 'fb', color: '#1877F2' },
-      instagram: { icon: 'ig', color: '#E4405F' },
-      youtube: { icon: 'yt', color: '#FF0000' },
-      whatsapp: { icon: 'wa', color: '#25D366' },
-      telegram: { icon: 'tg', color: '#0088CC' },
-      github: { icon: 'gh', color: '#181717' },
-      discord: { icon: 'dc', color: '#7289DA' },
-      snapchat: { icon: 'sc', color: '#FFFC00' },
-      pinterest: { icon: 'pin', color: '#BD081C' },
-      tiktok: { icon: 'tt', color: '#000000' }
+    const socialPlatforms: Record<string, { text: string, color: string }> = {
+      linkedin: { text: 'in', color: '#0077B5' },
+      twitter: { text: '𝕏', color: '#000000' },
+      facebook: { text: 'f', color: '#1877F2' },
+      instagram: { text: 'ig', color: '#E4405F' },
+      youtube: { text: '▶', color: '#FF0000' },
+      whatsapp: { text: 'W', color: '#25D366' },
+      telegram: { text: 'T', color: '#0088CC' },
+      github: { text: 'G', color: '#181717' },
+      discord: { text: 'D', color: '#5865F2' },
+      snapchat: { text: 'S', color: '#FFFC00' },
+      pinterest: { text: 'P', color: '#BD081C' },
+      tiktok: { text: 'TT', color: '#000000' }
     }
     
     Object.keys(socialLinks).forEach(network => {
       if (socialLinks[network]) {
         const platform = socialPlatforms[network]
         if (platform) {
-          // Simple text-based icons that work in all email clients
-          iconsHtml += `<a href="${socialLinks[network]}" target="_blank" style="color: white; background-color: ${platform.color}; text-decoration: none; margin-right: 3px; font-size: 9px; display: inline-block; width: 18px; height: 18px; border-radius: 50%; text-align: center; line-height: 18px; font-weight: bold; font-family: Arial, sans-serif;" title="${network.charAt(0).toUpperCase() + network.slice(1)}">${platform.icon}</a>`
+          // Simple text-based icons that work reliably in all email clients
+          const textColor = platform.color === '#FFFC00' ? '#000000' : '#FFFFFF' // Black text for yellow background
+          iconsHtml += `<a href="${socialLinks[network]}" target="_blank" style="display: inline-block; width: 24px; height: 24px; background-color: ${platform.color}; border-radius: 50%; margin-right: 4px; text-decoration: none; vertical-align: middle; text-align: center; line-height: 24px; font-size: 11px; font-weight: bold; color: ${textColor}; font-family: Arial, sans-serif;" title="${network.charAt(0).toUpperCase() + network.slice(1)}">${platform.text}</a>`
         }
       }
     })
@@ -217,23 +218,27 @@ export const useSignatureGenerator = () => {
     return vCard
   }
 
-  // Generate QR code as base64 data URL
-  const generateQRCode = async (data: SignatureData): Promise<string> => {
+  // Generate QR code URL using online service (email-compatible)
+  const generateQRCodeURL = (data: SignatureData): string => {
     try {
       const vCardData = generateVCardData(data)
-      const qrCodeDataURL = await QRCode.toDataURL(vCardData, {
-        width: 100,
-        margin: 1,
-        color: {
-          dark: '#000000',
-          light: '#FFFFFF'
-        }
-      })
-      return qrCodeDataURL
+      console.log('Generating QR code URL with vCard data')
+      
+      // Use QR Server API - reliable and email-compatible
+      const encodedData = encodeURIComponent(vCardData)
+      const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodedData}&format=png&margin=10`
+      
+      console.log('QR Code URL generated:', qrCodeURL)
+      return qrCodeURL
     } catch (error) {
-      console.error('Error generating QR code:', error)
+      console.error('Error generating QR code URL:', error)
       return ''
     }
+  }
+
+  // Keep the original function for backward compatibility but use URL instead
+  const generateQRCode = async (data: SignatureData): Promise<string> => {
+    return generateQRCodeURL(data)
   }
 
   const generateMinimalTemplate = (data: SignatureData) => {
@@ -242,7 +247,7 @@ export const useSignatureGenerator = () => {
     return `
       <table cellpadding="0" cellspacing="0" border="0" style="font-family: ${data.fontFamily || 'Arial, sans-serif'}; color: ${data.secondaryColor || '#333333'}; max-width: 400px; border-collapse: collapse; font-size: ${data.fontSize || '10px'};">
         <tr>
-          <td style="vertical-align: top; padding-right: ${data.includeQRCode && data.qrCodeData ? '15px' : '0'};">
+          <td style="vertical-align: top; padding-right: ${data.includeQRCode ? '15px' : '0'};">
             <table cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="padding: 0 0 4px 0; font-size: ${parseInt(data.fontSize || '10px') + 4}px; font-weight: bold; color: ${data.primaryColor || '#4361ee'};">${getFullName(data)}</td>
@@ -260,6 +265,8 @@ export const useSignatureGenerator = () => {
                 <td style="padding: 0 0 4px 0; font-size: ${data.fontSize || '10px'};">
                   <a href="mailto:${data.email || 'your.email@example.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.email || 'your.email@example.com'}</a>
                   ${data.mobilePhone ? ` | <a href="tel:${data.mobilePhone.replace(/[^\d+]/g, '')}" style="color: ${data.secondaryColor || '#333333'}; text-decoration: none;">${data.mobilePhone}</a>` : ''}
+                  ${data.homePhone ? ` | <a href="tel:${data.homePhone.replace(/[^\d+]/g, '')}" style="color: ${data.secondaryColor || '#333333'}; text-decoration: none;">${data.homePhone}</a>` : ''}
+                  ${data.officePhone ? ` | <a href="tel:${data.officePhone.replace(/[^\d+]/g, '')}" style="color: ${data.secondaryColor || '#333333'}; text-decoration: none;">${data.officePhone}</a>` : ''}
                 </td>
               </tr>
               ${data.website ? `<tr><td style="padding: 0 0 6px 0; font-size: ${data.fontSize || '10px'};"><a href="${data.website}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.website.replace(/^https?:\/\//, '')}</a></td></tr>` : ''}
@@ -270,9 +277,9 @@ export const useSignatureGenerator = () => {
               </tr>
             </table>
           </td>
-          ${data.includeQRCode && data.qrCodeData ? `
+          ${data.includeQRCode ? `
           <td style="vertical-align: top; text-align: center;">
-            <img src="${data.qrCodeData}" alt="Contact QR Code" style="width: 80px; height: 80px; border: none; display: block;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 80px; height: 80px; border: none; display: block;">
             <div style="font-size: 8px; color: ${data.secondaryColor || '#666666'}; margin-top: 2px;">Scan for Contact</div>
           </td>
           ` : ''}
@@ -305,7 +312,7 @@ export const useSignatureGenerator = () => {
               </table>`
             }
           </td>
-          <td style="vertical-align: top; border-left: 2px solid ${data.primaryColor || '#4361ee'}; padding: 0 0 0 15px; ${data.includeQRCode && data.qrCodeData ? 'padding-right: 15px;' : ''}">
+          <td style="vertical-align: top; border-left: 2px solid ${data.primaryColor || '#4361ee'}; padding: 0 0 0 15px; ${data.includeQRCode ? 'padding-right: 15px;' : ''}">
             <table cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="font-size: ${parseInt(data.fontSize || '10px') + 4}px; font-weight: bold; color: ${data.primaryColor || '#4361ee'}; padding: 0 0 3px 0;">${getFullName(data)}</td>
@@ -320,6 +327,7 @@ export const useSignatureGenerator = () => {
                 <td style="font-size: ${data.fontSize || '10px'}; color: ${data.secondaryColor || '#333333'}; padding: 0 0 6px 0; line-height: 1.4;">
                   <strong>Email:</strong> <a href="mailto:${data.email || 'your.email@example.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.email || 'your.email@example.com'}</a><br>
                   ${data.mobilePhone ? `<strong>Mobile:</strong> <a href="tel:${data.mobilePhone.replace(/[^\d+]/g, '')}" style="color: ${data.secondaryColor || '#333333'}; text-decoration: none;">${data.mobilePhone}</a><br>` : ''}
+                  ${data.homePhone ? `<strong>Home:</strong> <a href="tel:${data.homePhone.replace(/[^\d+]/g, '')}" style="color: ${data.secondaryColor || '#333333'}; text-decoration: none;">${data.homePhone}</a><br>` : ''}
                   ${data.officePhone ? `<strong>Office:</strong> <a href="tel:${data.officePhone.replace(/[^\d+]/g, '')}" style="color: ${data.secondaryColor || '#333333'}; text-decoration: none;">${data.officePhone}</a><br>` : ''}
                   ${data.website ? `<strong>Web:</strong> <a href="${data.website}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.website.replace(/^https?:\/\//, '')}</a><br>` : ''}
                 </td>
@@ -331,9 +339,9 @@ export const useSignatureGenerator = () => {
               </tr>
             </table>
           </td>
-          ${data.includeQRCode && data.qrCodeData ? `
+          ${data.includeQRCode ? `
           <td style="vertical-align: top; text-align: center;">
-            <img src="${data.qrCodeData}" alt="Contact QR Code" style="width: 80px; height: 80px; border: none; display: block;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 80px; height: 80px; border: none; display: block;">
             <div style="font-size: 8px; color: ${data.secondaryColor || '#666666'}; margin-top: 2px;">Scan for Contact</div>
           </td>
           ` : ''}
@@ -383,6 +391,8 @@ export const useSignatureGenerator = () => {
                 <a href="mailto:${data.email || 'your.email@example.com'}" style="color: white; text-decoration: none;">${data.email || 'your.email@example.com'}</a>
               </div>
               ${data.mobilePhone ? `<div style="margin-bottom: 8px; color: white; display: flex; align-items: center;"><span style="margin-right: 12px; font-size: 14px;">📱</span><a href="tel:${data.mobilePhone.replace(/[^\d+]/g, '')}" style="color: white; text-decoration: none;">${data.mobilePhone}</a></div>` : ''}
+              ${data.homePhone ? `<div style="margin-bottom: 8px; color: white; display: flex; align-items: center;"><span style="margin-right: 12px; font-size: 14px;">🏠</span><a href="tel:${data.homePhone.replace(/[^\d+]/g, '')}" style="color: white; text-decoration: none;">${data.homePhone}</a></div>` : ''}
+              ${data.officePhone ? `<div style="margin-bottom: 8px; color: white; display: flex; align-items: center;"><span style="margin-right: 12px; font-size: 14px;">🏢</span><a href="tel:${data.officePhone.replace(/[^\d+]/g, '')}" style="color: white; text-decoration: none;">${data.officePhone}</a></div>` : ''}
               ${data.website ? `<div style="margin-bottom: 8px; color: white; display: flex; align-items: center;"><span style="margin-right: 12px; font-size: 14px;">🌐</span><a href="${data.website}" style="color: white; text-decoration: none;">${data.website.replace(/^https?:\/\//, '')}</a></div>` : ''}
             </div>
           </td>
@@ -394,9 +404,9 @@ export const useSignatureGenerator = () => {
                 <td style="vertical-align: top;">
                   ${generateSocialIcons(data.socialLinks)}
                 </td>
-                ${data.includeQRCode && data.qrCodeData ? `
+                ${data.includeQRCode ? `
                 <td style="vertical-align: top; text-align: right;">
-                  <img src="${data.qrCodeData}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
+                  <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
                   <div style="font-size: 8px; color: rgba(255,255,255,0.8); margin-top: 2px; text-align: center;">Scan for Contact</div>
                 </td>
                 ` : ''}
@@ -446,9 +456,9 @@ export const useSignatureGenerator = () => {
           <div>
             ${generateSocialIcons(data.socialLinks)}
           </div>
-          ${data.includeQRCode && data.qrCodeData ? `
+          ${data.includeQRCode ? `
           <div style="text-align: center;">
-            <img src="${data.qrCodeData}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
             <div style="font-size: 8px; color: #666; margin-top: 2px;">Scan for Contact</div>
           </div>
           ` : ''}
@@ -473,19 +483,18 @@ export const useSignatureGenerator = () => {
             <span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Email:</span><br>
             <a href="mailto:${data.email || 'your.email@example.com'}" style="color: #333; text-decoration: none;">${data.email || 'your.email@example.com'}</a>
           </div>
-          <div>
-            <span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Mobile:</span><br>
-            <a href="tel:${(data.mobilePhone || '+1 (234) 567-8900').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.mobilePhone || '+1 (234) 567-8900'}</a>
-          </div>
+          ${data.mobilePhone ? `<div><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Mobile:</span><br><a href="tel:${data.mobilePhone.replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.mobilePhone}</a></div>` : ''}
+          ${data.homePhone ? `<div><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Home:</span><br><a href="tel:${data.homePhone.replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.homePhone}</a></div>` : ''}
+          ${data.officePhone ? `<div><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Office:</span><br><a href="tel:${data.officePhone.replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.officePhone}</a></div>` : ''}
         </div>
         
         <div style="margin-top: 8px; line-height: 1.2; display: flex; justify-content: space-between; align-items: center;">
           <div>
             ${generateSocialIcons(data.socialLinks)}
           </div>
-          ${data.includeQRCode && data.qrCodeData ? `
+          ${data.includeQRCode ? `
           <div style="text-align: center;">
-            <img src="${data.qrCodeData}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
             <div style="font-size: 8px; color: #666; margin-top: 2px;">Scan for Contact</div>
           </div>
           ` : ''}
@@ -513,15 +522,17 @@ export const useSignatureGenerator = () => {
             <a href="mailto:${data.email || 'your.email@example.com'}" style="color: #333; text-decoration: none; margin-left: 8px;">${data.email || 'your.email@example.com'}</a>
           </div>
           ${data.mobilePhone ? `<div style="margin-bottom: 6px;"><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Mobile:</span><a href="tel:${data.mobilePhone.replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none; margin-left: 8px;">${data.mobilePhone}</a></div>` : ''}
+          ${data.homePhone ? `<div style="margin-bottom: 6px;"><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Home:</span><a href="tel:${data.homePhone.replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none; margin-left: 8px;">${data.homePhone}</a></div>` : ''}
+          ${data.officePhone ? `<div style="margin-bottom: 6px;"><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Office:</span><a href="tel:${data.officePhone.replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none; margin-left: 8px;">${data.officePhone}</a></div>` : ''}
           ${data.website ? `<div style="margin-bottom: 6px;"><span style="color: ${data.primaryColor || '#4361ee'}; font-weight: 500;">Website:</span><a href="${data.website}" style="color: #333; text-decoration: none; margin-left: 8px;">${data.website.replace(/^https?:\/\//, '')}</a></div>` : ''}
         </div>
         <div style="text-align: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #ddd; line-height: 1.2; display: flex; justify-content: space-between; align-items: center;">
           <div style="flex: 1;">
             ${generateSocialIcons(data.socialLinks)}
           </div>
-          ${data.includeQRCode && data.qrCodeData ? `
+          ${data.includeQRCode ? `
           <div style="text-align: center;">
-            <img src="${data.qrCodeData}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
             <div style="font-size: 8px; color: #666; margin-top: 2px;">Scan for Contact</div>
           </div>
           ` : ''}
@@ -565,6 +576,7 @@ export const useSignatureGenerator = () => {
     generateSignature,
     getFullName,
     generateQRCode,
+    generateQRCodeURL,
     generateVCardData
   }
 } 
