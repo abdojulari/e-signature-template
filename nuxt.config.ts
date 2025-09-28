@@ -6,6 +6,13 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   
+  // Enable static generation for Netlify deployment
+  nitro: {
+    prerender: {
+      routes: ['/']
+    }
+  },
+  
   // Disable SSR to fix routing injection issues for browser-heavy app
   ssr: false,
 
@@ -16,8 +23,6 @@ export default defineNuxtConfig({
   ],
 
   modules: [
-    '@nuxt/devtools',
-    '@vite-pwa/nuxt',
     '@nuxtjs/tailwindcss'
   ],
 
