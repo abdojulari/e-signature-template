@@ -4,79 +4,135 @@
   <title>Signature Generator Pro</title>
   <style>
     body {
-      width: 300px;
-      height: 250px;
-      background: #4F46E5;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      width: 320px;
+      min-height: 280px;
+      background: #ffffff;
+      color: #374151;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      padding: 16px;
       margin: 0;
+      border: 1px solid #e5e7eb;
     }
     .header {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f3f4f6;
     }
     .title {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 18px;
+      font-weight: 600;
       margin: 0;
+      color: #111827;
     }
     .subtitle {
       font-size: 12px;
-      opacity: 0.8;
-      margin: 5px 0 0;
+      color: #6b7280;
+      margin: 4px 0 0;
     }
     button {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.3);
+      padding: 10px 16px;
+      margin: 6px 0;
+      background: #f9fafb;
+      color: #374151;
+      border: 1px solid #d1d5db;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
+      transition: all 0.2s ease;
     }
-    button:hover {
-      background: rgba(255,255,255,0.3);
+    button:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: #9ca3af;
     }
     button:disabled {
-      opacity: 0.5;
+      background: #f9fafb;
+      color: #9ca3af;
       cursor: not-allowed;
+      border-color: #e5e7eb;
+    }
+    button.primary {
+      background: #4f46e5;
+      color: white;
+      border-color: #4f46e5;
+    }
+    button.primary:hover:not(:disabled) {
+      background: #4338ca;
+      border-color: #4338ca;
+    }
+    button.primary:disabled {
+      background: #e5e7eb;
+      color: #9ca3af;
+      border-color: #e5e7eb;
     }
     .status {
       font-size: 11px;
       text-align: center;
-      margin-top: 15px;
-      opacity: 0.8;
+      margin-top: 12px;
+      color: #6b7280;
+      padding: 8px;
+      background: #f9fafb;
+      border-radius: 4px;
     }
     .signature-preview {
-      background: rgba(255,255,255,0.1);
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 12px;
+      margin: 12px 0;
+      max-height: 120px;
+      overflow-y: auto;
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .signature-content {
+      background: white;
+      border: 1px solid #e5e7eb;
       border-radius: 4px;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 8px;
+      font-size: 10px;
       max-height: 80px;
       overflow-y: auto;
-      font-size: 10px;
+    }
+    .loading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6b7280;
+    }
+    .dot-loader {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #9ca3af;
+      animation: dot-flash 1.4s infinite linear alternate;
+    }
+    @keyframes dot-flash {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
 <body>
   <div class="header">
     <h1 class="title">Signature Generator Pro</h1>
-    <p class="subtitle">v3.0.0 - Auto-Apply Edition</p>
+    <p class="subtitle">v3.0.1 - Auto-Apply Edition</p>
   </div>
   
   <div id="signature-preview" class="signature-preview">
-    <p>🔄 Checking for signature...</p>
+    <div class="loading">
+      <span class="dot-loader"></span>
+      <span>Loading signature...</span>
+    </div>
   </div>
   
-  <button id="apply-signature">Apply to Current Window</button>
-  <button id="open-dashboard">📝 Create/Edit Signature</button>
-  <button id="save-test">🧪 Save Test Signature</button>
+  <button id="apply-signature" class="primary">Apply to Current Window</button>
+  <button id="open-dashboard">Create/Edit Signature</button>
   
-  <div class="status" id="status">🚀 Initializing enhanced auto-apply...</div>
+  <div class="status" id="status">Initializing...</div>
   
   <script src="popup.js"></script>
 </body>

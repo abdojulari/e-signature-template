@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 flex items-center justify-center">
     <div class="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/30 p-8 max-w-md w-full mx-4">
       <!-- Loading State -->
       <div v-if="isLoading" class="text-center">
-        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div class="w-16 h-16 bg-gradient-to-r from-gray-500 to-slate-600 rounded-full flex items-center justify-center mx-auto mb-6">
           <svg class="w-8 h-8 text-white animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
@@ -23,7 +23,7 @@
         <p class="text-gray-600 mb-6">You have been successfully signed in</p>
         <NuxtLink 
           to="/dashboard"
-          class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105"
+          class="inline-flex items-center space-x-2 bg-gradient-to-r from-slate-600 to-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-slate-700 hover:to-gray-800 transition-all transform hover:scale-105"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -44,7 +44,7 @@
         <div class="space-y-3">
           <button 
             @click="retryAuth"
-            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all"
+            class="w-full bg-gradient-to-r from-slate-600 to-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-slate-700 hover:to-gray-800 transition-all"
           >
             Try Again
           </button>
@@ -98,7 +98,7 @@ const processAuth = async () => {
     }
 
     // Parse the state parameter to get the provider
-    let provider: 'gmail' | 'outlook'
+    let provider: 'gmail' | 'yahoo'
     try {
       const stateData = JSON.parse(decodeURIComponent(state))
       provider = stateData.provider

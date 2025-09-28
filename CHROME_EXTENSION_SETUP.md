@@ -52,7 +52,7 @@ chrome-extension/
 - Extension reads signatures from storage
 
 ### 2. Signature Application
-- Extension injects content script into Gmail/Outlook
+- Extension injects content script into Gmail/Yahoo
 - Content script detects email composition areas
 - Signature is inserted at cursor position or end of email
 
@@ -77,7 +77,7 @@ Dashboard → Chrome Storage → Extension Popup → Content Script → Email Ed
 ### Common Issues
 - **Extension not loading**: Check manifest.json syntax
 - **Icons not showing**: Ensure PNG files are in icons/ directory
-- **Signature not applying**: Check if you're in compose mode in Gmail/Outlook
+- **Signature not applying**: Check if you're in compose mode in Gmail/Yahoo
 
 ## 📦 Publishing to Chrome Web Store
 
@@ -109,7 +109,7 @@ Dashboard → Chrome Storage → Extension Popup → Content Script → Email Ed
 - ✅ Custom colors and fonts
 - ✅ Profile photo and company logo support
 - ✅ Social media links
-- ✅ Gmail and Outlook support
+- ✅ Gmail and Yahoo support
 - ✅ Real-time signature preview
 - ✅ Easy one-click application
 

@@ -28,6 +28,12 @@ Each file should be **300x150px PNG format**:
 - `glassmorphism-preview.png` - Modern glass effect
 - `modern-preview.png` - Contemporary sleek design
 - `elegant-preview.png` - Sophisticated refined style
+- `social-first-preview.png` - Profile-focused with social links
+- `compact-pro-preview.png` - Compact professional layout
+- `vibrant-preview.png` - Colorful and energetic design
+- `executive-preview.png` - Classic business leadership style
+- `handwritten-preview.png` - Personal script signature style
+- `corporate-elite-preview.png` - Premium executive with gold accents
 
 ## Tips for Best Results
 

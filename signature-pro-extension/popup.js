@@ -37,12 +37,12 @@ function initializePopup() {
       const url = tabs[0].url;
       console.log('🎯 POPUP: Current tab URL:', url);
       
-      if (url && (url.includes('mail.google.com') || url.includes('outlook.live.com') || url.includes('outlook.office.com'))) {
-        updateStatus('✅ Gmail/Outlook detected - Auto-apply active');
+      if (url && (url.includes('mail.google.com') || url.includes('Yahoo.live.com') || url.includes('Yahoo.office.com'))) {
+        updateStatus('✅ Gmail/Yahoo detected - Auto-apply active');
         enableApplyButton(true);
         checkSignatureStatus();
       } else {
-        updateStatus('⚠️ Please navigate to Gmail or Outlook');
+        updateStatus('⚠️ Please navigate to Gmail or Yahoo');
         enableApplyButton(false);
       }
     }

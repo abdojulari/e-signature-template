@@ -41,8 +41,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if (changeInfo.status === 'complete') {
     const url = tab.url;
     if (url && (url.includes('mail.google.com') || 
-                url.includes('outlook.live.com') || 
-                url.includes('outlook.office.com'))) {
+                url.includes('Yahoo.live.com') || 
+                url.includes('Yahoo.office.com'))) {
       // Inject content script if not already injected
       chrome.scripting.executeScript({
         target: { tabId: tabId },

@@ -175,11 +175,25 @@ function applySignatureToEmail(signature) {
     const images = signatureWrapper.querySelectorAll('img');
     if (images.length > 0) {
       console.log(`🎯 CONTENT: Signature contains ${images.length} images`);
+      let base64ImageCount = 0;
       images.forEach((img, index) => {
         if (img.src.startsWith('data:')) {
-          console.log(`🎯 CONTENT: Image ${index + 1} is base64 - may be blocked by email clients`);
+          base64ImageCount++;
+          console.warn(`🎯 CONTENT: Image ${index + 1} is base64 - WILL BE BLOCKED by most email clients (Gmail, Outlook, etc.)`);
+          // Replace base64 images with fallback text for better email compatibility
+          const altText = img.alt || 'Image';
+          const fallback = document.createElement('span');
+          fallback.style.cssText = 'display: inline-block; padding: 4px 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; color: #666; margin: 2px;';
+          fallback.textContent = `[${altText}]`;
+          img.parentNode.replaceChild(fallback, img);
+        } else if (img.src.startsWith('http')) {
+          console.log(`🎯 CONTENT: Image ${index + 1} is hosted URL - good for email compatibility`);
         }
       });
+      
+      if (base64ImageCount > 0) {
+        console.warn(`🎯 CONTENT: IMPORTANT: ${base64ImageCount} base64 images were replaced with text fallbacks to ensure recipients can see your signature.`);
+      }
     }
     
     // Insert signature at the end of the editor

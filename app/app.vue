@@ -21,8 +21,8 @@ useHead({
 
 useSeoMeta({
   title: 'SignaturePro - Beautiful Email Signature Generator',
-  description: 'Create stunning, professional email signatures with glassmorphism effects. Install directly in Gmail, Outlook, and other email clients.',
-  keywords: 'email signature, gmail signature, outlook signature, professional signature, glassmorphism',
+  description: 'Create stunning, professional email signatures with glassmorphism effects. Install directly in Gmail, Yahoo Mail, and other email clients.',
+  keywords: 'email signature, gmail signature, yahoo signature, professional signature, glassmorphism',
   ogTitle: 'SignaturePro - Beautiful Email Signature Generator',
   ogDescription: 'Create stunning, professional email signatures with glassmorphism effects.',
   ogImage: '/og-image.jpg',

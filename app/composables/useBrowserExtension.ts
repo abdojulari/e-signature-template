@@ -128,7 +128,7 @@ export const useBrowserExtension = () => {
       
       To apply your signature:
       
-      1. Go to Gmail or Outlook
+      1. Go to Gmail or Yahoo Mail
       2. Click the "Signature Generator Pro" extension icon
       3. Click "Test Extension" to apply your signature
       

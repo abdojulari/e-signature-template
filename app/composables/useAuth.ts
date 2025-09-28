@@ -3,7 +3,7 @@ export interface User {
   email: string
   name: string
   picture?: string
-  provider: 'gmail' | 'outlook'
+  provider: 'gmail' | 'yahoo'
 }
 
 export const useAuth = () => {
@@ -14,8 +14,8 @@ export const useAuth = () => {
   const config = useRuntimeConfig()
   const gmailClientId = config.public.gmailClientId
   const gmailClientSecret = config.public.gmailClientSecret
-  const outlookClientId = config.public.outlookClientId
-  const outlookClientSecret = config.public.outlookClientSecret
+  const yahooClientId = config.public.yahooClientId
+  const yahooClientSecret = config.public.yahooClientSecret
 
   // OAuth configuration
   const oauthConfig = {
@@ -24,10 +24,12 @@ export const useAuth = () => {
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
       redirectUri: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''
     },
-    outlook: {
-      clientId: outlookClientId, // Replace with your Microsoft OAuth client ID
+    yahoo: {
+      clientId: yahooClientId, // Replace with your Yahoo OAuth client ID
       scope: 'openid profile email',
-      redirectUri: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''
+      // Yahoo requires HTTPS - we'll use a placeholder production URL for now
+      // You'll need to update this when you deploy to production
+      redirectUri: 'https://your-production-domain.com/auth/callback'
     }
   }
 
@@ -55,16 +57,15 @@ export const useAuth = () => {
     }
   }
 
-  const signInWithOutlook = async () => {
+  const signInWithYahoo = async () => {
     isLoading.value = true
     try {
-      const state = encodeURIComponent(JSON.stringify({ provider: 'outlook' }))
-      const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
-        `client_id=${oauthConfig.outlook.clientId}&` +
-        `redirect_uri=${encodeURIComponent(oauthConfig.outlook.redirectUri)}&` +
-        `scope=${encodeURIComponent(oauthConfig.outlook.scope)}&` +
+      const state = encodeURIComponent(JSON.stringify({ provider: 'yahoo' }))
+      const authUrl = `https://api.login.yahoo.com/oauth2/request_auth?` +
+        `client_id=${oauthConfig.yahoo.clientId}&` +
+        `redirect_uri=${encodeURIComponent(oauthConfig.yahoo.redirectUri)}&` +
+        `scope=${encodeURIComponent(oauthConfig.yahoo.scope)}&` +
         `response_type=code&` +
-        `response_mode=query&` +
         `state=${state}`
 
       // Store the intended redirect
@@ -74,12 +75,12 @@ export const useAuth = () => {
 
       window.location.href = authUrl
     } catch (error) {
-      console.error('Outlook sign-in error:', error)
+      console.error('Yahoo sign-in error:', error)
       isLoading.value = false
     }
   }
 
-  const handleAuthCallback = async (code: string, provider: 'gmail' | 'outlook') => {
+  const handleAuthCallback = async (code: string, provider: 'gmail' | 'yahoo') => {
     isLoading.value = true
     try {
       let userData: User
@@ -123,14 +124,14 @@ export const useAuth = () => {
           throw new Error('Failed to get access token')
         }
       } else {
-        // For Outlook, similar process but with Microsoft Graph API
+        // For Yahoo, similar process but with Yahoo API
         // For now, create a better mock user based on the provider
         userData = {
           id: `user_${Date.now()}`,
-          email: 'user@outlook.com',
-          name: 'Outlook User',
+          email: 'user@yahoo.com',
+          name: 'Yahoo User',
           picture: 'https://via.placeholder.com/150',
-          provider: 'outlook'
+          provider: 'yahoo'
         }
       }
 
@@ -196,7 +197,7 @@ export const useAuth = () => {
     isAuthenticated,
     isLoading: readonly(isLoading),
     signInWithGmail,
-    signInWithOutlook,
+    signInWithYahoo,
     handleAuthCallback,
     signOut,
     checkAuthStatus

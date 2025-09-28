@@ -1,335 +1,580 @@
 <template>
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h2 class="text-xl font-semibold text-gray-900 mb-6">Your Information</h2>
+  <div class="bg-stone-200/20 backdrop-blur-md rounded-2xl border border-gray-200 p-8 relative overflow-hidden">
+    <!-- Subtle glass shine effect -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
     
-    <!-- Personal Information -->
-    <div class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            First Name *
-            <span v-if="getValidationIcon('firstName')" class="ml-1">{{ getValidationIcon('firstName') }}</span>
-          </label>
-          <input 
-            :value="signatureData.firstName"
-            @input="updateField('firstName', $event)"
-            @blur="updateField('firstName', $event)"
-            type="text" 
-            :class="getInputClasses('firstName')"
-            placeholder="John"
-          >
-          <p v-if="validationErrors.firstName" class="mt-1 text-sm text-red-600">
-            {{ validationErrors.firstName }}
-          </p>
-        </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Middle Name
-            <span v-if="getValidationIcon('middleName')" class="ml-1">{{ getValidationIcon('middleName') }}</span>
-          </label>
-          <input 
-            :value="signatureData.middleName"
-            @input="updateField('middleName', $event)"
-            @blur="updateField('middleName', $event)"
-            type="text" 
-            :class="getInputClasses('middleName')"
-            placeholder="Michael"
-          >
-          <p v-if="validationErrors.middleName" class="mt-1 text-sm text-red-600">
-            {{ validationErrors.middleName }}
-          </p>
-        </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Last Name *
-            <span v-if="getValidationIcon('lastName')" class="ml-1">{{ getValidationIcon('lastName') }}</span>
-          </label>
-          <input 
-            :value="signatureData.lastName"
-            @input="updateField('lastName', $event)"
-            @blur="updateField('lastName', $event)"
-            type="text" 
-            :class="getInputClasses('lastName')"
-            placeholder="Doe"
-          >
-          <p v-if="validationErrors.lastName" class="mt-1 text-sm text-red-600">
-            {{ validationErrors.lastName }}
-          </p>
+    <!-- Step Progress Indicator -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <div v-for="(step, index) in steps" :key="index" class="flex items-center">
+          <div :class="[
+            'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300',
+            currentStep >= index + 1 
+              ? 'bg-gradient-to-r from-slate-600/80 to-gray-700/80 text-white border-2 border-white/30' 
+              : 'bg-white/10 text-gray-400 border-2 border-white/20'
+          ]">
+            {{ index + 1 }}
+          </div>
+          <div v-if="index < steps.length - 1" :class="[
+            'w-16 h-1 mx-3 transition-all duration-300',
+            currentStep > index + 1 ? 'bg-gradient-to-r from-slate-600/80 to-gray-700/80' : 'bg-white/20'
+          ]"></div>
         </div>
       </div>
       
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
-        <input 
-          :value="signatureData.jobTitle"
-          @input="updateField('jobTitle', $event)"
-          type="text" 
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-          placeholder="Marketing Director"
-        >
-      </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-        <input 
-          :value="signatureData.companyName"
-          @input="updateField('companyName', $event)"
-          type="text" 
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-          placeholder="Acme Inc."
-        >
-      </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">
-          Email Address *
-          <span v-if="getValidationIcon('email')" class="ml-1">{{ getValidationIcon('email') }}</span>
-        </label>
-        <input 
-          :value="signatureData.email"
-          @input="updateField('email', $event)"
-          @blur="updateField('email', $event)"
-          type="email" 
-          :class="getInputClasses('email')"
-          placeholder="john@example.com"
-        >
-        <p v-if="validationErrors.email" class="mt-1 text-sm text-red-600">
-          {{ validationErrors.email }}
+      <div class="text-center">
+        <h2 class="text-2xl font-bold text-gray-600 mb-2 tracking-wide">
+          {{ steps[currentStep - 1]?.title || 'Step' }}
+        </h2>
+        <p class="text-sm text-gray-500">
+          {{ steps[currentStep - 1]?.description || 'Please complete this step' }}
         </p>
       </div>
-      
-      <!-- Phone Numbers -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Mobile Phone
-            <span v-if="getValidationIcon('mobilePhone')" class="ml-1">{{ getValidationIcon('mobilePhone') }}</span>
-          </label>
-          <input 
-            :value="signatureData.mobilePhone"
-            @input="updateField('mobilePhone', $event)"
-            @blur="updateField('mobilePhone', $event)"
-            type="tel" 
-            :class="getInputClasses('mobilePhone')"
-            placeholder="+1 (555) 123-4567"
-          >
-          <p v-if="validationErrors.mobilePhone" class="mt-1 text-sm text-red-600">
-            {{ validationErrors.mobilePhone }}
-          </p>
-        </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Home Phone
-            <span v-if="getValidationIcon('homePhone')" class="ml-1">{{ getValidationIcon('homePhone') }}</span>
-          </label>
-          <input 
-            :value="signatureData.homePhone"
-            @input="updateField('homePhone', $event)"
-            @blur="updateField('homePhone', $event)"
-            type="tel" 
-            :class="getInputClasses('homePhone')"
-            placeholder="+1 (555) 987-6543"
-          >
-          <p v-if="validationErrors.homePhone" class="mt-1 text-sm text-red-600">
-            {{ validationErrors.homePhone }}
-          </p>
-        </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Office Phone
-            <span v-if="getValidationIcon('officePhone')" class="ml-1">{{ getValidationIcon('officePhone') }}</span>
-          </label>
-          <input 
-            :value="signatureData.officePhone"
-            @input="updateField('officePhone', $event)"
-            @blur="updateField('officePhone', $event)"
-            type="tel" 
-            :class="getInputClasses('officePhone')"
-            placeholder="+1 (555) 456-7890"
-          >
-          <p v-if="validationErrors.officePhone" class="mt-1 text-sm text-red-600">
-            {{ validationErrors.officePhone }}
-          </p>
-        </div>
-      </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">
-          Website
-          <span v-if="getValidationIcon('website')" class="ml-1">{{ getValidationIcon('website') }}</span>
-        </label>
-        <input 
-          :value="signatureData.website"
-          @input="updateField('website', $event)"
-          @blur="updateField('website', $event)"
-          type="url" 
-          :class="getInputClasses('website')"
-          placeholder="https://example.com"
-        >
-        <p v-if="validationErrors.website" class="mt-1 text-sm text-red-600">
-          {{ validationErrors.website }}
-        </p>
-      </div>
-      
-      <!-- Social Media -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-3">Social Media</label>
-        <div class="grid grid-cols-4 gap-2 mb-4">
-          <div 
-            v-for="network in socialNetworks" 
-            :key="network.id"
-            @click="toggleSocialNetwork(network.id)"
-            class="flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-gray-50 border relative"
-            :class="selectedSocialNetworks.includes(network.id) ? 'bg-blue-50 border-blue-500' : 'border-gray-200'"
-          >
-            <!-- Social Media Icon -->
-            <div class="w-8 h-8 rounded-full flex items-center justify-center mb-2"
-                 :style="{ backgroundColor: getSocialNetworkColor(network.id) }">
-              <i :class="getSocialNetworkIcon(network.id)" 
-                 :style="{ color: getSocialNetworkTextColor(network.id) }" 
-                 class="text-sm"></i>
+    </div>
+    
+    <!-- Step Content -->
+    <div class="min-h-[400px]">
+      <!-- Step 1: Basic Information -->
+      <div v-if="currentStep === 1" class="space-y-6">
+        <!-- Profile Photo -->
+        <div class="bg-white/5 rounded-xl border border-white/20 ">
+          <h3 class="text-lg font-semibold text-gray-600 mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Profile Photo
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <!-- URL Input -->
+              <div class="mb-3">
+                <input 
+                  type="url" 
+                  :value="signatureData.profilePhotoUrl"
+                  @input="handleProfilePhotoUrlInput"
+                  placeholder="https://imgur.com/your-image.jpg (Recommended for all email clients)"
+                  :class="getInputClasses('profilePhotoUrl')"
+                >
+              </div>
+              
+              <!-- File Upload -->
+              <div class="relative">
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  @change="handleProfilePhoto"
+                  class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-gray-300/50 bg-white/10 text-gray-600 text-sm file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-white/20 file:text-gray-600 hover:file:bg-white/30 transition-all duration-150 backdrop-blur-sm"
+                >
+               
+              </div>
             </div>
             
-            <!-- Selection Checkmark -->
-            <div v-if="selectedSocialNetworks.includes(network.id)" 
-                 class="absolute top-1 right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-              <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
+            <!-- Preview -->
+            <div class="flex justify-center items-center">
+              <div v-if="profilePhotoLoading" class="w-20 h-20 rounded-full border-2 border-white/30 bg-white/10 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </div>
+              <img v-else-if="getProfileImageSrc()" :src="getProfileImageSrc()" alt="Profile Preview" class="w-20 h-20 rounded-full object-cover border-2 border-white/30 shadow-sm">
+              <div v-else class="w-20 h-20 rounded-full border-2 border-dashed border-white/30 bg-white/5 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
             </div>
-            
-            <span class="text-xs text-center font-medium">{{ network.name }}</span>
           </div>
         </div>
         
-        <div v-if="selectedSocialNetworks.length > 0" class="space-y-3">
-          <div v-for="network in selectedSocialNetworks" :key="network" class="space-y-1">
-            <label class="block text-xs font-medium text-gray-600">
-              {{ getSocialNetworkName(network) }} URL
-              <span v-if="getValidationIcon(`social_${network}`)" class="ml-1">{{ getValidationIcon(`social_${network}`) }}</span>
+        <!-- Names -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+              First Name *
             </label>
             <input 
-              :value="signatureData.socialLinks[network] || ''"
-              @input="updateSocialLink(network, $event)"
-              @blur="updateSocialLink(network, $event)"
+              :value="signatureData.firstName"
+              @input="updateField('firstName', $event)"
+              @blur="updateField('firstName', $event)"
               type="text" 
-              :placeholder="`${getSocialNetworkName(network)} URL`"
-              :class="getInputClasses(`social_${network}`)"
+              :class="getInputClasses('firstName')"
+              placeholder="John"
             >
-            <p v-if="validationErrors[`social_${network}`]" class="mt-1 text-xs text-red-600">
-              {{ validationErrors[`social_${network}`] }}
+            <p v-if="validationErrors.firstName" class="mt-1 text-sm text-red-600">
+              {{ validationErrors.firstName }}
+            </p>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+              Middle Name
+            </label>
+            <input 
+              :value="signatureData.middleName"
+              @input="updateField('middleName', $event)"
+              @blur="updateField('middleName', $event)"
+              type="text" 
+              :class="getInputClasses('middleName')"
+              placeholder="Michael"
+            >
+            <p v-if="validationErrors.middleName" class="mt-1 text-sm text-red-600">
+              {{ validationErrors.middleName }}
+            </p>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+              Last Name *
+            </label>
+            <input 
+              :value="signatureData.lastName"
+              @input="updateField('lastName', $event)"
+              @blur="updateField('lastName', $event)"
+              type="text" 
+              :class="getInputClasses('lastName')"
+              placeholder="Doe"
+            >
+            <p v-if="validationErrors.lastName" class="mt-1 text-sm text-red-600">
+              {{ validationErrors.lastName }}
             </p>
           </div>
         </div>
+        
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            Email Address *
+          </label>
+          <input 
+            :value="signatureData.email"
+            @input="updateField('email', $event)"
+            @blur="updateField('email', $event)"
+            type="email" 
+            :class="getInputClasses('email')"
+            placeholder="john@example.com"
+          >
+          <p v-if="validationErrors.email" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.email }}
+          </p>
+        </div>
+        
+        <!-- Phone Numbers -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+              Mobile Phone
+            </label>
+            <input 
+              :value="signatureData.mobilePhone"
+              @input="updateField('mobilePhone', $event)"
+              @blur="updateField('mobilePhone', $event)"
+              type="tel" 
+              :class="getInputClasses('mobilePhone')"
+              placeholder="+1 (555) 123-4567"
+            >
+            <p v-if="validationErrors.mobilePhone" class="mt-1 text-sm text-red-600">
+              {{ validationErrors.mobilePhone }}
+            </p>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+              Office Phone
+            </label>
+            <input 
+              :value="signatureData.officePhone"
+              @input="updateField('officePhone', $event)"
+              @blur="updateField('officePhone', $event)"
+              type="tel" 
+              :class="getInputClasses('officePhone')"
+              placeholder="+1 (555) 456-7890"
+            >
+            <p v-if="validationErrors.officePhone" class="mt-1 text-sm text-red-600">
+              {{ validationErrors.officePhone }}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Website -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            Website
+          </label>
+          <input 
+            :value="signatureData.website"
+            @input="updateField('website', $event)"
+            @blur="updateField('website', $event)"
+            type="url" 
+            :class="getInputClasses('website')"
+            placeholder="https://example.com"
+          >
+          <p v-if="validationErrors.website" class="mt-1 text-sm text-red-600">
+            {{ validationErrors.website }}
+          </p>
+        </div>
       </div>
       
-      <!-- QR Code Option -->
-      <div>
-        <label class="flex items-center space-x-2 cursor-pointer">
-          <input 
-            type="checkbox" 
-            :checked="signatureData.includeQRCode"
-            @change="toggleQRCode"
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-          >
-          <span class="text-sm font-medium text-gray-700">Include QR Code for Contact Info</span>
-        </label>
-        <p class="text-xs text-gray-500 mt-1 ml-6">Add a scannable QR code containing your contact information to your signature</p>
+      <!-- Step 2: Company Information -->
+      <div v-if="currentStep === 2" class="space-y-6">
+        <!-- Company Logo -->
+        <div class="bg-white/5 rounded-xl border border-white/20 ">
+          <h3 class="text-lg font-semibold text-gray-600 mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            Company Logo
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <!-- URL Input -->
+              <div class="mb-3">
+                <input 
+                  type="url" 
+                  :value="signatureData.companyLogoUrl"
+                  @input="handleCompanyLogoUrlInput"
+                  placeholder="https://imgur.com/your-logo.png (Recommended for all email clients)"
+                  :class="getInputClasses('companyLogoUrl')"
+                >
+                <p class="text-xs text-green-600 mt-1">✅ Hosted URLs work in Gmail, Outlook, and all email clients</p>
+              </div>
+              
+              <!-- File Upload -->
+              <div class="relative">
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  @change="handleCompanyLogo"
+                  class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-gray-300/50 bg-white/10 text-gray-600 text-sm file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-white/20 file:text-gray-600 hover:file:bg-white/30 transition-all duration-150 backdrop-blur-sm"
+                >
+                <p class="text-xs text-amber-600 mt-1">⚠️ Uploaded files may not display in Gmail (but work in Outlook)</p>
+              </div>
+            </div>
+            
+            <!-- Preview -->
+            <div class="flex justify-center items-center">
+              <div v-if="companyLogoLoading" class="h-16 w-24 border border-white/30 rounded-lg bg-white/10 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </div>
+              <img v-else-if="getCompanyLogoSrc()" :src="getCompanyLogoSrc()" alt="Logo Preview" class="h-16 object-contain border border-white/30 rounded-lg p-2 bg-white/10 shadow-sm">
+              <div v-else class="h-16 w-24 border-2 border-dashed border-white/30 bg-white/5 flex items-center justify-center rounded-lg">
+                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
         
-        <!-- QR Code Preview -->
-        <div v-if="signatureData.includeQRCode && signatureData.qrCodeData" class="mt-3 ml-6">
-          <div class="flex items-center space-x-3">
-            <img :src="signatureData.qrCodeData" alt="Contact QR Code" class="w-16 h-16 border border-gray-200 rounded">
-            <div class="text-xs text-gray-600">
-              <p class="font-medium">QR Code Preview</p>
-              <p>Scan to save contact info</p>
+        <!-- Company Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">Job Title</label>
+            <input 
+              :value="signatureData.jobTitle"
+              @input="updateField('jobTitle', $event)"
+              type="text" 
+              :class="getInputClasses('jobTitle')"
+              placeholder="Marketing Director"
+            >
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">Company Name</label>
+            <input 
+              :value="signatureData.companyName"
+              @input="updateField('companyName', $event)"
+              type="text" 
+              :class="getInputClasses('companyName')"
+              placeholder="Acme Inc."
+            >
+          </div>
+        </div>
+        
+        <!-- Company Address Section -->
+        <div class="bg-white/5 rounded-xl border border-white/20 ">
+          <h3 class="text-lg font-semibold text-gray-600 mb-4 tracking-wide flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            Company Address (Optional)
+          </h3>
+          <p class="text-sm text-gray-600/70 mb-4">Add your company's physical address to include in signatures</p>
+          
+          <div class="space-y-4">
+            <!-- Street Address -->
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">Street Address</label>
+              <input 
+                :value="signatureData.companyAddress"
+                @input="updateField('companyAddress', $event)"
+                type="text" 
+                :class="getInputClasses('companyAddress')"
+                placeholder="123 Business Street"
+              >
+            </div>
+            
+            <!-- City, State, Zip -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-2">City</label>
+                <input 
+                  :value="signatureData.companyCity"
+                  @input="updateField('companyCity', $event)"
+                  type="text" 
+                  :class="getInputClasses('companyCity')"
+                  placeholder="New York"
+                >
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-2">State/Province</label>
+                <input 
+                  :value="signatureData.companyState"
+                  @input="updateField('companyState', $event)"
+                  type="text" 
+                  :class="getInputClasses('companyState')"
+                  placeholder="NY"
+                >
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-2">ZIP/Postal Code</label>
+                <input 
+                  :value="signatureData.companyZipCode"
+                  @input="updateField('companyZipCode', $event)"
+                  type="text" 
+                  :class="getInputClasses('companyZipCode')"
+                  placeholder="10001"
+                >
+              </div>
+            </div>
+            
+            <!-- Country -->
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-2">Country</label>
+              <input 
+                :value="signatureData.companyCountry"
+                @input="updateField('companyCountry', $event)"
+                type="text" 
+                :class="getInputClasses('companyCountry')"
+                placeholder="United States"
+              >
             </div>
           </div>
         </div>
       </div>
       
-      <!-- File Uploads -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
-          <input 
-            type="url" 
-            :value="signatureData.profilePhotoUrl"
-            @input="handleProfilePhotoUrlInput"
-            placeholder="https://example.com/profile.jpg"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm mb-2"
-          >
-          <input 
-            type="file" 
-            accept="image/*" 
-            @change="handleProfilePhoto"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-          >
-          <div v-if="getProfileImageSrc()" class="mt-2">
-            <img :src="getProfileImageSrc()" alt="Profile Preview" class="w-12 h-12 rounded-full object-cover">
+      <!-- Step 3: Social Media -->
+      <div v-if="currentStep === 3" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-6">
+          <label class="flex items-center justify-between cursor-pointer group">
+            <div class="flex items-center space-x-3">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+              </svg>
+              <div>
+                <span class="text-lg font-semibold text-gray-600 tracking-wide">Include Social Media</span>
+                <p class="text-sm text-gray-600/70 mt-1">Add your social media profiles to your signature</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-3">
+              <span v-if="selectedSocialNetworks.length > 0" class="text-sm text-gray-600 bg-white/20 px-3 py-1 rounded-full">
+                {{ selectedSocialNetworks.length }} selected
+              </span>
+              <input 
+                type="checkbox" 
+                :checked="includeSocialMedia"
+                @change="toggleSocialMediaInclusion"
+                class="w-6 h-6 text-gray-600 bg-white/20 border-white/30 rounded focus:ring-gray-500/50 focus:ring-2 backdrop-blur-sm"
+              >
+            </div>
+          </label>
+          
+          <!-- Social Media Configuration Button -->
+          <div v-if="includeSocialMedia" class="mt-6 pt-6 border-t border-white/20">
+            <button 
+              @click="openSocialMediaDialog"
+              class="w-full px-6 py-4 border border-white/30 text-gray-600 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-150 text-base font-medium shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center"
+            >
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              Configure Social Media
+              <span v-if="selectedSocialNetworks.length > 0" class="ml-3 text-sm bg-gray-600 text-white px-3 py-1 rounded-full">
+                {{ selectedSocialNetworks.length }}
+              </span>
+            </button>
+          </div>
+          
+          <!-- Social Media Preview -->
+          <div v-if="includeSocialMedia && selectedSocialNetworks.length > 0" class="mt-6 pt-6 border-t border-white/20">
+            <h4 class="text-sm font-medium text-gray-600 mb-3">Selected Social Networks:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span v-for="network in selectedSocialNetworks" :key="network" class="px-3 py-1 bg-white/20 text-gray-600 rounded-full text-sm capitalize">
+                {{ network }}
+              </span>
+            </div>
           </div>
         </div>
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Company Logo</label>
-          <input 
-            type="url" 
-            :value="signatureData.companyLogoUrl"
-            @input="handleCompanyLogoUrlInput"
-            placeholder="https://example.com/logo.png"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm mb-2"
-          >
-          <input 
-            type="file" 
-            accept="image/*" 
-            @change="handleCompanyLogo"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-          >
-          <div v-if="getCompanyLogoSrc()" class="mt-2">
-            <img :src="getCompanyLogoSrc()" alt="Logo Preview" class="h-8 object-contain">
+      </div>
+      
+      <!-- Step 4: QR Code -->
+      <div v-if="currentStep === 4" class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-6">
+          <label class="flex items-center justify-between cursor-pointer group">
+            <div class="flex items-center space-x-3">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V4a1 1 0 00-1-1H5a1 1 0 00-1 1v3a1 1 0 001 1zm0 10h2a1 1 0 001-1v-3a1 1 0 00-1-1H5a1 1 0 00-1 1v3a1 1 0 001 1zM17 8h2a1 1 0 001-1V4a1 1 0 00-1-1h-2a1 1 0 00-1 1v3a1 1 0 001 1z"></path>
+              </svg>
+              <div>
+                <span class="text-lg font-semibold text-gray-600 tracking-wide">Include QR Code</span>
+                <p class="text-sm text-gray-600/70 mt-1">Add a scannable QR code with your contact information</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-3">
+              <span v-if="signatureData.includeQRCode" class="text-sm text-gray-600 bg-white/20 px-3 py-1 rounded-full">
+                Active
+              </span>
+              <input 
+                type="checkbox" 
+                :checked="signatureData.includeQRCode"
+                @change="toggleQRCodeInclusion"
+                class="w-6 h-6 text-gray-600 bg-white/20 border-white/30 rounded focus:ring-gray-500/50 focus:ring-2 backdrop-blur-sm"
+              >
+            </div>
+          </label>
+          
+          <!-- QR Code Configuration Button -->
+          <div v-if="signatureData.includeQRCode" class="mt-6 pt-6 border-t border-white/20">
+            <div class="flex items-center space-x-6">
+              <button 
+                @click="openQRCodeDialog"
+                class="flex-1 px-6 py-4 border border-white/30 text-gray-600 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-150 text-base font-medium shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center"
+              >
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Configure QR Code
+              </button>
+              
+              <!-- QR Code Preview -->
+              <div v-if="signatureData.qrCodeData" class="flex-shrink-0">
+                <img :src="signatureData.qrCodeData" alt="Contact QR Code" class="w-20 h-20 border border-white/30 rounded-lg shadow-lg">
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Action Buttons -->
-    <div class="flex gap-3 mt-6 pt-4 border-t border-gray-200">
-      <button 
-        @click="resetForm" 
-        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm"
-      >
-        Reset
-      </button>
-      <button 
-        @click="generateSignature" 
-        :disabled="!isFormValid && Object.keys(validationErrors).length > 0"
-        :class="[
-          'px-4 py-2 rounded-md transition-colors text-sm font-medium',
-          isFormValid || Object.keys(validationErrors).length === 0
-            ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-        ]"
-      >
-        <span v-if="Object.keys(validationErrors).length > 0" class="mr-2">⚠️</span>
-        Generate Signature
-      </button>
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between items-center mt-8 pt-6 border-t border-white/20">
+      <div class="flex gap-3">
+        <!-- Previous Button -->
+        <button 
+          v-if="currentStep > 1"
+          @click="previousStep" 
+          class="px-6 py-3 border border-white/30 text-gray-600 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-150 text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 flex items-center"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Previous
+        </button>
+        
+        <!-- Reset Button -->
+        <button 
+          @click="resetForm" 
+          class="px-6 py-3 border border-white/30 text-gray-600 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-150 text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 flex items-center"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Reset
+        </button>
+      </div>
       
-      <!-- Validation Summary -->
-      <div v-if="Object.keys(validationErrors).length > 0" class="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
-        <h4 class="text-sm font-medium text-red-800 mb-2">Please fix the following errors:</h4>
-        <ul class="text-sm text-red-700 space-y-1">
-          <li v-for="(error, field) in validationErrors" :key="field" class="flex items-start">
-            <span class="mr-2">•</span>
-            <span>{{ error }}</span>
-          </li>
-        </ul>
+      <div class="flex gap-3">
+        <!-- Next Button -->
+        <button 
+          v-if="currentStep < steps.length"
+          @click="nextStep" 
+          :disabled="!canProceedToNextStep"
+          :class="[
+            'px-6 py-3 rounded-xl transition-all duration-150 text-sm font-medium backdrop-blur-sm shadow-lg hover:shadow-xl flex items-center',
+            canProceedToNextStep
+              ? 'bg-gradient-to-r from-slate-600/80 to-gray-700/80 text-white hover:from-slate-600 hover:to-gray-700 focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 hover:scale-105 border border-white/30'
+              : 'bg-gray-400/30 text-gray-300 cursor-not-allowed border border-gray-400/30'
+          ]"
+        >
+          Next
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+        
+        <!-- Generate Signature Button -->
+        <button 
+          v-if="currentStep === steps.length"
+          @click="generateSignature" 
+          :disabled="!isFormValid && Object.keys(validationErrors).length > 0"
+          :class="[
+            'px-8 py-3 rounded-xl transition-all duration-150 text-sm font-bold backdrop-blur-sm shadow-lg hover:shadow-xl flex items-center',
+            isFormValid || Object.keys(validationErrors).length === 0
+              ? 'bg-gradient-to-r from-slate-600/80 to-gray-700/80 text-white hover:from-slate-600 hover:to-gray-700 focus:ring-2 focus:ring-gray-500/50 focus:ring-offset-2 hover:scale-105 border border-white/30'
+              : 'bg-gray-400/30 text-gray-300 cursor-not-allowed border border-gray-400/30'
+          ]"
+        >
+          <span v-if="Object.keys(validationErrors).length > 0" class="mr-2">⚠️</span>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+          </svg>
+          Generate 
+        </button>
       </div>
     </div>
-
+    
+    <!-- Validation Summary -->
+    <div v-if="Object.keys(validationErrors).length > 0 && currentStep === steps.length" class="mt-4 p-4 bg-red-500/20 border border-red-400/30 rounded-xl backdrop-blur-sm">
+      <h4 class="text-sm font-bold text-red-200 mb-3 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+        </svg>
+        Please fix the following errors:
+      </h4>
+      <ul class="text-sm text-red-100 space-y-1">
+        <li v-for="(error, field) in validationErrors" :key="field" class="flex items-start">
+          <span class="mr-2 text-red-300">•</span>
+          <span>{{ error }}</span>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Modal Dialogs -->
+    <SocialMediaDialog
+      :isOpen="showSocialMediaDialog"
+      :selectedSocialNetworks="props.selectedSocialNetworks"
+      :socialLinks="props.signatureData.socialLinks"
+      @close="closeSocialMediaDialog"
+      @save="saveSocialMediaSettings"
+    />
+    
+    <QRCodeDialog
+      :isOpen="showQRCodeDialog"
+      :includeQRCode="props.signatureData.includeQRCode"
+      :qrCodeFields="qrCodeFields"
+      :qrCodeSize="qrCodeSize"
+      :signatureData="props.signatureData"
+      @close="closeQRCodeDialog"
+      @save="saveQRCodeSettings"
+    />
   </div>
 </template>
 
@@ -337,6 +582,8 @@
 import { ref, computed } from 'vue'
 import { useSignatureGenerator, type SignatureData } from '~/composables/useSignatureGenerator'
 import { useValidation, type ValidationResult } from '~/composables/useValidation'
+import SocialMediaDialog from '~/components/dialogs/SocialMediaDialog.vue'
+import QRCodeDialog from '~/components/dialogs/QRCodeDialog.vue'
 
 interface Props {
   signatureData: SignatureData
@@ -366,12 +613,66 @@ const {
 } = useValidation()
 
 // Validation state
-const validationErrors = ref<Record<string, string>>({})
-const validationSuccess = ref<Record<string, boolean>>({}) 
+const validationErrors = ref<Record<string, string>>({}) 
+
+// Loading states for better UX
+const profilePhotoLoading = ref(false)
+const companyLogoLoading = ref(false)
+
+// Modal states
+const showSocialMediaDialog = ref(false)
+const showQRCodeDialog = ref(false)
+const includeSocialMedia = ref(props.selectedSocialNetworks.length > 0)
+
+// QR Code settings
+const qrCodeFields = ref<string[]>(['firstName', 'lastName', 'email', 'mobilePhone'])
+const qrCodeSize = ref(100)
+
+// Multi-step form state
+const currentStep = ref(1)
+const steps = ref([
+  {
+    title: 'Basic Information',
+    description: 'Enter your personal details and contact information'
+  },
+  {
+    title: 'Company Details',
+    description: 'Add your company information and address'
+  },
+  {
+    title: 'Social Media',
+    description: 'Configure your social media profiles'
+  },
+  {
+    title: 'QR Code',
+    description: 'Set up QR code for easy contact sharing'
+  }
+])
 
 // Computed validation states
 const isFormValid = computed(() => {
   return Object.keys(validationErrors.value).length === 0
+})
+
+// Step validation - check if current step can proceed
+const canProceedToNextStep = computed(() => {
+  switch (currentStep.value) {
+    case 1: // Basic Information - require first name, last name, and email
+      return props.signatureData.firstName && 
+             props.signatureData.lastName && 
+             props.signatureData.email &&
+             !validationErrors.value.firstName &&
+             !validationErrors.value.lastName &&
+             !validationErrors.value.email
+    case 2: // Company Details - no required fields, can always proceed
+      return true
+    case 3: // Social Media - no required fields, can always proceed
+      return true
+    case 4: // QR Code - no required fields, can always proceed
+      return true
+    default:
+      return true
+  }
 })
 
 // Validation helper functions
@@ -386,13 +687,17 @@ const validateField = (field: keyof SignatureData, value: string): ValidationRes
     case 'email':
       return validateEmail(value)
     case 'mobilePhone':
-    case 'homePhone':
     case 'officePhone':
       return validatePhoneNumber(value)
     case 'website':
       return validateWebsite(value)
     case 'jobTitle':
     case 'companyName':
+    case 'companyAddress':
+    case 'companyCity':
+    case 'companyState':
+    case 'companyZipCode':
+    case 'companyCountry':
       return { isValid: true, message: '' } // Optional fields, no validation needed
     default:
       return { isValid: true, message: '' }
@@ -402,10 +707,8 @@ const validateField = (field: keyof SignatureData, value: string): ValidationRes
 const updateValidation = (field: keyof SignatureData, validation: ValidationResult) => {
   if (validation.isValid) {
     delete validationErrors.value[field]
-    validationSuccess.value[field] = true
   } else {
     validationErrors.value[field] = validation.message
-    delete validationSuccess.value[field]
   }
 }
 
@@ -415,7 +718,7 @@ const updateField = (field: keyof SignatureData, event: Event) => {
   let value = target.value
   
   // Format phone numbers on blur for better UX
-  if (['mobilePhone', 'homePhone', 'officePhone'].includes(field) && value) {
+  if (['mobilePhone', 'officePhone'].includes(field) && value) {
     value = formatPhoneNumber(value)
   }
   
@@ -442,23 +745,6 @@ const updateSocialLink = (network: string, event: Event) => {
   updateValidation(fieldKey as keyof SignatureData, validation)
   
   const updatedSocialLinks = { ...props.signatureData.socialLinks, [network]: value }
-  const updatedData = { ...props.signatureData, socialLinks: updatedSocialLinks }
-  emit('update:signatureData', updatedData)
-}
-
-const toggleSocialNetwork = (networkId: string) => {
-  const index = props.selectedSocialNetworks.indexOf(networkId)
-  let updatedNetworks: string[]
-  let updatedSocialLinks = { ...props.signatureData.socialLinks }
-  
-  if (index > -1) {
-    updatedNetworks = props.selectedSocialNetworks.filter(id => id !== networkId)
-    delete updatedSocialLinks[networkId]
-  } else {
-    updatedNetworks = [...props.selectedSocialNetworks, networkId]
-  }
-  
-  emit('update:selectedSocialNetworks', updatedNetworks)
   const updatedData = { ...props.signatureData, socialLinks: updatedSocialLinks }
   emit('update:signatureData', updatedData)
 }
@@ -526,13 +812,16 @@ const convertFileToBase64 = (file: File): Promise<string> => {
     
     const reader = new FileReader()
     reader.onload = () => {
-      const result = reader.result as string
-      // Ensure we have a valid base64 data URL
-      if (result && result.startsWith('data:image/')) {
-        resolve(result)
-      } else {
-        reject(new Error('Failed to convert image to base64'))
-      }
+      // Use requestAnimationFrame to prevent UI blocking
+      requestAnimationFrame(() => {
+        const result = reader.result as string
+        // Ensure we have a valid base64 data URL
+        if (result && result.startsWith('data:image/')) {
+          resolve(result)
+        } else {
+          reject(new Error('Failed to convert image to base64'))
+        }
+      })
     }
     reader.onerror = () => reject(new Error('Failed to read image file'))
     reader.readAsDataURL(file)
@@ -542,6 +831,7 @@ const convertFileToBase64 = (file: File): Promise<string> => {
 const handleProfilePhoto = async (event: Event) => {
   const target = event.target as HTMLInputElement
   if (target.files && target.files[0]) {
+    profilePhotoLoading.value = true
     try {
       const base64 = await convertFileToBase64(target.files[0])
       const updatedData = {
@@ -558,6 +848,8 @@ const handleProfilePhoto = async (event: Event) => {
       alert(`Error uploading profile photo: ${errorMessage}`)
       // Clear the input
       target.value = ''
+    } finally {
+      profilePhotoLoading.value = false
     }
   }
 }
@@ -565,6 +857,7 @@ const handleProfilePhoto = async (event: Event) => {
 const handleCompanyLogo = async (event: Event) => {
   const target = event.target as HTMLInputElement
   if (target.files && target.files[0]) {
+    companyLogoLoading.value = true
     try {
       const base64 = await convertFileToBase64(target.files[0])
       const updatedData = {
@@ -581,6 +874,8 @@ const handleCompanyLogo = async (event: Event) => {
       alert(`Error uploading company logo: ${errorMessage}`)
       // Clear the input
       target.value = ''
+    } finally {
+      companyLogoLoading.value = false
     }
   }
 }
@@ -630,7 +925,7 @@ const generateSignature = () => {
   // Validate all fields before generating signature
   const fieldsToValidate: (keyof SignatureData)[] = [
     'firstName', 'lastName', 'middleName', 'email', 
-    'mobilePhone', 'homePhone', 'officePhone', 'website'
+    'mobilePhone', 'officePhone', 'website'
   ]
   
   fieldsToValidate.forEach(field => {
@@ -657,29 +952,77 @@ const generateSignature = () => {
 
 // Helper functions for CSS classes
 const getInputClasses = (field: keyof SignatureData | string) => {
-  const baseClasses = 'w-full px-3 py-2 border rounded-md focus:outline-none text-sm'
+  const baseClasses = 'w-full px-4 py-3 border rounded-xl focus:outline-none text-sm font-medium transition-all duration-150 backdrop-blur-sm'
   const hasError = validationErrors.value[field]
-  const hasSuccess = validationSuccess.value[field]
   
   if (hasError) {
-    return `${baseClasses} border-red-300 focus:ring-1 focus:ring-red-500 focus:border-red-500 bg-red-50`
-  } else if (hasSuccess) {
-    return `${baseClasses} border-green-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 bg-green-50`
+    return `${baseClasses} border-red-300/50 focus:ring-2 focus:ring-red-400/50 focus:border-red-400/50 bg-red-50/20 text-gray-600 placeholder-red-200 hover:shadow-glass-sm`
   } else {
-    return `${baseClasses} border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white`
+    return `${baseClasses} border-gray-200 focus:ring-2 focus:ring-white/40 focus:border-white/50 bg-white/60 text-gray-600 placeholder-gray-400  hover:bg-white/15 hover:shadow-glass-sm`
   }
 }
 
-const getValidationIcon = (field: keyof SignatureData | string) => {
-  const hasError = validationErrors.value[field]
-  const hasSuccess = validationSuccess.value[field]
+// Removed validation icons for cleaner professional look
+
+// Modal handlers
+const toggleSocialMediaInclusion = () => {
+  includeSocialMedia.value = !includeSocialMedia.value
   
-  if (hasError) {
-    return '❌'
-  } else if (hasSuccess) {
-    return '✅'
+  if (!includeSocialMedia.value) {
+    // Clear all social networks and links when disabled
+    emit('update:selectedSocialNetworks', [])
+    const updatedData = { ...props.signatureData, socialLinks: {} }
+    emit('update:signatureData', updatedData)
   }
-  return ''
+}
+
+const openSocialMediaDialog = () => {
+  showSocialMediaDialog.value = true
+}
+
+const closeSocialMediaDialog = () => {
+  showSocialMediaDialog.value = false
+}
+
+const saveSocialMediaSettings = (data: { selectedNetworks: string[], socialLinks: Record<string, string> }) => {
+  emit('update:selectedSocialNetworks', data.selectedNetworks)
+  const updatedData = { ...props.signatureData, socialLinks: data.socialLinks }
+  emit('update:signatureData', updatedData)
+  emit('generateSignature')
+}
+
+const toggleQRCodeInclusion = () => {
+  const newValue = !props.signatureData.includeQRCode
+  const updatedData = { ...props.signatureData, includeQRCode: newValue }
+  
+  if (!newValue) {
+    // Clear QR code data when disabled
+    updatedData.qrCodeData = ''
+  }
+  
+  emit('update:signatureData', updatedData)
+}
+
+const openQRCodeDialog = () => {
+  showQRCodeDialog.value = true
+}
+
+const closeQRCodeDialog = () => {
+  showQRCodeDialog.value = false
+}
+
+const saveQRCodeSettings = (data: { includeQRCode: boolean, qrCodeFields: string[], qrCodeSize: number, qrCodeData: string }) => {
+  qrCodeFields.value = data.qrCodeFields
+  qrCodeSize.value = data.qrCodeSize
+  
+  const updatedData = {
+    ...props.signatureData,
+    includeQRCode: data.includeQRCode,
+    qrCodeData: data.qrCodeData
+  }
+  
+  emit('update:signatureData', updatedData)
+  emit('generateSignature')
 }
 
 const toggleQRCode = async (event: Event) => {
@@ -708,6 +1051,20 @@ const toggleQRCode = async (event: Event) => {
   }
   
   emit('update:signatureData', updatedData)
-  emit('generateSignature')
+  // Debounce signature generation for better performance
+  setTimeout(() => emit('generateSignature'), 200)
+}
+
+// Step navigation methods
+const nextStep = () => {
+  if (currentStep.value < steps.value.length && canProceedToNextStep.value) {
+    currentStep.value++
+  }
+}
+
+const previousStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--
+  }
 }
 </script>

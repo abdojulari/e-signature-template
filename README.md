@@ -4,8 +4,8 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 
 ## ✨ Features
 
-- **Beautiful Templates**: 6 professionally designed templates including glassmorphism effects
-- **OAuth Authentication**: Sign in with Gmail or Outlook accounts
+- **Beautiful Templates**: 12 professionally designed templates including glassmorphism effects and premium executive designs
+- **OAuth Authentication**: Sign in with Gmail or Yahoo accounts
 - **Real-time Preview**: See your signature as you design it
 - **Customization Options**: 
   - Multiple color schemes
@@ -29,7 +29,7 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 - **UI Library**: Reka UI
 - **Styling**: Tailwind CSS
 - **Icons**: Nuxt Icon (Heroicons)
-- **Authentication**: OAuth 2.0 (Gmail & Outlook)
+- **Authentication**: OAuth 2.0 (Gmail & Yahoo)
 - **QR Code Generation**: qrcode library for vCard contact sharing
 - **State Management**: Pinia
 - **TypeScript**: Full type safety
@@ -59,7 +59,7 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
    Create a `.env` file in the root directory:
    ```env
    GMAIL_CLIENT_ID=your_gmail_client_id
-   OUTLOOK_CLIENT_ID=your_outlook_client_id
+   Yahoo_CLIENT_ID=your_Yahoo_client_id
    ```
 
 4. **Start the development server**
@@ -111,7 +111,7 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
      },
      "content_scripts": [
        {
-         "matches": ["*://mail.google.com/*", "*://outlook.live.com/*"],
+         "matches": ["*://mail.google.com/*", "*://Yahoo.live.com/*"],
          "js": ["content.js"]
        }
      ]
@@ -254,7 +254,7 @@ e-signature-template/
 
 ### Creating a Signature
 
-1. **Sign In**: Use Gmail or Outlook account
+1. **Sign In**: Use Gmail or Yahoo account
 2. **Choose Template**: Select from available designs
 3. **Customize Colors**: Pick primary and secondary colors
 4. **Fill Information**: Enter personal and company details

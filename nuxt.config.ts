@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   // Disable SSR to fix routing injection issues for browser-heavy app
   ssr: false,
 
+
   css: [
     '~/assets/css/styles.css',
     '@fortawesome/fontawesome-free/css/all.css'
@@ -26,8 +27,8 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Create stunning, professional email signatures with glassmorphism effects. Install directly in Gmail, Outlook, and other email clients.' },
-        { name: 'keywords', content: 'email signature, gmail signature, outlook signature, professional signature, glassmorphism' },
+        { name: 'description', content: 'Create stunning, professional email signatures with glassmorphism effects. Install directly in Gmail, Yahoo, and other email clients.' },
+        { name: 'keywords', content: 'email signature, gmail signature, Yahoo signature, professional signature, glassmorphism' },
         { name: 'author', content: 'SignaturePro' },
         { property: 'og:title', content: 'SignaturePro - Beautiful Email Signature Generator' },
         { property: 'og:description', content: 'Create stunning, professional email signatures with glassmorphism effects.' },
@@ -52,8 +53,8 @@ export default defineNuxtConfig({
     public: {
       gmailClientId: process.env.GMAIL_CLIENT_ID || 'YOUR_GMAIL_CLIENT_ID',
       gmailClientSecret: process.env.GMAIL_CLIENT_SECRET || 'YOUR_GMAIL_CLIENT_SECRET',
-      outlookClientId: process.env.OUTLOOK_CLIENT_ID || 'YOUR_OUTLOOK_CLIENT_ID',
-      outlookClientSecret: process.env.OUTLOOK_CLIENT_SECRET || 'YOUR_OUTLOOK_CLIENT_SECRET'
+      yahooClientId: process.env.YAHOO_CLIENT_ID || 'YOUR_YAHOO_CLIENT_ID',
+      yahooClientSecret: process.env.YAHOO_CLIENT_SECRET || 'YOUR_YAHOO_CLIENT_SECRET'
     }
   }
 })

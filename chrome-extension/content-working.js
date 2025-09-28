@@ -175,11 +175,25 @@ function applySignatureToEmail(signature) {
     const images = signatureWrapper.querySelectorAll('img');
     if (images.length > 0) {
       console.log(`🎯 CONTENT: Signature contains ${images.length} images`);
+      let base64ImageCount = 0;
       images.forEach((img, index) => {
         if (img.src.startsWith('data:')) {
-          console.log(`🎯 CONTENT: Image ${index + 1} is base64 - may be blocked by email clients`);
+          base64ImageCount++;
+          console.warn(`🎯 CONTENT: Image ${index + 1} is base64 - WILL BE BLOCKED by most email clients (Gmail, Outlook, etc.)`);
+          // Replace base64 images with fallback text for better email compatibility
+          const altText = img.alt || 'Image';
+          const fallback = document.createElement('span');
+          fallback.style.cssText = 'display: inline-block; padding: 4px 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; color: #666; margin: 2px;';
+          fallback.textContent = `[${altText}]`;
+          img.parentNode.replaceChild(fallback, img);
+        } else if (img.src.startsWith('http')) {
+          console.log(`🎯 CONTENT: Image ${index + 1} is hosted URL - good for email compatibility`);
         }
       });
+      
+      if (base64ImageCount > 0) {
+        console.warn(`🎯 CONTENT: IMPORTANT: ${base64ImageCount} base64 images were replaced with text fallbacks to ensure recipients can see your signature.`);
+      }
     }
     
     // Insert signature at the end of the editor
@@ -214,12 +228,13 @@ let lastAppliedSignature = '';
 
 // Load signature from storage and cache it
 function loadSignatureFromStorage() {
-  chrome.storage.local.get(['email_signature'], function(result) {
-    if (result.email_signature) {
-      signatureCache = result.email_signature;
+  chrome.storage.local.get(['email_signature', 'signaturepro_generated_signature'], function(result) {
+    if (result.email_signature || result.signaturepro_generated_signature) {
+      signatureCache = result.email_signature || result.signaturepro_generated_signature;
     } else {
-      // Fallback to localStorage if chrome.storage.local is empty
-      const localStorageSignature = localStorage.getItem('email_signature');
+      // Fallback to localStorage if chrome.storage.local is empty (check both old and new keys)
+      const localStorageSignature = localStorage.getItem('email_signature') || 
+                                   localStorage.getItem('signaturepro_generated_signature');
       if (localStorageSignature) {
         signatureCache = localStorageSignature;
         
@@ -233,13 +248,14 @@ function loadSignatureFromStorage() {
 // Auto-apply signature when compose window is detected
 function autoApplySignature(targetEditor = null) {
   if (!signatureCache) {
-    chrome.storage.local.get(['email_signature'], function(result) {
-      if (result.email_signature) {
-        signatureCache = result.email_signature;
+    chrome.storage.local.get(['email_signature', 'signaturepro_generated_signature'], function(result) {
+      if (result.email_signature || result.signaturepro_generated_signature) {
+        signatureCache = result.email_signature || result.signaturepro_generated_signature;
         applySignatureToSpecificEditor(targetEditor);
       } else {
-        // Fallback to localStorage
-        const localStorageSignature = localStorage.getItem('email_signature');
+        // Fallback to localStorage (check both old and new keys)
+        const localStorageSignature = localStorage.getItem('email_signature') || 
+                                     localStorage.getItem('signaturepro_generated_signature');
         if (localStorageSignature) {
           signatureCache = localStorageSignature;
           applySignatureToSpecificEditor(targetEditor);

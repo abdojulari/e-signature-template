@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "SignaturePro - Email Signature Manager",
   "version": "1.0.0",
-  "description": "Beautiful email signature generator with glassmorphism effects. Install signatures directly in Gmail, Outlook, and other email clients.",
+  "description": "Beautiful email signature generator with glassmorphism effects. Install signatures directly in Gmail, Yahoo, and other email clients.",
   "permissions": [
     "activeTab",
     "storage",
@@ -10,8 +10,8 @@
   ],
   "host_permissions": [
     "*://mail.google.com/*",
-    "*://outlook.live.com/*",
-    "*://outlook.office.com/*",
+    "*://Yahoo.live.com/*",
+    "*://Yahoo.office.com/*",
     "*://mail.yahoo.com/*",
     "*://mail.aol.com/*"
   ],
@@ -35,8 +35,8 @@
     {
       "matches": [
         "*://mail.google.com/*",
-        "*://outlook.live.com/*",
-        "*://outlook.office.com/*",
+        "*://Yahoo.live.com/*",
+        "*://Yahoo.office.com/*",
         "*://mail.yahoo.com/*",
         "*://mail.aol.com/*"
       ],

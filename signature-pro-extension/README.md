@@ -1,6 +1,6 @@
 # SignaturePro Chrome Extension
 
-A Chrome extension that automatically applies beautiful email signatures to Gmail and Outlook.
+A Chrome extension that automatically applies beautiful email signatures to Gmail and Yahoo.
 
 ## Installation
 
@@ -25,7 +25,7 @@ A Chrome extension that automatically applies beautiful email signatures to Gmai
    - Click "Generate Signature" to create your signature
 
 2. **Apply Signature**:
-   - Go to Gmail or Outlook
+   - Go to Gmail or Yahoo
    - Compose a new email
    - Click the SignaturePro extension icon in your browser toolbar
    - Click "Apply Signature" to insert your signature into the email
@@ -35,7 +35,7 @@ A Chrome extension that automatically applies beautiful email signatures to Gmai
    - Custom colors and fonts
    - Profile photo and company logo support
    - Social media links
-   - Works with Gmail and Outlook
+   - Works with Gmail and Yahoo
 
 ## File Structure
 
@@ -84,7 +84,7 @@ chrome-extension/
 ## Troubleshooting
 
 - **Extension not working**: Make sure the extension is loaded and enabled
-- **Signature not appearing**: Check that you're in compose mode in Gmail/Outlook
+- **Signature not appearing**: Check that you're in compose mode in Gmail/Yahoo
 - **Dashboard not loading**: Ensure your Nuxt development server is running
 
 ## Support

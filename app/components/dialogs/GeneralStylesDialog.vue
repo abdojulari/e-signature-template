@@ -22,9 +22,9 @@
             :key="template.id"
             @click="selectTemplate(template.id)"
             class="border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-gray-300 hover:shadow-md"
-            :class="currentTemplate === template.id ? 'border-blue-500 bg-blue-50 shadow-md' : 'border-gray-200'"
+            :class="selectedTemplate === template.id ? 'border-blue-500 bg-blue-50 shadow-md' : 'border-gray-200'"
           >
-            <div class="h-20 bg-gray-50 rounded-md mb-3 flex items-center justify-center overflow-hidden">
+            <div class="h-22 bg-gray-50 rounded-md mb-3 flex items-center justify-center overflow-hidden">
               <img :src="`/templates/${template.image}`" :alt="template.name" class="w-full h-full object-contain rounded-md">
             </div>
             <div class="text-center">
@@ -71,7 +71,7 @@ const emit = defineEmits<{
 
 const { templates } = useSignatureGenerator()
 
-let selectedTemplate = ref(props.currentTemplate)
+const selectedTemplate = ref(props.currentTemplate)
 
 const selectTemplate = (templateId: string) => {
   selectedTemplate.value = templateId

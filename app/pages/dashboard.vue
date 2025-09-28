@@ -1,46 +1,35 @@
 <template>
   <!-- Loading State -->
-  <div v-if="isPageLoading" class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-    <div class="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/30 p-8 text-center">
-      <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-        <svg class="w-8 h-8 text-white animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div v-if="isPageLoading" class="min-h-screen bg-gradient-to-br from-gray-300 via-slate-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0">
+      <div class="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-20 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+    </div>
+    
+    <div class="bg-slate-200 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-12 text-center relative z-10 max-w-md mx-4">
+      <div class="w-20 h-20 bg-gradient-to-r from-white/20 to-white/10 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/30">
+        <svg class="w-10 h-10 text-white animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
         </svg>
       </div>
-      <h2 class="text-xl font-semibold text-gray-800 mb-2">Loading Dashboard...</h2>
-      <p class="text-gray-600">Please wait while we verify your authentication</p>
+      <h2 class="text-2xl font-bold text-white mb-3 tracking-wide">Loading Dashboard...</h2>
+      <p class="text-white/80 text-lg">Creating your signature experience</p>
     </div>
   </div>
 
   <!-- Main Dashboard -->
-  <div v-else class="min-h-screen bg-gray-50">
+  <div v-else class="min-h-screen bg-white relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <!-- <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+      <div class="absolute bottom-1/3 left-1/3 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse delay-700"></div>
+    </div> -->
     <!-- Clean Header -->
-    <header class="bg-white border-b border-gray-200">
-      <div class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <NuxtLink to="/" class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-              </svg>
-            </div>
-            <h1 class="text-xl font-semibold text-gray-900">
-              SignaturePro
-            </h1>
-          </NuxtLink>
-          
-          <div class="flex items-center space-x-4">
-            <div class="flex items-center space-x-2">
-              <img :src="user?.picture || '/default-avatar.png'" alt="Profile" class="w-8 h-8 rounded-full">
-              <span class="text-sm font-medium text-gray-700">{{ user?.name }}</span>
-            </div>
-            <button @click="signOut" class="text-sm text-gray-500 hover:text-gray-700">
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+    <Header />
 
     <!-- Design Sidebar -->
     <DesignYourSignature 
@@ -60,35 +49,51 @@
 
     <!-- Main Content -->
     <main 
-      class="transition-all duration-300"
-      :class="[
-        'min-h-screen pt-16',
-        isSidebarOpen ? 'lg:ml-72' : 'ml-0'
-      ]"
+      class="transition-all duration-500 ease-in-out relative z-10 min-h-screen pt-16"
     >
       <div class="container mx-auto px-6 py-8">
-        <div class="grid lg:grid-cols-2 gap-6">
+        
+        <!-- Welcome Header -->
+        <div class="mb-8 text-center">
+          <div class=" p-8 max-w-2xl mx-auto">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4 tracking-wide">
+              Create Your Perfect 
+              <span class="bg-gradient-to-r from-gray-600 to-slate-700 bg-clip-text text-transparent">
+                Email Signature
+              </span>
+            </h1>
+            <p class="text-gray-700 text-lg leading-relaxed">
+              Design professional signatures that make lasting impressions
+            </p>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
           <!-- Form Panel -->
-          <YourInformation 
-            :signatureData="signatureData"
-            :selectedSocialNetworks="selectedSocialNetworks"
-            @update:signatureData="updateSignatureData"
-            @update:selectedSocialNetworks="updateSelectedSocialNetworks"
-            @resetForm="resetForm"
-            @generateSignature="generateSignature"
-          />
+          <div class=" p-1 hover:shadow-3xl transition-all duration-500 group">
+            <div class=" p-8 h-full">
+              <YourInformation 
+                :signatureData="signatureData"
+                :selectedSocialNetworks="selectedSocialNetworks"
+                @update:signatureData="updateSignatureData"
+                @update:selectedSocialNetworks="updateSelectedSocialNetworks"
+                @resetForm="resetForm"
+                @generateSignature="generateSignature"
+              />
+            </div>
+          </div>
 
           <!-- Preview Panel -->
-          <div>
-            <SignaturePreviewDialog 
-              :signatureHtml="signatureHtml"
-              :extensionSaveStatus="extensionSaveStatus"
-              :installationInstructions="installationInstructions"
-              @copyHtml="copyHtml"
-              @downloadSignature="downloadSignature"
-              @testInGmail="testInGmail"
-            />
-          </div>
+          
+          <SignaturePreviewDialog 
+            :signatureHtml="signatureHtml"
+            :extensionSaveStatus="extensionSaveStatus"
+            :installationInstructions="installationInstructions"
+            @copyHtml="copyHtml"
+            @downloadSignature="downloadSignature"
+            @testInGmail="testInGmail"
+          />
+           
         </div>
       </div>
     </main>
@@ -100,6 +105,8 @@ import { ref, reactive, onMounted, watch, nextTick } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useSignatureGenerator } from '~/composables/useSignatureGenerator'
 import { useBrowserExtension } from '~/composables/useBrowserExtension'
+import { useSignatureStorage } from '~/composables/useLocalStorage'
+import Header from '~/components/Header.vue'
 
 
 // Check authentication
@@ -122,59 +129,73 @@ const {
   generateInstallationInstructions 
 } = useBrowserExtension()
 
-// Reactive data
-const currentTemplate = ref('minimal')
-const selectedSocialNetworks = ref(['linkedin', 'twitter'])
-const signatureHtml = ref('<p>Your signature will appear here</p>')
+// Use localStorage for persistence
+const {
+  signatureData: storedSignatureData,
+  designSettings: storedDesignSettings,
+  selectedSocialNetworks: storedSocialNetworks,
+  generatedSignature: storedGeneratedSignature,
+  saveSignatureData,
+  saveDesignSettings,
+  setSelectedSocialNetworks,
+  setGeneratedSignature,
+  exportForExtension
+} = useSignatureStorage()
+
+// Reactive data with localStorage backing
+const currentTemplate = ref(storedDesignSettings.value.currentTemplate)
+const selectedSocialNetworks = ref(storedSocialNetworks.value.length > 0 ? storedSocialNetworks.value : ['linkedin', 'twitter'])
+const signatureHtml = ref(storedGeneratedSignature.value || '<p>Your signature will appear here</p>')
 const installationInstructions = ref(null as any)
 const extensionSaveStatus = ref(null as any)
 const isSidebarOpen = ref(false)
 
-const signatureData = reactive({
-  firstName: '',
-  lastName: '',
-  middleName: '',
-  email: '',
-  mobilePhone: '',
-  homePhone: '',
-  officePhone: '',
-  companyName: '',
-  jobTitle: '',
-  website: '',
-  socialLinks: {} as Record<string, string>,
-  profilePhoto: null as File | null,
-  companyLogo: null as File | null,
-  profilePhotoBase64: '' as string,
-  companyLogoBase64: '' as string,
-  profilePhotoUrl: '' as string,
-  companyLogoUrl: '' as string,
-  fontFamily: 'Arial, sans-serif',
-  fontSize: '10px',
-  primaryColor: '#4361ee',
-  secondaryColor: '#3a0ca3',
-  includeQRCode: false,
-  qrCodeData: ''
-})
+// Create reactive signature data from stored data
+const signatureData = reactive({ ...storedSignatureData.value })
 
-// Methods
+// Methods with localStorage persistence
 const updateCurrentTemplate = (template: string) => {
   currentTemplate.value = template
+  saveDesignSettings({
+    ...storedDesignSettings.value,
+    currentTemplate: template
+  })
 }
 
 const updatePrimaryColor = (color: string) => {
   signatureData.primaryColor = color
+  saveSignatureData(signatureData)
+  saveDesignSettings({
+    ...storedDesignSettings.value,
+    primaryColor: color
+  })
 }
 
 const updateSecondaryColor = (color: string) => {
   signatureData.secondaryColor = color
+  saveSignatureData(signatureData)
+  saveDesignSettings({
+    ...storedDesignSettings.value,
+    secondaryColor: color
+  })
 }
 
 const updateFontFamily = (fontFamily: string) => {
   signatureData.fontFamily = fontFamily
+  saveSignatureData(signatureData)
+  saveDesignSettings({
+    ...storedDesignSettings.value,
+    fontFamily: fontFamily
+  })
 }
 
 const updateFontSize = (fontSize: string) => {
   signatureData.fontSize = fontSize
+  saveSignatureData(signatureData)
+  saveDesignSettings({
+    ...storedDesignSettings.value,
+    fontSize: fontSize
+  })
 }
 
 const updateSidebarOpen = (isOpen: boolean) => {
@@ -183,10 +204,12 @@ const updateSidebarOpen = (isOpen: boolean) => {
 
 const updateSignatureData = (newData: any) => {
   Object.assign(signatureData, newData)
+  saveSignatureData(signatureData)
 }
 
 const updateSelectedSocialNetworks = (networks: string[]) => {
   selectedSocialNetworks.value = networks
+  setSelectedSocialNetworks(networks)
 }
 
 const resetForm = () => {
@@ -196,11 +219,15 @@ const resetForm = () => {
     middleName: '',
     email: '',
     mobilePhone: '',
-    homePhone: '',
     officePhone: '',
     companyName: '',
     jobTitle: '',
     website: '',
+    companyAddress: '',
+    companyCity: '',
+    companyState: '',
+    companyZipCode: '',
+    companyCountry: '',
     socialLinks: {},
     profilePhoto: null,
     companyLogo: null,
@@ -220,29 +247,44 @@ const resetForm = () => {
   generateSignature()
 }
 
+// Debounced signature generation to prevent excessive calls
+let generateSignatureTimeout: ReturnType<typeof setTimeout> | null = null
+
 const generateSignature = async () => {
-  try {
-    // Generate QR code if enabled and contact info is available
-    if (signatureData.includeQRCode && (signatureData.firstName || signatureData.lastName || signatureData.email)) {
-      console.log('Generating QR code for signature...')
-      signatureData.qrCodeData = await generateQRCode(signatureData)
-      console.log('QR code data set:', signatureData.qrCodeData ? 'Success' : 'Failed')
-    } else if (signatureData.includeQRCode) {
-      console.log('QR code enabled but missing required data (name or email)')
-    } else {
-      signatureData.qrCodeData = ''
-      console.log('QR code disabled')
-    }
-    
-    const html = generateSignatureFromComposable(signatureData, currentTemplate.value)
-    signatureHtml.value = html
-    
-    // Auto-save to Chrome storage for extension if available
-    saveSignatureToExtension(html)
-  } catch (error) {
-    console.error('Error generating signature:', error)
-    signatureHtml.value = '<p>Error generating signature</p>'
+  // Clear any existing timeout
+  if (generateSignatureTimeout) {
+    clearTimeout(generateSignatureTimeout)
   }
+  
+  // Debounce the signature generation
+  generateSignatureTimeout = setTimeout(async () => {
+    try {
+      // Generate QR code if enabled and contact info is available
+      if (signatureData.includeQRCode && (signatureData.firstName || signatureData.lastName || signatureData.email)) {
+        console.log('Generating QR code for signature...')
+        signatureData.qrCodeData = await generateQRCode(signatureData)
+        console.log('QR code data set:', signatureData.qrCodeData ? 'Success' : 'Failed')
+      } else if (signatureData.includeQRCode) {
+        console.log('QR code enabled but missing required data (name or email)')
+      } else {
+        signatureData.qrCodeData = ''
+        console.log('QR code disabled')
+      }
+      
+      const html = generateSignatureFromComposable(signatureData, currentTemplate.value)
+      signatureHtml.value = html
+      
+      // Save to localStorage for persistence
+      setGeneratedSignature(html)
+      saveSignatureData(signatureData)
+      
+      // Auto-save to Chrome storage for extension if available
+      saveSignatureToExtension(html)
+    } catch (error) {
+      console.error('Error generating signature:', error)
+      signatureHtml.value = '<p>Error generating signature</p>'
+    }
+  }, 150) // 150ms debounce for better performance
 }
 
 const saveSignatureToExtension = (signature: string) => {
@@ -253,11 +295,12 @@ const saveSignatureToExtension = (signature: string) => {
 const saveToChromeStorageDirectly = (signature: string) => {
   if (typeof window !== 'undefined') {
     // Method 1: Try chrome.storage.local directly (if available)
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+    const chromeApi = (window as any).chrome
+    if (typeof chromeApi !== 'undefined' && chromeApi.storage && chromeApi.storage.local) {
       try {
-        chrome.storage.local.set({ email_signature: signature }, function() {
-          if (chrome.runtime.lastError) {
-            console.error('Chrome storage error:', chrome.runtime.lastError.message)
+        chromeApi.storage.local.set({ email_signature: signature }, function() {
+          if (chromeApi.runtime.lastError) {
+            console.error('Chrome storage error:', chromeApi.runtime.lastError.message)
           } else {
             extensionSaveStatus.value = {
               success: true,
@@ -290,7 +333,7 @@ const saveToChromeStorageDirectly = (signature: string) => {
       localStorage.setItem('email_signature', signature)
       
       // Show success status if chrome storage didn't work
-      if (!chrome?.storage?.local) {
+      if (!chromeApi?.storage?.local) {
         extensionSaveStatus.value = {
           success: true,
           message: 'Signature saved - Extension ready'
@@ -339,8 +382,9 @@ const clearExtensionCache = () => {
   }
   
   // Clear chrome.storage.local if available
-  if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-    chrome.storage.local.remove(['email_signature'], function() {
+  const chromeApi = (window as any).chrome
+  if (typeof chromeApi !== 'undefined' && chromeApi.storage && chromeApi.storage.local) {
+    chromeApi.storage.local.remove(['email_signature'], function() {
       // Re-save current signature
       setTimeout(() => {
         saveSignatureToExtension(signatureHtml.value)
