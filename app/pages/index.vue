@@ -14,15 +14,15 @@
     <Header />
 
     <!-- Main Content -->
-    <main class="relative z-10 container mx-auto px-4 py-12 pt-24">
+    <main class="relative z-10 container mx-auto px-4 py-24 pt-24">
       <!-- Hero Section -->
-      <div class="text-center mb-16">
+      <div class="text-center my-16">
         <h1 class="text-5xl md:text-6xl font-bold mb-6">
           <span class="bg-gradient-to-r from-gray-600 via-slate-600 to-gray-700 bg-clip-text text-transparent">
             Beautiful Email
           </span>
           <br>
-          <span class="bg-gradient-to-r from-slate-600 to-gray-700 bg-clip-text text-transparent">
+          <span class="bg-gradient-to-r from-orange-600 to-yellow-100 bg-clip-text text-transparent">
             Signatures
           </span>
         </h1>
@@ -132,7 +132,7 @@
               </svg>
             </div>
             <h3 class="text-xl font-semibold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">Cross-Platform</h3>
-            <p class="text-gray-600">Works seamlessly across Chrome, Firefox, Safari, and Edge browsers.</p>
+            <p class="text-gray-600">Works seamlessly across Chrome, while Firefox, Safari, and Edge browsers are coming soon.</p>
           </div>
         </div>
       </div>

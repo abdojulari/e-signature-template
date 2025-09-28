@@ -114,17 +114,7 @@
         </div>
       </div>
 
-      <div class="mt-4 p-4 bg-gray-50/50 border border-gray-200/50 rounded-lg">
-        <p>If you love this, please consider leaving a review on the Chrome Web Store. It helps us grow and improve the extension.</p>
-        <div class="mt-4">
-          <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="text-blue-500 hover:text-blue-700">Leave a Review</a>
-        </div>
-        <div class="mt-4">
-          <p>If you have any questions, please feel free to contact us at <a href="mailto:abdulkabirojulari@gmail.com" class="text-blue-500 hover:text-blue-700">abdulkabirojulari@gmail.com</a>.</p>
-          <p>You can buy me a coffee <a href="https://www.buymeacoffee.com/abdulkabirojulari" target="_blank" class="text-blue-500 hover:text-blue-700">here</a>.</p>
-          <p>Thank you for using Signature Generator Pro!</p>
-        </div>
-      </div>
+  
     </div>
   </div>
 </template>
