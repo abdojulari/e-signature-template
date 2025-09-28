@@ -1,9 +1,11 @@
 [build]
   publish = ".output/public"
-  command = "pnpm run generate"
+  command = "pnpm install --shamefully-hoist && pnpm run generate"
 
 [build.environment]
   NODE_VERSION = "18"
+  PNPM_VERSION = "8"
+  NPM_FLAGS = "--prefer-offline --no-audit"
 
 [[redirects]]
   from = "/*"

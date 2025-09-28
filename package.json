@@ -13,7 +13,6 @@
     "@fortawesome/fontawesome-free": "^7.0.1",
     "@nuxt/ui": "3.2.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
-    "@tailwindcss/vite": "^4.1.11",
     "@types/qrcode": "^1.5.5",
     "nuxt": "^4.0.0",
     "qrcode": "^1.5.4",
