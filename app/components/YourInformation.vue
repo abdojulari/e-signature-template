@@ -1,14 +1,14 @@
 <template>
-  <div class="bg-stone-200/20 backdrop-blur-md rounded-2xl border border-gray-200 p-8 relative overflow-hidden">
+  <div class="bg-stone-200/20 backdrop-blur-md rounded-2xl border border-gray-200 p-4 sm:p-6 lg:p-8 relative overflow-hidden">
     <!-- Subtle glass shine effect -->
     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
     
     <!-- Step Progress Indicator -->
-    <div class="mb-8">
-      <div class="flex items-center justify-between mb-6">
-        <div v-for="(step, index) in steps" :key="index" class="flex items-center">
+    <div class="mb-6 sm:mb-8">
+      <div class="flex items-center justify-center sm:justify-between mb-4 sm:mb-6 overflow-x-auto">
+        <div v-for="(step, index) in steps" :key="index" class="flex items-center flex-shrink-0">
           <div :class="[
-            'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300',
+            'w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-300',
             currentStep >= index + 1 
               ? 'bg-gradient-to-r from-slate-600/80 to-gray-700/80 text-white border-2 border-white/30' 
               : 'bg-white/10 text-gray-400 border-2 border-white/20'
@@ -16,17 +16,17 @@
             {{ index + 1 }}
           </div>
           <div v-if="index < steps.length - 1" :class="[
-            'w-16 h-1 mx-3 transition-all duration-300',
+            'w-8 sm:w-16 h-1 mx-2 sm:mx-3 transition-all duration-300',
             currentStep > index + 1 ? 'bg-gradient-to-r from-slate-600/80 to-gray-700/80' : 'bg-white/20'
           ]"></div>
         </div>
       </div>
       
       <div class="text-center">
-        <h2 class="text-2xl font-bold text-gray-600 mb-2 tracking-wide">
+        <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-600 mb-2 tracking-wide">
           {{ steps[currentStep - 1]?.title || 'Step' }}
         </h2>
-        <p class="text-sm text-gray-500">
+        <p class="text-xs sm:text-sm text-gray-500 px-2">
           {{ steps[currentStep - 1]?.description || 'Please complete this step' }}
         </p>
       </div>
@@ -37,15 +37,15 @@
       <!-- Step 1: Basic Information -->
       <div v-if="currentStep === 1" class="space-y-6">
         <!-- Profile Photo -->
-        <div class="bg-white/5 rounded-xl border border-white/20 ">
-          <h3 class="text-lg font-semibold text-gray-600 mb-4 flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white/5 rounded-xl border border-white/20 p-4 sm:p-6">
+          <h3 class="text-base sm:text-lg font-semibold text-gray-600 mb-4 flex items-center">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
             Profile Photo
           </h3>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 gap-4 sm:gap-6">
             <div>
               <!-- URL Input -->
               <div class="mb-3">
@@ -64,22 +64,22 @@
                   type="file" 
                   accept="image/*" 
                   @change="handleProfilePhoto"
-                  class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-gray-300/50 bg-white/10 text-gray-600 text-sm file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-white/20 file:text-gray-600 hover:file:bg-white/30 transition-all duration-150 backdrop-blur-sm"
+                  class="w-full px-2 py-2 sm:px-3 sm:py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-gray-300/50 bg-white/10 text-gray-600 text-xs sm:text-sm file:mr-2 sm:file:mr-3 file:py-1 file:px-2 sm:file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-white/20 file:text-gray-600 hover:file:bg-white/30 transition-all duration-150 backdrop-blur-sm"
                 >
                
               </div>
             </div>
             
             <!-- Preview -->
-            <div class="flex justify-center items-center">
-              <div v-if="profilePhotoLoading" class="w-20 h-20 rounded-full border-2 border-white/30 bg-white/10 flex items-center justify-center">
-                <svg class="w-6 h-6 text-gray-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex justify-center items-center mt-4 sm:mt-0">
+              <div v-if="profilePhotoLoading" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-white/30 bg-white/10 flex items-center justify-center">
+                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-gray-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                 </svg>
               </div>
-              <img v-else-if="getProfileImageSrc()" :src="getProfileImageSrc()" alt="Profile Preview" class="w-20 h-20 rounded-full object-cover border-2 border-white/30 shadow-sm">
-              <div v-else class="w-20 h-20 rounded-full border-2 border-dashed border-white/30 bg-white/5 flex items-center justify-center">
-                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <img v-else-if="getProfileImageSrc()" :src="getProfileImageSrc()" alt="Profile Preview" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-white/30 shadow-sm">
+              <div v-else class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-dashed border-white/30 bg-white/5 flex items-center justify-center">
+                <svg class="w-4 h-4 sm:w-6 sm:h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
               </div>
@@ -88,9 +88,9 @@
         </div>
         
         <!-- Names -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-2 tracking-wide">
               First Name *
             </label>
             <input 
@@ -107,7 +107,7 @@
           </div>
           
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-2 tracking-wide">
               Middle Name
             </label>
             <input 
@@ -124,7 +124,7 @@
           </div>
           
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-2 tracking-wide">
               Last Name *
             </label>
             <input 

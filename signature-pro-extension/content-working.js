@@ -228,12 +228,13 @@ let lastAppliedSignature = '';
 
 // Load signature from storage and cache it
 function loadSignatureFromStorage() {
-  chrome.storage.local.get(['email_signature'], function(result) {
-    if (result.email_signature) {
-      signatureCache = result.email_signature;
+  chrome.storage.local.get(['email_signature', 'signaturepro_generated_signature'], function(result) {
+    if (result.email_signature || result.signaturepro_generated_signature) {
+      signatureCache = result.email_signature || result.signaturepro_generated_signature;
     } else {
-      // Fallback to localStorage if chrome.storage.local is empty
-      const localStorageSignature = localStorage.getItem('email_signature');
+      // Fallback to localStorage if chrome.storage.local is empty (check both old and new keys)
+      const localStorageSignature = localStorage.getItem('email_signature') || 
+                                   localStorage.getItem('signaturepro_generated_signature');
       if (localStorageSignature) {
         signatureCache = localStorageSignature;
         
@@ -247,13 +248,14 @@ function loadSignatureFromStorage() {
 // Auto-apply signature when compose window is detected
 function autoApplySignature(targetEditor = null) {
   if (!signatureCache) {
-    chrome.storage.local.get(['email_signature'], function(result) {
-      if (result.email_signature) {
-        signatureCache = result.email_signature;
+    chrome.storage.local.get(['email_signature', 'signaturepro_generated_signature'], function(result) {
+      if (result.email_signature || result.signaturepro_generated_signature) {
+        signatureCache = result.email_signature || result.signaturepro_generated_signature;
         applySignatureToSpecificEditor(targetEditor);
       } else {
-        // Fallback to localStorage
-        const localStorageSignature = localStorage.getItem('email_signature');
+        // Fallback to localStorage (check both old and new keys)
+        const localStorageSignature = localStorage.getItem('email_signature') || 
+                                     localStorage.getItem('signaturepro_generated_signature');
         if (localStorageSignature) {
           signatureCache = localStorageSignature;
           applySignatureToSpecificEditor(targetEditor);

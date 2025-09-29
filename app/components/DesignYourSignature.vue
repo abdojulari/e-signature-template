@@ -253,6 +253,10 @@ const closeAllDialogs = () => {
 const openGeneralStylesDialog = () => {
   closeAllDialogs()
   isGeneralStylesDialogOpen.value = true
+  // Close sidebar on mobile when dialog opens
+  if (window.innerWidth < 768) {
+    isSidebarOpen.value = false
+  }
 }
 
 const closeGeneralStylesDialog = () => {
@@ -262,6 +266,10 @@ const closeGeneralStylesDialog = () => {
 const openFontSettingsDialog = () => {
   closeAllDialogs()
   isFontSettingsDialogOpen.value = true
+  // Close sidebar on mobile when dialog opens
+  if (window.innerWidth < 768) {
+    isSidebarOpen.value = false
+  }
 }
 
 const closeFontSettingsDialog = () => {
@@ -271,6 +279,10 @@ const closeFontSettingsDialog = () => {
 const openColorSettingsDialog = () => {
   closeAllDialogs()
   isColorSettingsDialogOpen.value = true
+  // Close sidebar on mobile when dialog opens
+  if (window.innerWidth < 768) {
+    isSidebarOpen.value = false
+  }
 }
 
 const closeColorSettingsDialog = () => {
@@ -280,6 +292,10 @@ const closeColorSettingsDialog = () => {
 const openSocialIconsDialog = () => {
   closeAllDialogs()
   isSocialIconsDialogOpen.value = true
+  // Close sidebar on mobile when dialog opens
+  if (window.innerWidth < 768) {
+    isSidebarOpen.value = false
+  }
 }
 
 const closeSocialIconsDialog = () => {
