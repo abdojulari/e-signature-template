@@ -359,10 +359,10 @@ export const useSignatureGenerator = () => {
     const logoImage = data.companyLogoUrl || data.companyLogoBase64 || null
     
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="font-family: ${data.fontFamily || 'Arial, sans-serif'}; color: ${data.secondaryColor || '#333333'}; max-width: 420px; border-collapse: collapse; font-size: ${data.fontSize || '10px'};">
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: ${data.fontFamily || 'Arial, sans-serif'}; color: ${data.secondaryColor || '#333333'}; width: 100%; max-width: 420px; border-collapse: collapse; font-size: ${data.fontSize || '10px'};">
         <tr>
-          <td style="vertical-align: top; padding-right: ${data.includeQRCode ? '15px' : '0'};">
-            <table cellpadding="0" cellspacing="0" border="0">
+          <td style="vertical-align: top; padding-right: ${data.includeQRCode ? '10px' : '0'}; width: ${data.includeQRCode ? '70%' : '100%'};">
+            <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
               <tr>
                 <td style="padding: 0 0 4px 0; font-size: ${parseInt(data.fontSize || '10px') + 4}px; font-weight: bold; color: ${data.primaryColor || '#4361ee'};">${getFullName(data)}</td>
               </tr>
@@ -402,10 +402,10 @@ export const useSignatureGenerator = () => {
             </table>
           </td>
           ${data.includeQRCode ? `
-          <td style="vertical-align: top; text-align: center;">
-            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 80px; height: 80px; border: none; display: block; object-fit: contain; margin: 0 auto;">
+          <td style="vertical-align: top; text-align: center; width: 30%;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; max-width: 100%; border: none; display: block; object-fit: contain; margin: 0 auto;">
             <div style="font-size: 8px; color: ${data.secondaryColor || '#666666'}; margin-top: 2px;">Scan for Contact</div>
-            ${logoImage ? `<img src="${logoImage}" alt="Company Logo" style="height: 20px; margin-top: 4px; border: none; display: block; max-width: 80px; margin-left: auto; margin-right: auto;" onerror="this.style.display='none';">` : ''}
+            ${logoImage ? `<img src="${logoImage}" alt="Company Logo" style="height: 16px; margin-top: 4px; border: none; display: block; max-width: 60px; margin-left: auto; margin-right: auto;" onerror="this.style.display='none';">` : ''}
           </td>
           ` : ''}
         </tr>
@@ -429,9 +429,9 @@ export const useSignatureGenerator = () => {
     }
     
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="font-family: ${data.fontFamily || 'Arial, sans-serif'}; color: #333333; max-width: 500px; border-collapse: collapse; font-size: ${data.fontSize || '10px'};">
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: ${data.fontFamily || 'Arial, sans-serif'}; color: #333333; width: 100%; max-width: 500px; border-collapse: collapse; font-size: ${data.fontSize || '10px'};">
         <tr>
-          <td style="padding: 0 5px 0 0; vertical-align: top; width: 70px;">
+          <td style="padding: 0 5px 0 0; vertical-align: top; width: 15%;">
             ${profileImage ? 
               `<img src="${profileImage}" alt="Profile" style="width: 60px; height: 60px; border-radius: 30px; border: none; display: block; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                <table cellpadding="0" cellspacing="0" border="0" style="width: 60px; height: 60px; background-color: ${data.primaryColor || '#4361ee'}; border-radius: 30px; display: none;">
@@ -442,8 +442,8 @@ export const useSignatureGenerator = () => {
               </table>`
             }
           </td>
-          <td style="vertical-align: top; border-left: 2px solid ${data.primaryColor || '#4361ee'}; padding: 0 0 0 15px; ${data.includeQRCode ? 'padding-right: 15px;' : ''}">
-            <table cellpadding="0" cellspacing="0" border="0">
+          <td style="vertical-align: top; border-left: 2px solid ${data.primaryColor || '#4361ee'}; padding: 0 0 0 10px; ${data.includeQRCode ? 'padding-right: 10px;' : ''} width: ${data.includeQRCode ? '60%' : '85%'};">
+            <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
               <tr>
                 <td style="font-size: ${parseInt(data.fontSize || '10px') + 4}px; font-weight: bold; color: ${data.primaryColor || '#4361ee'}; padding: 0 0 3px 0;">${getFullName(data)}</td>
               </tr>
@@ -469,8 +469,8 @@ export const useSignatureGenerator = () => {
             </table>
           </td>
           ${data.includeQRCode ? `
-          <td style="vertical-align: top; text-align: center;">
-            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 80px; height: 80px; border: none; display: block;">
+          <td style="vertical-align: top; text-align: center; width: 25%;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; max-width: 100%; border: none; display: block; margin: 0 auto;">
             <div style="font-size: 8px; color: ${data.secondaryColor || '#666666'}; margin-top: 2px;">Scan for Contact</div>
           </td>
           ` : ''}
@@ -484,12 +484,12 @@ export const useSignatureGenerator = () => {
     const logoImage = data.companyLogoUrl || data.companyLogoBase64 || null
     
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, ${data.primaryColor || '#4361ee'}, ${data.secondaryColor || '#3a0ca3'}); padding: 25px 30px; border-radius: 12px; color: white; max-width: 450px; min-width: 400px; font-family: ${data.fontFamily || 'Arial, sans-serif'}; font-size: ${data.fontSize || '10px'}; border-collapse: collapse; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      <table cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, ${data.primaryColor || '#4361ee'}, ${data.secondaryColor || '#3a0ca3'}); padding: 15px 20px; border-radius: 12px; color: white; width: 100%; max-width: 450px; font-family: ${data.fontFamily || 'Arial, sans-serif'}; font-size: ${data.fontSize || '10px'}; border-collapse: collapse; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
         <tr>
           <td style="padding: 0 0 8px 0;">
             <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; width: 100%;">
               <tr>
-                <td style="padding: 20px; vertical-align: top; width: 100px;">
+                <td style="padding: 10px; vertical-align: top; width: 25%;">
                   ${profileImage ? 
                     `<div style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1);">
                        <img src="${profileImage}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'text-align: center; font-size: 24px; font-weight: bold; color: white; line-height: 74px;\\'>${getFullName(data).charAt(0).toUpperCase()}</div>';">
@@ -499,7 +499,7 @@ export const useSignatureGenerator = () => {
                     </table>`
                   }
                 </td>
-                <td style="vertical-align: top; padding: 10px 30px 10px 0;">
+                <td style="vertical-align: top; padding: 10px 15px 10px 0; width: 75%;">
                   <div style="font-size: ${parseInt(data.fontSize || '10px') + 8}px; font-weight: bold; margin-bottom: 6px; margin-top: 10px; color: white; line-height: 1.2;">${getFullName(data)}</div>
                   <div style="font-size: ${parseInt(data.fontSize || '10px') + 2}px; opacity: 0.9; color: white; margin-bottom: 10px; line-height: 1.3;">
                     ${data.jobTitle || 'Your Job Title'} | ${data.companyName || 'Your Company'}
@@ -550,9 +550,9 @@ export const useSignatureGenerator = () => {
     
     // Convert to table-based layout for better email client support
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="background: #f8f9ff; border: 1px solid #e0e5ff; border-radius: 8px; padding: 18px; color: #333; max-width: 400px; font-family: ${data.fontFamily || 'Arial, sans-serif'}; font-size: ${data.fontSize || '10px'}; border-collapse: collapse;">
+      <table cellpadding="0" cellspacing="0" border="0" style="background: #f8f9ff; border: 1px solid #e0e5ff; border-radius: 8px; padding: 12px; color: #333; width: 100%; max-width: 400px; font-family: ${data.fontFamily || 'Arial, sans-serif'}; font-size: ${data.fontSize || '10px'}; border-collapse: collapse;">
         <tr>
-          <td style="padding: 0 15px 0 0; vertical-align: top;">
+          <td style="padding: 0 10px 0 0; vertical-align: top; width: 15%;">
             ${profileImage ? 
               `<img src="${profileImage}" alt="Profile" style="width: 50px; height: 50px; border-radius: 25px; object-fit: cover; border: none; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                <table cellpadding="0" cellspacing="0" border="0" style="width: 50px; height: 50px; background: linear-gradient(135deg, ${data.primaryColor || '#4361ee'}, ${data.secondaryColor || '#3a0ca3'}); border-radius: 25px; display: none;">
@@ -563,8 +563,8 @@ export const useSignatureGenerator = () => {
               </table>`
             }
           </td>
-          <td style="vertical-align: top; ${data.includeQRCode ? 'padding-right: 15px;' : ''}">
-            <table cellpadding="0" cellspacing="0" border="0">
+          <td style="vertical-align: top; ${data.includeQRCode ? 'padding-right: 10px;' : ''} width: ${data.includeQRCode ? '65%' : '85%'};">
+            <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
               <tr>
                 <td style="font-size: ${parseInt(data.fontSize || '10px') + 6}px; font-weight: 600; color: ${data.primaryColor || '#4361ee'}; padding: 0 0 3px 0;">${getFullName(data)}</td>
               </tr>
@@ -609,10 +609,10 @@ export const useSignatureGenerator = () => {
     const logoImage = data.companyLogoUrl || data.companyLogoBase64 || null
     
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="border-left: 3px solid ${data.primaryColor || '#4361ee'}; font-family: ${data.fontFamily || 'Arial, sans-serif'}; max-width: 400px; font-size: ${data.fontSize || '10px'}; border-collapse: collapse;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border-left: 3px solid ${data.primaryColor || '#4361ee'}; font-family: ${data.fontFamily || 'Arial, sans-serif'}; width: 100%; max-width: 400px; font-size: ${data.fontSize || '10px'}; border-collapse: collapse;">
         <tr>
-          <td style="padding: 0 0 0 15px; vertical-align: top; ${data.includeQRCode ? 'padding-right: 15px;' : ''}">
-            <table cellpadding="0" cellspacing="0" border="0">
+          <td style="padding: 0 0 0 10px; vertical-align: top; ${data.includeQRCode ? 'padding-right: 10px;' : ''} width: ${data.includeQRCode ? '75%' : '100%'};">
+            <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
               <tr>
                 <td style="font-size: ${parseInt(data.fontSize || '10px') + 6}px; font-weight: 600; color: ${data.primaryColor || '#4361ee'}; padding: 0 0 4px 0;">${getFullName(data)}</td>
               </tr>
@@ -656,8 +656,8 @@ export const useSignatureGenerator = () => {
             </table>
           </td>
           ${data.includeQRCode ? `
-          <td style="vertical-align: top; text-align: center;">
-            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block;">
+          <td style="vertical-align: top; text-align: center; width: 25%;">
+            <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 50px; height: 50px; max-width: 100%; border: none; display: block; margin: 0 auto;">
             <div style="font-size: 8px; color: #666; margin-top: 2px;">Scan for Contact</div>
           </td>
           ` : ''}
@@ -1016,79 +1016,6 @@ export const useSignatureGenerator = () => {
     `
   }
 
-  // // Corporate Elite Template (Professional layout with sky blue accent)
-  // const generateCorporateEliteTemplate = (data: SignatureData) => {
-  //   const profileImage = data.profilePhotoUrl || data.profilePhotoBase64 || null
-  //   const primaryColor = data.primaryColor || '#4a90e2' // Default sky blue color
-  //   const secondaryColor = data.secondaryColor || '#333333' // Dark gray
-  //   const baseFontSize = parseInt(data.fontSize || '11') // Parse fontSize to number
-    
-  //   // Build full name
-  //   const fullName = [data.firstName, data.middleName, data.lastName].filter(Boolean).join(' ') || 'Your Name'
-    
-  //   // Build phone string with pipes
-  //   let phoneString = ''
-  //   const phones = [data.mobilePhone, data.officePhone].filter(Boolean)
-  //   if (phones.length > 0) {
-  //     phoneString = phones.join(' | ')
-  //   }
-    
-  //   // Build full address
-  //   const addressParts = [data.companyAddress, data.companyCity, data.companyState, data.companyZipCode, data.companyCountry].filter(Boolean)
-  //   const fullAddress = addressParts.length > 0 ? addressParts.join(', ') : ''
-    
-  //   return `
-  //     <table cellpadding="0" cellspacing="0" border="0" style="font-family: ${data.fontFamily || 'Arial, sans-serif'}; width: 450px; border-collapse: collapse; font-size: ${baseFontSize}px;">
-  //       <tr>
-  //         <td style="vertical-align: top; width: 90px; padding: 0 10px 0 0;">
-  //           ${profileImage ? `
-  //           <img src="${profileImage}" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; display: block;" alt="Profile">
-  //           ` : `
-  //           <div style="width: 70px; height: 70px; border-radius: 50%; background: #f0f0f0; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; font-size: ${baseFontSize - 1}px; color: #999; font-family: ${data.fontFamily || 'Arial, sans-serif'};">Photo</div>
-  //           `}
-  //           <svg width="70" height="25" style="display: block;">
-  //             <path d="M5 8 Q35 2 65 12 Q60 20 30 22 Q10 18 5 8 Z" fill="${primaryColor}" opacity="0.7"/>
-  //           </svg>
-  //         </td>
-  //         <td style="vertical-align: top; padding: 0 15px 0 0; border-right: 1px solid #ccc; width: 180px;">
-  //           <div style="font-size: ${baseFontSize + 7}px; font-weight: bold; color: ${primaryColor}; margin-bottom: 3px; font-family: ${data.fontFamily || 'Arial, sans-serif'};">${fullName}</div>
-  //           <div style="font-size: ${baseFontSize + 3}px; color: ${secondaryColor}; margin-bottom: 10px; font-family: ${data.fontFamily || 'Arial, sans-serif'};">${data.jobTitle || 'Software Developer'}</div>
-  //           <div style="margin-top: 8px;">
-  //             ${generateSocialIcons(data.socialLinks)}
-  //           </div>
-  //         </td>
-  //         <td style="vertical-align: top; padding: 0 0 0 15px; width: 180px;">
-  //           ${data.companyName ? `<div style="font-size: ${baseFontSize + 1}px; color: ${secondaryColor}; font-weight: bold; margin-bottom: 2px; font-family: ${data.fontFamily || 'Arial, sans-serif'};">${data.companyName}</div>` : ''}
-  //           ${fullAddress ? `<div style="font-size: ${baseFontSize}px; color: #666; margin-bottom: 8px; font-family: ${data.fontFamily || 'Arial, sans-serif'};">${fullAddress}</div>` : ''}
-            
-  //           ${phoneString ? `<div style="font-size: ${baseFontSize - 1}px; color: ${secondaryColor}; margin-bottom: 4px; font-family: ${data.fontFamily || 'Arial, sans-serif'};">${phoneString}</div>` : ''}
-  //           ${data.email ? `<div style="font-size: ${baseFontSize - 1}px; color: ${primaryColor}; margin-bottom: 12px; font-family: ${data.fontFamily || 'Arial, sans-serif'};"><a href="mailto:${data.email}" style="color: ${primaryColor}; text-decoration: none;">${data.email}</a></div>` : ''}
-  //           ${data.website ? `<div style="font-size: ${baseFontSize}px; color: ${primaryColor}; margin-bottom: 12px; font-family: ${data.fontFamily || 'Arial, sans-serif'};"><a href="${data.website}" style="color: ${primaryColor}; text-decoration: none;">${(data.website || '').replace(/^https?:\/\//, '')}</a></div>` : ''}
-            
-  //           ${data.includeQRCode ? `
-  //           <div style="display: flex; align-items: flex-start; gap: 10px;">
-  //             ${data.companyLogoUrl || data.companyLogoBase64 ? `
-  //             <img src="${data.companyLogoUrl || data.companyLogoBase64}" style="width: 40px; height: 25px; object-fit: contain;" alt="Company Logo">
-  //             ` : `
-  //             <div style="width: 40px; height: 25px; background: #f0f0f0; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; font-size: ${baseFontSize - 3}px; color: #999; font-family: ${data.fontFamily || 'Arial, sans-serif'};">LOGO</div>
-  //             `}
-  //             <div style="text-align: center;">
-  //               <img src="${generateQRCodeURL(data)}" alt="Contact QR Code" style="width: 60px; height: 60px; border: none; display: block; margin-bottom: 4px;">
-  //               <div style="font-size: ${baseFontSize - 2}px; color: ${secondaryColor}; font-family: ${data.fontFamily || 'Arial, sans-serif'};">Scan to Connect</div>
-  //             </div>
-  //           </div>
-  //           ` : `
-  //           ${data.companyLogoUrl || data.companyLogoBase64 ? `
-  //           <img src="${data.companyLogoUrl || data.companyLogoBase64}" style="width: 40px; height: 25px; object-fit: contain; display: block;" alt="Company Logo">
-  //           ` : `
-  //           <div style="width: 40px; height: 25px; background: #f0f0f0; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; font-size: ${baseFontSize - 3}px; color: #999; font-family: ${data.fontFamily || 'Arial, sans-serif'};">LOGO</div>
-  //           `}
-  //           `}
-  //         </td>
-  //       </tr>
-  //     </table>
-  //   `
-  // }
 
 const generateCorporateEliteTemplate = (data: SignatureData) => {
     const profileImage = data.profilePhotoUrl || null // Skip base64 for Gmail compatibility
