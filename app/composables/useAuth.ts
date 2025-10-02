@@ -27,9 +27,8 @@ export const useAuth = () => {
     yahoo: {
       clientId: yahooClientId, // Replace with your Yahoo OAuth client ID
       scope: 'openid profile email',
-      // Yahoo requires HTTPS - we'll use a placeholder production URL for now
-      // You'll need to update this when you deploy to production
-      redirectUri: 'https://your-production-domain.com/auth/callback'
+      // Yahoo requires HTTPS - use dynamic redirect URI based on environment
+      redirectUri: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : 'https://signature-pro.ca/auth/callback'
     }
   }
 
