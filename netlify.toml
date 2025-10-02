@@ -1,10 +1,9 @@
 [build]
   publish = ".output/public"
-  command = "pnpm install --shamefully-hoist && pnpm run generate"
+  command = "rm -rf node_modules package-lock.json && npm install && npm run generate"
 
 [build.environment]
   NODE_VERSION = "18"
-  PNPM_VERSION = "8"
   NPM_FLAGS = "--prefer-offline --no-audit"
 
 [[redirects]]
