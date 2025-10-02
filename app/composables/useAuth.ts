@@ -123,14 +123,42 @@ export const useAuth = () => {
           throw new Error('Failed to get access token')
         }
       } else {
-        // For Yahoo, similar process but with Yahoo API
-        // For now, create a better mock user based on the provider
-        userData = {
-          id: `user_${Date.now()}`,
-          email: 'user@yahoo.com',
-          name: 'Yahoo User',
-          picture: 'https://via.placeholder.com/150',
-          provider: 'yahoo'
+        // Exchange code for access token and get user info from Yahoo
+        const tokenResponse = await fetch('https://api.login.yahoo.com/oauth2/get_token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            client_id: yahooClientId,
+            client_secret: yahooClientSecret,
+            code: code,
+            grant_type: 'authorization_code',
+            redirect_uri: oauthConfig.yahoo.redirectUri,
+          }),
+        })
+
+        const tokenData = await tokenResponse.json()
+        
+        if (tokenData.access_token) {
+          // Get user info from Yahoo
+          const userResponse = await fetch('https://api.login.yahoo.com/openid/v1/userinfo', {
+            headers: {
+              Authorization: `Bearer ${tokenData.access_token}`,
+            },
+          })
+          
+          const yahooUser = await userResponse.json()
+          
+          userData = {
+            id: yahooUser.sub || yahooUser.id,
+            email: yahooUser.email,
+            name: yahooUser.name || (yahooUser.given_name + ' ' + yahooUser.family_name),
+            picture: yahooUser.picture,
+            provider: 'yahoo'
+          }
+        } else {
+          throw new Error('Failed to get access token from Yahoo')
         }
       }
 
