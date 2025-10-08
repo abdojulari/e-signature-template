@@ -40,6 +40,37 @@ export interface Template {
 import QRCode from 'qrcode'
 
 export const useSignatureGenerator = () => {
+  // Helper function to format job title and company with conditional pipe separator
+  const formatJobTitleAndCompany = (jobTitle: string, companyName: string): string => {
+    const hasJobTitle = jobTitle && jobTitle.trim() !== ''
+    const hasCompany = companyName && companyName.trim() !== ''
+    
+    if (hasJobTitle && hasCompany) {
+      return `${jobTitle} | ${companyName}`
+    } else if (hasJobTitle) {
+      return jobTitle
+    } else if (hasCompany) {
+      return companyName
+    } else {
+      return 'Your Job Title'
+    }
+  }
+
+  // Helper function to format job title and company with conditional "at" separator
+  const formatJobTitleAtCompany = (jobTitle: string, companyName: string): string => {
+    const hasJobTitle = jobTitle && jobTitle.trim() !== ''
+    const hasCompany = companyName && companyName.trim() !== ''
+    
+    if (hasJobTitle && hasCompany) {
+      return `${jobTitle} at ${companyName}`
+    } else if (hasJobTitle) {
+      return jobTitle
+    } else if (hasCompany) {
+      return companyName
+    } else {
+      return 'Your Job Title'
+    }
+  }
   const templates: Template[] = [
     { 
       id: 'minimal', 
@@ -368,7 +399,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 0 0 6px 0; font-size: ${data.fontSize || '10px'}; color: ${data.secondaryColor || '#666666'};">
-                  ${data.jobTitle || 'Your Job Title'} | ${data.companyName || 'Your Company'}
+                  ${formatJobTitleAndCompany(data.jobTitle || '', data.companyName || '')}
                 </td>
               </tr>
               <tr>
@@ -449,7 +480,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="font-size: ${data.fontSize || '10px'}; color: ${data.secondaryColor || '#666666'}; padding: 0 0 6px 0;">
-                  ${data.jobTitle || 'Your Job Title'} | ${data.companyName || 'Your Company'}
+                  ${formatJobTitleAndCompany(data.jobTitle || '', data.companyName || '')}
                   ${logoImage ? `<br><img src="${logoImage}" alt="Company Logo" style="height: 16px; margin-top: 3px; border: none; display: block;" onerror="this.style.display='none';">` : ''}
                 </td>
               </tr>
@@ -502,7 +533,7 @@ export const useSignatureGenerator = () => {
                 <td style="vertical-align: top; padding: 10px 15px 10px 0; width: 75%;">
                   <div style="font-size: ${parseInt(data.fontSize || '10px') + 8}px; font-weight: bold; margin-bottom: 6px; margin-top: 10px; color: white; line-height: 1.2;">${getFullName(data)}</div>
                   <div style="font-size: ${parseInt(data.fontSize || '10px') + 2}px; opacity: 0.9; color: white; margin-bottom: 10px; line-height: 1.3;">
-                    ${data.jobTitle || 'Your Job Title'} | ${data.companyName || 'Your Company'}
+                    ${formatJobTitleAndCompany(data.jobTitle || '', data.companyName || '')}
                   </div>
                   ${logoImage ? `<div style="margin-bottom: 10px;"><img src="${logoImage}" alt="Company Logo" style="height: 24px; max-width: 120px; border: none; display: block; object-fit: contain;" onerror="this.style.display='none'; console.log('Logo failed to load:', '${logoImage}');"></div>` : ''}
                 </td>
@@ -618,7 +649,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="font-size: ${parseInt(data.fontSize || '10px') + 1}px; color: #666; padding: 0 0 8px 0; font-weight: 500;">
-                  ${data.jobTitle || 'Your Job Title'} | ${data.companyName || 'Your Company'}
+                  ${formatJobTitleAndCompany(data.jobTitle || '', data.companyName || '')}
                   ${logoImage ? `<br><img src="${logoImage}" alt="Company Logo" style="height: 16px; margin-top: 3px; border: none; display: block;" onerror="this.style.display='none';">` : ''}
                 </td>
               </tr>
@@ -744,7 +775,7 @@ export const useSignatureGenerator = () => {
                 <td style="font-size: ${parseInt(data.fontSize || '12px') + 6}px; font-weight: bold; color: ${data.primaryColor || '#4361ee'}; padding: 0 0 4px 0;">${getFullName(data)}</td>
               </tr>
               <tr>
-                <td style="font-size: ${parseInt(data.fontSize || '12px') + 1}px; color: #666; padding: 0 0 2px 0;">${data.jobTitle || 'Your Job Title'} at <strong style="color: ${data.primaryColor || '#4361ee'};">${data.companyName || 'Your Company'}</strong></td>
+                <td style="font-size: ${parseInt(data.fontSize || '12px') + 1}px; color: #666; padding: 0 0 2px 0;">${formatJobTitleAtCompany(data.jobTitle || '', data.companyName || '')}</td>
               </tr>
               <tr>
                 <td style="font-size: ${data.fontSize || '12px'}; padding: 6px 0;">

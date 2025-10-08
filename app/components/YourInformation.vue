@@ -218,7 +218,7 @@
       <!-- Step 2: Company Information -->
       <div v-if="currentStep === 2" class="space-y-6">
         <!-- Company Logo -->
-        <div class="bg-white/5 rounded-xl border border-white/20 ">
+        <div class="bg-white/5 rounded-xl border border-white/20 p-4">
           <h3 class="text-lg font-semibold text-gray-600 dark:text-white mb-4 flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -227,7 +227,7 @@
           </h3>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
+            <div >
               <!-- URL Input -->
               <div class="mb-3">
                 <input 
@@ -237,7 +237,7 @@
                   placeholder="https://imgur.com/your-logo.png (Recommended for all email clients)"
                   :class="getInputClasses('companyLogoUrl')"
                 >
-                <p class="text-xs text-green-600 mt-1">✅ Hosted URLs work in Gmail, Outlook, and all email clients</p>
+    
               </div>
               
               <!-- File Upload -->
@@ -248,7 +248,7 @@
                   @change="handleCompanyLogo"
                   class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-gray-300/50 bg-white/10 text-gray-600 text-sm file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-white/20 file:text-gray-600 hover:file:bg-white/30 transition-all duration-150 backdrop-blur-sm"
                 >
-                <p class="text-xs text-amber-600 mt-1">⚠️ Uploaded files may not display in Gmail (but work in Outlook)</p>
+                
               </div>
             </div>
             
@@ -295,7 +295,7 @@
         </div>
         
         <!-- Company Address Section -->
-        <div class="bg-white/5 rounded-xl border border-white/20 ">
+        <div class="bg-white/5 rounded-xl border border-white/20 p-4">
           <h3 class="text-lg font-semibold text-gray-600 dark:text-white mb-4 tracking-wide flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -303,7 +303,7 @@
             </svg>
             Company Address (Optional)
           </h3>
-          <p class="text-sm text-gray-600/70 mb-4">Add your company's physical address to include in signatures</p>
+          <p class="text-sm text-gray-600/70 mb-4 dark:text-gray-200">Add your company's physical address to include in signatures</p>
           
           <div class="space-y-4">
             <!-- Street Address -->
@@ -434,7 +434,7 @@
               </svg>
               <div>
                 <span class="text-lg font-semibold text-gray-600 dark:text-white tracking-wide">Include QR Code</span>
-                <p class="text-sm text-gray-600/70 mt-1">Add a scannable QR code with your contact information</p>
+                <p class="text-sm text-gray-600/70 mt-1 dark:text-gray-200">Add a scannable QR code with your contact information</p>
               </div>
             </div>
             <div class="flex items-center space-x-3">
@@ -536,11 +536,11 @@
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
           </svg>
-          Generate 
+          Revalidate
         </button>
       </div>
     </div>
-    
+    <p class="flex justify-end mt-5 text-xs text-gray-600/70 dark:text-gray-200">Revalidate chrome extension</p>
     <!-- Validation Summary -->
     <div v-if="Object.keys(validationErrors).length > 0 && currentStep === steps.length" class="mt-4 p-4 bg-red-500/20 border border-red-400/30 rounded-xl backdrop-blur-sm">
       <h4 class="text-sm font-bold text-red-200 mb-3 flex items-center">
