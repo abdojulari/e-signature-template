@@ -23,7 +23,7 @@
       </div>
       
       <div class="text-center">
-        <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-600 mb-2 tracking-wide">
+        <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-600 dark:text-white mb-2 tracking-wide">
           {{ steps[currentStep - 1]?.title || 'Step' }}
         </h2>
         <p class="text-xs sm:text-sm text-gray-500 px-2">
@@ -38,7 +38,7 @@
       <div v-if="currentStep === 1" class="space-y-6">
         <!-- Profile Photo -->
         <div class="bg-white/5 rounded-xl border border-white/20 p-4 sm:p-6">
-          <h3 class="text-base sm:text-lg font-semibold text-gray-600 mb-4 flex items-center">
+          <h3 class="text-base sm:text-lg font-semibold text-gray-600 dark:text-white mb-4 flex items-center">
             <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
@@ -90,7 +90,7 @@
         <!-- Names -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div>
-            <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
               First Name *
             </label>
             <input 
@@ -107,7 +107,7 @@
           </div>
           
           <div>
-            <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
               Middle Name
             </label>
             <input 
@@ -124,7 +124,7 @@
           </div>
           
           <div>
-            <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-xs sm:text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
               Last Name *
             </label>
             <input 
@@ -143,7 +143,7 @@
         
         <!-- Email -->
         <div>
-          <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+          <label class="block text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
             Email Address *
           </label>
           <input 
@@ -162,7 +162,7 @@
         <!-- Phone Numbers -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
               Mobile Phone
             </label>
             <input 
@@ -179,7 +179,7 @@
           </div>
           
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+            <label class="block text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
               Office Phone
             </label>
             <input 
@@ -198,7 +198,7 @@
         
         <!-- Website -->
         <div>
-          <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">
+          <label class="block text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">
             Website
           </label>
           <input 
@@ -219,7 +219,7 @@
       <div v-if="currentStep === 2" class="space-y-6">
         <!-- Company Logo -->
         <div class="bg-white/5 rounded-xl border border-white/20 ">
-          <h3 class="text-lg font-semibold text-gray-600 mb-4 flex items-center">
+          <h3 class="text-lg font-semibold text-gray-600 dark:text-white mb-4 flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
             </svg>
@@ -272,7 +272,7 @@
         <!-- Company Details -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">Job Title</label>
+            <label class="block text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">Job Title</label>
             <input 
               :value="signatureData.jobTitle"
               @input="updateField('jobTitle', $event)"
@@ -283,7 +283,7 @@
           </div>
           
           <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-2 tracking-wide">Company Name</label>
+            <label class="block text-sm font-semibold text-gray-600 dark:text-white mb-2 tracking-wide">Company Name</label>
             <input 
               :value="signatureData.companyName"
               @input="updateField('companyName', $event)"
@@ -296,7 +296,7 @@
         
         <!-- Company Address Section -->
         <div class="bg-white/5 rounded-xl border border-white/20 ">
-          <h3 class="text-lg font-semibold text-gray-600 mb-4 tracking-wide flex items-center">
+          <h3 class="text-lg font-semibold text-gray-600 dark:text-white mb-4 tracking-wide flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -308,7 +308,7 @@
           <div class="space-y-4">
             <!-- Street Address -->
             <div>
-              <label class="block text-sm font-medium text-gray-600 mb-2">Street Address</label>
+              <label class="block text-sm font-medium text-gray-600 dark:text-white mb-2">Street Address</label>
               <input 
                 :value="signatureData.companyAddress"
                 @input="updateField('companyAddress', $event)"
@@ -321,7 +321,7 @@
             <!-- City, State, Zip -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">City</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-white mb-2">City</label>
                 <input 
                   :value="signatureData.companyCity"
                   @input="updateField('companyCity', $event)"
@@ -332,7 +332,7 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">State/Province</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-white mb-2">State/Province</label>
                 <input 
                   :value="signatureData.companyState"
                   @input="updateField('companyState', $event)"
@@ -343,7 +343,7 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">ZIP/Postal Code</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-white mb-2">ZIP/Postal Code</label>
                 <input 
                   :value="signatureData.companyZipCode"
                   @input="updateField('companyZipCode', $event)"
@@ -356,7 +356,7 @@
             
             <!-- Country -->
             <div>
-              <label class="block text-sm font-medium text-gray-600 mb-2">Country</label>
+              <label class="block text-sm font-medium text-gray-600 dark:text-white mb-2">Country</label>
               <input 
                 :value="signatureData.companyCountry"
                 @input="updateField('companyCountry', $event)"
@@ -378,7 +378,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
               </svg>
               <div>
-                <span class="text-lg font-semibold text-gray-600 tracking-wide">Include Social Media</span>
+                <span class="text-lg font-semibold text-gray-600 dark:text-white tracking-wide">Include Social Media</span>
                 <p class="text-sm text-gray-600/70 mt-1">Add your social media profiles to your signature</p>
               </div>
             </div>
@@ -414,7 +414,7 @@
           
           <!-- Social Media Preview -->
           <div v-if="includeSocialMedia && selectedSocialNetworks.length > 0" class="mt-6 pt-6 border-t border-white/20">
-            <h4 class="text-sm font-medium text-gray-600 mb-3">Selected Social Networks:</h4>
+            <h4 class="text-sm font-medium text-gray-600 dark:text-white mb-3">Selected Social Networks:</h4>
             <div class="flex flex-wrap gap-2">
               <span v-for="network in selectedSocialNetworks" :key="network" class="px-3 py-1 bg-white/20 text-gray-600 rounded-full text-sm capitalize">
                 {{ network }}
@@ -433,7 +433,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V4a1 1 0 00-1-1H5a1 1 0 00-1 1v3a1 1 0 001 1zm0 10h2a1 1 0 001-1v-3a1 1 0 00-1-1H5a1 1 0 00-1 1v3a1 1 0 001 1zM17 8h2a1 1 0 001-1V4a1 1 0 00-1-1h-2a1 1 0 00-1 1v3a1 1 0 001 1z"></path>
               </svg>
               <div>
-                <span class="text-lg font-semibold text-gray-600 tracking-wide">Include QR Code</span>
+                <span class="text-lg font-semibold text-gray-600 dark:text-white tracking-wide">Include QR Code</span>
                 <p class="text-sm text-gray-600/70 mt-1">Add a scannable QR code with your contact information</p>
               </div>
             </div>

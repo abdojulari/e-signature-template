@@ -27,8 +27,8 @@ export const useAuth = () => {
     yahoo: {
       clientId: yahooClientId, // Replace with your Yahoo OAuth client ID
       scope: 'openid profile email',
-      // Yahoo requires HTTPS - use dynamic redirect URI based on environment
-      redirectUri: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : 'https://signature-pro.ca/auth/callback'
+      // Use consistent redirect URI - must match exactly what's configured in Yahoo Developer Network
+      redirectUri: 'https://signature-pro.ca/auth/callback'
     }
   }
 
@@ -60,17 +60,23 @@ export const useAuth = () => {
     isLoading.value = true
     try {
       const state = encodeURIComponent(JSON.stringify({ provider: 'yahoo' }))
+      
+      // Generate a secure nonce for Yahoo OAuth
+      const nonce = btoa(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15))
+      
+      // Store nonce for validation later
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('yahoo_nonce', nonce)
+        localStorage.setItem('auth_redirect', window.location.pathname)
+      }
+      
       const authUrl = `https://api.login.yahoo.com/oauth2/request_auth?` +
         `client_id=${oauthConfig.yahoo.clientId}&` +
         `redirect_uri=${encodeURIComponent(oauthConfig.yahoo.redirectUri)}&` +
         `scope=${encodeURIComponent(oauthConfig.yahoo.scope)}&` +
         `response_type=code&` +
-        `state=${state}`
-
-      // Store the intended redirect
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('auth_redirect', window.location.pathname)
-      }
+        `state=${state}&` +
+        `nonce=${nonce}`
 
       window.location.href = authUrl
     } catch (error) {

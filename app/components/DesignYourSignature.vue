@@ -8,7 +8,7 @@
 
   <!-- Sidebar -->
   <div 
-    class="fixed top-28 left-0 h-[calc(100vh-5rem)] bg-white/50 backdrop-blur-xl shadow-2xl border-r border-white/20 transition-all duration-500 z-[60]"
+    class="fixed top-28 left-0 h-[calc(100vh-5rem)] bg-white/50 dark:bg-gray-800/50 backdrop-blur-xl shadow-2xl border-r border-white/20 dark:border-gray-700/20 transition-all duration-500 z-[60]"
     :class="[
       isSidebarOpen ? 'transform translate-x-0' : 'transform -translate-x-full',
       'w-80 lg:w-72'
@@ -16,7 +16,7 @@
   >
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between p-6 border-b border-gray-400">
-      <h2 class="text-md font-bold text-gray-600 flex items-center tracking-wide">
+      <h2 class="text-md font-bold text-gray-600 dark:text-white flex items-center tracking-wide">
         <div class="w-8 h-8 bg-gradient-to-r from-white/50 to-gray-200 rounded-lg mr-3 flex items-center justify-center backdrop-blur-sm border border-gray-100/80">
           <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
@@ -72,8 +72,8 @@
               </svg>
             </div>
             <div>
-              <div class="font-semibold text-gray-600 text-sm">Font Settings</div>
-              <div class="text-xs text-gray-500">Family & size</div>
+              <div class="font-semibold text-gray-600 dark:text-white text-sm">Font Settings</div>
+              <div class="text-xs text-gray-500 dark:text-gray-300">Family & size</div>
             </div>
           </div>
           <svg class="w-4 h-4 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,8 +93,8 @@
               </svg>
             </div>
             <div>
-              <div class="font-semibold text-gray-600 text-sm">Color Settings</div>
-              <div class="text-xs text-gray-500">Template & text colors</div>
+              <div class="font-semibold text-gray-600 dark:text-white text-sm">Color Settings</div>
+              <div class="text-xs text-gray-500 dark:text-gray-300">Template & text colors</div>
             </div>
           </div>
           <svg class="w-4 h-4 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,8 +114,8 @@
               </svg>
             </div>
             <div>
-              <div class="font-semibold text-gray-600 text-sm">Social Icons</div>
-              <div class="text-xs text-gray-500">Style & appearance</div>
+              <div class="font-semibold text-gray-600 dark:text-white text-sm">Social Icons</div>
+              <div class="text-xs text-gray-500 dark:text-gray-300">Style & appearance</div>
             </div>
           </div>
           <svg class="w-4 h-4 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,7 +128,7 @@
 
     <!-- Sidebar Footer -->
     <div class="p-6 border-t border-white/80">
-      <div class="text-xs text-gray-500 text-center font-medium tracking-wide">
+      <div class="text-xs text-gray-500 dark:text-white text-center font-medium tracking-wide">
         ✨ Click any setting to customize
       </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
@@ -7,6 +7,9 @@
 </template>
 
 <script setup lang="ts">
+// Initialize dark mode
+const { initDarkMode } = useDarkMode()
+
 // Add FontAwesome for social media icons globally
 useHead({
   link: [
@@ -17,6 +20,11 @@ useHead({
       crossorigin: 'anonymous'
     }
   ]
+})
+
+// Initialize dark mode on app start
+onMounted(() => {
+  initDarkMode()
 })
 
 useSeoMeta({
@@ -41,10 +49,14 @@ useSeoMeta({
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f5f7fa;
   color: var(--dark);
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  color: #e2e8f0;
 }
 </style>
 

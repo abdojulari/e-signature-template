@@ -1,6 +1,6 @@
 <template>
   <!-- Loading State -->
-  <div v-if="isPageLoading" class="min-h-screen bg-gradient-to-br from-gray-300 via-slate-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
+  <div v-if="isPageLoading" class="min-h-screen bg-gradient-to-br from-gray-300 via-slate-100 to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center relative overflow-hidden">
     <!-- Animated Background Elements -->
     <div class="absolute inset-0">
       <div class="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
@@ -8,26 +8,19 @@
       <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
     </div>
     
-    <div class="bg-slate-200 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-12 text-center relative z-10 max-w-md mx-4">
-      <div class="w-20 h-20 bg-gradient-to-r from-white/20 to-white/10 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/30">
-        <svg class="w-10 h-10 text-white animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="bg-slate-200 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/50 p-12 text-center relative z-10 max-w-md mx-4">
+      <div class="w-20 h-20 bg-gradient-to-r from-white/20 to-white/10 dark:from-gray-700/50 dark:to-gray-600/50 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/30 dark:border-gray-600/50">
+        <svg class="w-10 h-10 text-white dark:text-gray-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
         </svg>
       </div>
-      <h2 class="text-2xl font-bold text-white mb-3 tracking-wide">Loading Dashboard...</h2>
-      <p class="text-white/80 text-lg">Creating your signature experience</p>
+      <h2 class="text-2xl font-bold text-white dark:text-gray-100 mb-3 tracking-wide">Loading Dashboard...</h2>
+      <p class="text-white/80 dark:text-gray-300/80 text-lg">Creating your signature experience</p>
     </div>
   </div>
 
   <!-- Main Dashboard -->
-  <div v-else class="min-h-screen bg-white relative overflow-hidden">
-    <!-- Animated Background Elements -->
-    <!-- <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute bottom-20 right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      <div class="absolute top-1/3 right-1/3 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
-      <div class="absolute bottom-1/3 left-1/3 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse delay-700"></div>
-    </div> -->
+  <div v-else class="min-h-screen bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
     <!-- Clean Header -->
     <Header />
 
@@ -56,13 +49,13 @@
         <!-- Welcome Header -->
         <div class="mb-8 text-center">
           <div class=" p-8 max-w-2xl mx-auto">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4 tracking-wide">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-wide">
               Create Your Perfect 
-              <span class="bg-gradient-to-r from-gray-600 to-slate-700 bg-clip-text text-transparent">
+              <span class="bg-gradient-to-r from-gray-600 to-slate-700 dark:from-gray-300 dark:to-gray-400 bg-clip-text text-transparent">
                 Email Signature
               </span>
             </h1>
-            <p class="text-gray-700 text-lg leading-relaxed">
+            <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
               Design professional signatures that make lasting impressions
             </p>
           </div>
@@ -95,15 +88,49 @@
           />
            
         </div>
-        <div class="mt-4 p-4 bg-gray-50/50 border border-gray-200/50 rounded-lg">
-        <p>If you love this, please consider leaving a review on the Chrome Web Store. It helps us grow and improve the extension.</p>
+        <div class="mt-4 p-4 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50 rounded-lg">
+        <p class="text-gray-700 dark:text-gray-300">If you love this, please consider leaving a review on the Chrome Web Store. It helps us grow and improve the extension.</p>
         <div class="mt-4">
-          <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="text-blue-500 hover:text-blue-700">Leave a Review</a>
+          <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">Leave a Review</a>
         </div>
         <div class="mt-4">
-          <p>If you have any questions, please feel free to contact us at <a href="mailto:abdulkabirojulari@gmail.com" class="text-blue-500 hover:text-blue-700">abdulkabirojulari@gmail.com</a>.</p>
-          <p>You can buy me a coffee <a href="https://www.buymeacoffee.com/abdulkabirojulari" target="_blank" class="text-blue-500 hover:text-blue-700">here</a>.</p>
-          <p>Thank you for using Signature Generator Pro!</p>
+          <p class="mb-4 text-gray-700 dark:text-gray-300">If you have any questions, please feel free to contact us at <a href="mailto:abdulkabirojulari@gmail.com" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">abdulkabirojulari@gmail.com</a>.</p>
+          <div class="flex  space-x-3 group">
+            <div class="relative">
+              <!-- Animated Coffee Cup -->
+              <div class="relative group-hover:scale-110 transition-transform duration-300">
+                <!-- Coffee Cup -->
+                <svg class="w-8 h-8 text-gray-600 dark:text-gray-400 transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24">
+                  <!-- Cup body -->
+                  <path d="M3 4h14c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="currentColor"/>
+                  <!-- Coffee liquid -->
+                  <path d="M3 6h14v6H3V6z" fill="url(#coffeeGradient)" opacity="0.8"/>
+                  <!-- Cup handle -->
+                  <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2V8z" fill="currentColor"/>
+                  <!-- Saucer -->
+                  <ellipse cx="12" cy="18" rx="8" ry="1" fill="currentColor" opacity="0.3"/>
+                  <!-- Gradient definition -->
+                  <defs>
+                    <linearGradient id="coffeeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style="stop-color:#fefefe;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                
+                <!-- Animated Steam -->
+                <div class="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                  <div class="steam-container">
+                    <div class="steam steam-1"></div>
+                    <div class="steam steam-2"></div>
+                    <div class="steam steam-3"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300">You can buy me a coffee <a href="https://www.buymeacoffee.com/abdulkabirojulari" target="_blank" class="text-orange-500 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200">here</a>.</p>
+          </div>
+          <p class="py-5 text-gray-700 dark:text-gray-300">Thank you for using Signature Generator Pro!</p>
         </div>
       </div>
       </div>
@@ -485,3 +512,72 @@ useSeoMeta({
   description: 'Design and customize your email signature with beautiful templates and glassmorphism effects.'
 })
 </script>
+
+<style scoped>
+/* Coffee Steam Animation */
+.steam-container {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.steam {
+  position: absolute;
+  width: 2px;
+  height: 8px;
+  background: linear-gradient(to top, rgba(107, 114, 128, 0.8), rgba(107, 114, 128, 0.2));
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: steam-rise 2.5s infinite ease-in-out;
+}
+
+.steam-1 {
+  left: 6px;
+  animation-delay: 0s;
+  animation-duration: 2.2s;
+}
+
+.steam-2 {
+  left: 10px;
+  animation-delay: 0.7s;
+  animation-duration: 2.8s;
+}
+
+.steam-3 {
+  left: 14px;
+  animation-delay: 1.4s;
+  animation-duration: 2.5s;
+}
+
+@keyframes steam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6) rotate(0deg);
+  }
+  20% {
+    opacity: 0.8;
+    transform: translateY(-4px) scale(0.8) rotate(2deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1) rotate(-1deg);
+  }
+  80% {
+    opacity: 0.6;
+    transform: translateY(-12px) scale(0.9) rotate(1deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.6) rotate(0deg);
+  }
+}
+
+/* Dark mode steam */
+.dark .steam {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+}
+
+/* Hover effect for steam */
+.group:hover .steam {
+  animation-duration: 1.8s;
+}
+</style>

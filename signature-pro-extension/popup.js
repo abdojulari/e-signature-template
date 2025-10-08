@@ -171,7 +171,8 @@ function manualApplySignature() {
 
 function openDashboard() {
   console.log('Signature Generator Pro: Opening dashboard');
-  chrome.tabs.create({ url: 'http://localhost:3000/dashboard' });
+  //chrome.tabs.create({ url: 'http://localhost:3000/dashboard' });
+  chrome.tabs.create({ url: 'https://signature-pro.ca/dashboard' });
 }
 
 // Listen for storage changes to update popup
