@@ -32,107 +32,84 @@
       :fontFamily="signatureData.fontFamily"
       :fontSize="signatureData.fontSize"
       :isSidebarOpen="isSidebarOpen"
+      :socialIconSettings="signatureData.socialIconSettings"
       @update:currentTemplate="updateCurrentTemplate"
       @update:primaryColor="updatePrimaryColor"
       @update:secondaryColor="updateSecondaryColor"
       @update:fontFamily="updateFontFamily"
       @update:fontSize="updateFontSize"
       @update:isSidebarOpen="updateSidebarOpen"
+      @update:socialIconSettings="updateSocialIconSettings"
     />
 
     <!-- Main Content -->
-    <main 
-      class="transition-all duration-500 ease-in-out relative z-10 min-h-screen pt-16"
-    >
-      <div class="container mx-auto px-6 py-8">
-        
+    <main class="transition-all duration-500 ease-in-out relative z-10 min-h-screen pt-16">
+      <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
         <!-- Welcome Header -->
-        <div class="mb-8 text-center">
-          <div class=" p-8 max-w-2xl mx-auto">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-wide">
-              Create Your Perfect 
-              <span class="bg-gradient-to-r from-gray-600 to-slate-700 dark:from-gray-300 dark:to-gray-400 bg-clip-text text-transparent">
+        <div class="mb-6 sm:mb-8 text-center">
+          <div class="max-w-2xl mx-auto">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
+              Create Your Perfect
+              <span class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
                 Email Signature
               </span>
             </h1>
-            <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               Design professional signatures that make lasting impressions
             </p>
           </div>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-8">
+        <div class="grid lg:grid-cols-2 gap-6 sm:gap-8">
           <!-- Form Panel -->
-          <div class=" p-1 hover:shadow-3xl transition-all duration-500 group">
-            <div class=" p-8 h-full">
-              <YourInformation 
-                :signatureData="signatureData"
-                :selectedSocialNetworks="selectedSocialNetworks"
-                @update:signatureData="updateSignatureData"
-                @update:selectedSocialNetworks="updateSelectedSocialNetworks"
-                @resetForm="resetForm"
-                @generateSignature="generateSignature"
-              />
-            </div>
+          <div>
+            <YourInformation
+              :signatureData="signatureData"
+              :selectedSocialNetworks="selectedSocialNetworks"
+              @update:signatureData="updateSignatureData"
+              @update:selectedSocialNetworks="updateSelectedSocialNetworks"
+              @resetForm="resetForm"
+              @generateSignature="generateSignature"
+            />
           </div>
 
           <!-- Preview Panel -->
-          
-          <SignaturePreviewDialog 
-            :signatureHtml="signatureHtml"
-            :extensionSaveStatus="extensionSaveStatus"
-            :installationInstructions="installationInstructions"
-            @copyHtml="copyHtml"
-            @downloadSignature="downloadSignature"
-            @testInGmail="testInGmail"
-          />
-           
-        </div>
-        <div class="mt-4 p-4 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50 rounded-lg">
-        <p class="text-gray-700 dark:text-gray-300">If you love this, please consider leaving a review on the Chrome Web Store. It helps us grow and improve the extension.</p>
-        <div class="mt-4">
-          <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">Leave a Review</a>
-        </div>
-        <div class="mt-4">
-          <p class="mb-4 text-gray-700 dark:text-gray-300">If you have any questions, please feel free to contact us at <a href="mailto:abdulkabirojulari@gmail.com" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">abdulkabirojulari@gmail.com</a>.</p>
-          <div class="flex  space-x-3 group">
-            <div class="relative">
-              <!-- Animated Coffee Cup -->
-              <div class="relative group-hover:scale-110 transition-transform duration-300">
-                <!-- Coffee Cup -->
-                <svg class="w-8 h-8 text-gray-600 dark:text-gray-400 transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24">
-                  <!-- Cup body -->
-                  <path d="M3 4h14c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="currentColor"/>
-                  <!-- Coffee liquid -->
-                  <path d="M3 6h14v6H3V6z" fill="url(#coffeeGradient)" opacity="0.8"/>
-                  <!-- Cup handle -->
-                  <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2V8z" fill="currentColor"/>
-                  <!-- Saucer -->
-                  <ellipse cx="12" cy="18" rx="8" ry="1" fill="currentColor" opacity="0.3"/>
-                  <!-- Gradient definition -->
-                  <defs>
-                    <linearGradient id="coffeeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style="stop-color:#fefefe;stop-opacity:1" />
-                      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                
-                <!-- Animated Steam -->
-                <div class="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                  <div class="steam-container">
-                    <div class="steam steam-1"></div>
-                    <div class="steam steam-2"></div>
-                    <div class="steam steam-3"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-700 dark:text-gray-300">You can buy me a coffee <a href="https://www.buymeacoffee.com/abdulkabirojulari" target="_blank" class="text-orange-500 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200">here</a>.</p>
+          <div class="lg:sticky lg:top-24 lg:self-start">
+            <SignaturePreviewDialog
+              :signatureHtml="signatureHtml"
+              :extensionSaveStatus="extensionSaveStatus"
+              :installationInstructions="installationInstructions"
+              @copyHtml="copyHtml"
+              @downloadSignature="downloadSignature"
+              @testInGmail="testInGmail"
+            />
           </div>
-          <p class="py-5 text-gray-700 dark:text-gray-300">Thank you for using Signature Generator Pro!</p>
         </div>
-      </div>
+
+        <!-- Footer Card -->
+        <div class="mt-8 rounded-2xl bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/60 dark:border-gray-700/40 shadow-sm overflow-hidden">
+          <div class="p-5 sm:p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <p class="text-sm text-gray-700 dark:text-gray-300">Love this tool? A review helps us grow.</p>
+              <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-800/40 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-950/50 transition-colors w-fit">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                </svg>
+                Leave a Review
+              </a>
+            </div>
+            <div class="pt-3 border-t border-gray-200/50 dark:border-gray-700/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Questions? <a href="mailto:abdulkabirojulari@gmail.com" class="text-indigo-600 dark:text-indigo-400 hover:underline">abdulkabirojulari@gmail.com</a>
+              </p>
+              <a href="https://www.buymeacoffee.com/abdulkabirojulari" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 rounded-xl hover:bg-amber-100 dark:hover:bg-amber-950/50 transition-colors w-fit">
+                <span class="text-base">☕</span>
+                Buy me a coffee
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -141,7 +118,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch, nextTick } from 'vue'
 import { useAuth } from '~/composables/useAuth'
-import { useSignatureGenerator } from '~/composables/useSignatureGenerator'
+import { useSignatureGenerator, type SocialIconSettings } from '~/composables/useSignatureGenerator'
 import { useBrowserExtension } from '~/composables/useBrowserExtension'
 import { useSignatureStorage } from '~/composables/useLocalStorage'
 import Header from '~/components/Header.vue'
@@ -240,6 +217,12 @@ const updateSidebarOpen = (isOpen: boolean) => {
   isSidebarOpen.value = isOpen
 }
 
+const updateSocialIconSettings = (settings: SocialIconSettings) => {
+  signatureData.socialIconSettings = settings
+  saveSignatureData(signatureData)
+  generateSignature()
+}
+
 const updateSignatureData = (newData: any) => {
   Object.assign(signatureData, newData)
   saveSignatureData(signatureData)
@@ -278,7 +261,14 @@ const resetForm = () => {
     primaryColor: '#4361ee',
     secondaryColor: '#3a0ca3',
     includeQRCode: false,
-    qrCodeData: ''
+    qrCodeData: '',
+    socialIconSettings: {
+      iconType: 'branded',
+      size: 24,
+      shape: 'circle',
+      backgroundColor: '#4f46e5',
+      iconColor: '#ffffff'
+    }
   })
   currentTemplate.value = 'minimal'
   selectedSocialNetworks.value = ['linkedin', 'twitter']
@@ -514,70 +504,4 @@ useSeoMeta({
 </script>
 
 <style scoped>
-/* Coffee Steam Animation */
-.steam-container {
-  position: relative;
-  width: 20px;
-  height: 20px;
-}
-
-.steam {
-  position: absolute;
-  width: 2px;
-  height: 8px;
-  background: linear-gradient(to top, rgba(107, 114, 128, 0.8), rgba(107, 114, 128, 0.2));
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  animation: steam-rise 2.5s infinite ease-in-out;
-}
-
-.steam-1 {
-  left: 6px;
-  animation-delay: 0s;
-  animation-duration: 2.2s;
-}
-
-.steam-2 {
-  left: 10px;
-  animation-delay: 0.7s;
-  animation-duration: 2.8s;
-}
-
-.steam-3 {
-  left: 14px;
-  animation-delay: 1.4s;
-  animation-duration: 2.5s;
-}
-
-@keyframes steam-rise {
-  0% {
-    opacity: 0;
-    transform: translateY(0) scale(0.6) rotate(0deg);
-  }
-  20% {
-    opacity: 0.8;
-    transform: translateY(-4px) scale(0.8) rotate(2deg);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-8px) scale(1) rotate(-1deg);
-  }
-  80% {
-    opacity: 0.6;
-    transform: translateY(-12px) scale(0.9) rotate(1deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-16px) scale(0.6) rotate(0deg);
-  }
-}
-
-/* Dark mode steam */
-.dark .steam {
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
-}
-
-/* Hover effect for steam */
-.group:hover .steam {
-  animation-duration: 1.8s;
-}
 </style>

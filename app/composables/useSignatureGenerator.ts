@@ -1,3 +1,11 @@
+export interface SocialIconSettings {
+  iconType: 'branded' | 'colored' | 'outline'
+  size: number
+  shape: 'square' | 'circle' | 'rounded'
+  backgroundColor: string
+  iconColor: string
+}
+
 export interface SignatureData {
   firstName: string
   lastName: string
@@ -26,6 +34,7 @@ export interface SignatureData {
   secondaryColor: string
   includeQRCode: boolean
   qrCodeData: string
+  socialIconSettings?: SocialIconSettings
 }
 
 export interface Template {
@@ -213,33 +222,47 @@ export const useSignatureGenerator = () => {
     { id: 'discord', icon: 'fab fa-discord', name: 'Discord' }
   ]
 
-  const generateSocialIcons = (socialLinks: Record<string, string>) => {
+  const SOCIAL_ICONS_BASE_URL = 'https://signature-pro.ca/social-icons'
+
+  const socialPlatforms: Record<string, { label: string, color: string, fallback: string }> = {
+    linkedin: { label: 'LinkedIn', color: '#0077B5', fallback: 'in' },
+    twitter: { label: 'X', color: '#000000', fallback: '𝕏' },
+    facebook: { label: 'Facebook', color: '#1877F2', fallback: 'f' },
+    instagram: { label: 'Instagram', color: '#E4405F', fallback: 'ig' },
+    youtube: { label: 'YouTube', color: '#FF0000', fallback: '▶' },
+    whatsapp: { label: 'WhatsApp', color: '#25D366', fallback: 'W' },
+    telegram: { label: 'Telegram', color: '#0088CC', fallback: 'T' },
+    github: { label: 'GitHub', color: '#181717', fallback: 'G' },
+    discord: { label: 'Discord', color: '#5865F2', fallback: 'D' },
+    snapchat: { label: 'Snapchat', color: '#FFFC00', fallback: 'S' },
+    pinterest: { label: 'Pinterest', color: '#BD081C', fallback: 'P' },
+    tiktok: { label: 'TikTok', color: '#000000', fallback: 'TT' }
+  }
+
+  const generateSocialIcons = (socialLinks: Record<string, string>, settings?: SocialIconSettings) => {
     let iconsHtml = ''
-    const socialPlatforms: Record<string, { text: string, color: string }> = {
-      linkedin: { text: 'in', color: '#0077B5' },
-      twitter: { text: '𝕏', color: '#000000' },
-      facebook: { text: 'f', color: '#1877F2' },
-      instagram: { text: 'ig', color: '#E4405F' },
-      youtube: { text: '▶', color: '#FF0000' },
-      whatsapp: { text: 'W', color: '#25D366' },
-      telegram: { text: 'T', color: '#0088CC' },
-      github: { text: 'G', color: '#181717' },
-      discord: { text: 'D', color: '#5865F2' },
-      snapchat: { text: 'S', color: '#FFFC00' },
-      pinterest: { text: 'P', color: '#BD081C' },
-      tiktok: { text: 'TT', color: '#000000' }
-    }
-    
-    Object.keys(socialLinks).forEach(network => {
-      if (socialLinks[network]) {
-        const platform = socialPlatforms[network]
-        if (platform) {
-          // Simple text-based icons that work reliably in all email clients
-          const textColor = platform.color === '#FFFC00' ? '#000000' : '#FFFFFF' // Black text for yellow background
-          iconsHtml += `<a href="${socialLinks[network]}" target="_blank" style="display: inline-block; width: 24px; height: 24px; background-color: ${platform.color}; border-radius: 50%; margin-right: 4px; text-decoration: none; vertical-align: middle; text-align: center; line-height: 24px; font-size: 11px; font-weight: bold; color: ${textColor}; font-family: Arial, sans-serif;" title="${network.charAt(0).toUpperCase() + network.slice(1)}">${platform.text}</a>`
-        }
-      }
+    const size = settings?.size || 24
+    const shape = settings?.shape || 'circle'
+    const iconType = settings?.iconType || 'branded'
+    const borderRadius = shape === 'circle' ? '50%' : shape === 'rounded' ? '4px' : '0'
+    const iconPadding = Math.round(size * 0.2)
+    const imgSize = size - (iconPadding * 2)
+
+    const iconEntries = Object.keys(socialLinks).filter(network => socialLinks[network] && socialPlatforms[network])
+
+    if (iconEntries.length === 0) return ''
+
+    iconsHtml += `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>`
+    iconEntries.forEach(network => {
+      const platform = socialPlatforms[network]
+      const bgColor = iconType === 'branded' ? platform.color : (settings?.backgroundColor || platform.color)
+      const iconUrl = `${SOCIAL_ICONS_BASE_URL}/${network}.png`
+      const fallbackColor = bgColor === '#FFFC00' ? '#000000' : '#FFFFFF'
+
+      iconsHtml += `<td style="padding:0 3px 0 0;vertical-align:middle;"><a href="${socialLinks[network]}" target="_blank" style="display:block;text-decoration:none;" title="${platform.label}"><!--[if mso]><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:${bgColor};border-radius:${borderRadius};width:${size}px;height:${size}px;text-align:center;vertical-align:middle;padding:${iconPadding}px;"><![endif]--><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="background-color:${bgColor};border-radius:${borderRadius};width:${size}px;height:${size}px;text-align:center;vertical-align:middle;padding:${iconPadding}px;line-height:0;"><img src="${iconUrl}" alt="${platform.fallback}" width="${imgSize}" height="${imgSize}" style="display:block;border:0;outline:none;width:${imgSize}px;height:${imgSize}px;" /></td></tr></table><!--[if mso]></td></tr></table><![endif]--></a></td>`
     })
+    iconsHtml += `</tr></table>`
+
     return iconsHtml
   }
 
@@ -420,7 +443,7 @@ export const useSignatureGenerator = () => {
               ${data.website ? `<tr><td style="padding: 0 0 6px 0; font-size: ${data.fontSize || '10px'};"><a href="${data.website}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.website.replace(/^https?:\/\//, '')}</a></td></tr>` : ''}
               <tr>
                 <td style="padding: 6px 0 0 0; line-height: 1.2;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
               ${!data.includeQRCode && logoImage ? `
@@ -494,7 +517,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 8px 0 0 0; line-height: 1.2;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
             </table>
@@ -558,7 +581,7 @@ export const useSignatureGenerator = () => {
                 </td>
                 <td style="vertical-align: top; text-align: right; width: 30%;">
                   <div style="margin-bottom: 12px;">
-                    ${generateSocialIcons(data.socialLinks)}
+                    ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                   </div>
                   ${data.includeQRCode ? `
                   <div style="text-align: center;">
@@ -620,7 +643,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 8px 0 0 0; border-top: 1px solid #e0e5ff;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
             </table>
@@ -681,7 +704,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 8px 0 0 0;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
             </table>
@@ -731,7 +754,7 @@ export const useSignatureGenerator = () => {
                   <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
                     <tr>
                       <td style="text-align: left; vertical-align: middle;">
-                        ${generateSocialIcons(data.socialLinks)}
+                        ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                       </td>
                       ${data.includeQRCode ? `
                       <td style="text-align: center; vertical-align: middle;">
@@ -795,7 +818,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 8px 0 0 0;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                   <div style="font-size: 10px; color: #666; margin-top: 4px;">
                     <span style="color: ${data.primaryColor || '#4361ee'}; font-weight: bold;">Book a meeting</span> | 
                     <span style="color: ${data.primaryColor || '#4361ee'}; font-weight: bold;">Request a demo</span>
@@ -851,7 +874,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 6px 0 0 0;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
             </table>
@@ -902,7 +925,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td style="padding: 8px 0 0 0;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
             </table>
@@ -967,7 +990,7 @@ export const useSignatureGenerator = () => {
           </td>
           <td style="vertical-align: top; text-align: right;">
             <div style="margin-bottom: 12px;">
-              ${generateSocialIcons(data.socialLinks)}
+              ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
             </div>
             ${data.includeQRCode ? `
             <div style="text-align: center;">
@@ -1037,7 +1060,7 @@ export const useSignatureGenerator = () => {
               </tr>
               <tr>
                 <td colspan="2" style="padding: 6px 0 0 0;">
-                  ${generateSocialIcons(data.socialLinks)}
+                  ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
                 </td>
               </tr>
             </table>
@@ -1087,7 +1110,7 @@ const generateCorporateEliteTemplate = (data: SignatureData) => {
             ${fullAddress ? `<div style="font-size: ${baseFontSize}px; color: #666; margin-bottom: 12px; font-family: ${data.fontFamily || 'Arial, sans-serif'}; line-height: 1.4;">${fullAddress}</div>` : ''}
             
             <div style="margin-top: 15px;">
-              ${generateSocialIcons(data.socialLinks)}
+              ${generateSocialIcons(data.socialLinks, data.socialIconSettings)}
             </div>
           </td>
           <td style="vertical-align: top; padding: 0 0 0 15px; width: 205px;">

@@ -1,126 +1,117 @@
 <template>
-  <div class="p-8 relative overflow-hidden">
-    <!-- Subtle glass shine effect -->
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-    
-    <div class="flex items-center justify-between mb-8">
-      <h2 class="text-2xl font-bold text-gray-600 dark:text-gray-300 flex items-center tracking-wide">
-        <div class="w-8 h-8 bg-gradient-to-r from-gray-400/30 to-gray-200 dark:from-gray-600/50 dark:to-gray-700/50 rounded-lg mr-3 flex items-center justify-center backdrop-blur-sm border border-gray-200/30 dark:border-gray-600/50">
-          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-          </svg>
+  <div class="relative overflow-hidden rounded-2xl bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl border border-gray-200/60 dark:border-gray-700/40 shadow-[0_8px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.3)]">
+    <!-- Decorative top accent -->
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-400/30 dark:via-gray-500/20 to-transparent"></div>
+
+    <div class="p-6 sm:p-8">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-200/40 dark:border-indigo-700/30 flex items-center justify-center">
+            <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Live Preview</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Real-time signature output</p>
+          </div>
         </div>
-        Signature Preview
-      </h2>
-      <div v-if="extensionSaveStatus" class="flex items-center gap-3 px-4 py-3 rounded-xl backdrop-blur-sm border shadow-lg" :class="extensionSaveStatus.success ? 'bg-white border-gray-600/50 text-green-700' : 'bg-yellow-500/20 border-yellow-400/50 text-yellow-100'">
-        <svg v-if="extensionSaveStatus.success" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-        </svg>
-        <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-sm font-semibold">{{ extensionSaveStatus.message }}</span>
+        <div v-if="extensionSaveStatus" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border" :class="extensionSaveStatus.success ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400' : 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400'">
+          <span class="w-1.5 h-1.5 rounded-full" :class="extensionSaveStatus.success ? 'bg-emerald-500' : 'bg-amber-500'"></span>
+          {{ extensionSaveStatus.message }}
+        </div>
       </div>
-    </div>
-    
-    <div class="border border-gray-300 dark:border-gray-600 rounded-xl p-8 min-h-[300px] bg-white/10 dark:bg-gray-800/20 backdrop-blur-sm shadow-lg">
-      <div v-if="!signatureHtml || signatureHtml === '<p>Your signature will appear here</p>'" class="text-gray-600/70 dark:text-gray-400/70 text-center">
-        <svg class="w-16 h-16 mx-auto mb-6 text-gray-600/40 dark:text-gray-400/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-        </svg>
-        <p class="text-xl font-bold mb-3 text-gray-600 dark:text-gray-400">Your signature will appear here</p>
-        <p class="text-sm text-gray-600/60 dark:text-gray-400/60">Fill in your details and generate your signature</p>
+
+      <!-- Preview Area -->
+      <div class="rounded-xl border border-gray-200/80 dark:border-gray-700/50 bg-white dark:bg-gray-800/50 p-6 sm:p-8 min-h-[240px] transition-all duration-300">
+        <div v-if="!signatureHtml || signatureHtml === '<p>Your signature will appear here</p>'" class="flex flex-col items-center justify-center py-12 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
+          </div>
+          <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Your signature will appear here</p>
+          <p class="text-xs text-gray-400 dark:text-gray-500">Fill in your details to generate a preview</p>
+        </div>
+        <div v-else v-html="signatureHtml" class="signature-preview"></div>
       </div>
-      <div v-else v-html="signatureHtml" class="signature-preview"></div>
-    </div>
-    
-    <div class="mt-8 space-y-6">
-      <div class="flex flex-wrap gap-4">
-        <button 
-          @click="copyHtml" 
-          class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-600/90 dark:text-gray-300/90 rounded-xl hover:bg-white/10 dark:hover:bg-gray-700/50 backdrop-blur-sm transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105"
+
+      <!-- Actions -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <button
+          @click="copyHtml"
+          class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-750 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 shadow-sm"
         >
-          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
           </svg>
           Copy HTML
         </button>
-        <button 
-          @click="downloadSignature" 
-          class="px-6 py-3 border border-gray-300 text-gray-600/90 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105"
+        <button
+          @click="downloadSignature"
+          class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-750 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 shadow-sm"
         >
-          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
           </svg>
           Download
         </button>
-        <button 
-          @click="testInGmail" 
-          class="px-8 py-3 bg-gradient-to-r from-slate-500/80 to-gray-600/80 text-white rounded-xl hover:from-slate-500 hover:to-gray-600 backdrop-blur-sm transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-xl hover:scale-105 border border-gray-300"
+        <button
+          @click="testInGmail"
+          class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 rounded-xl hover:from-indigo-700 hover:to-purple-700 dark:hover:from-indigo-600 dark:hover:to-purple-600 transition-all duration-200 shadow-md hover:shadow-lg"
         >
-          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
           </svg>
           Test in Gmail
         </button>
       </div>
-      
-      <div v-if="installationInstructions" class="bg-green-500/20 border border-green-400/50 rounded-xl p-4 backdrop-blur-sm">
-        <h3 class="text-sm font-semibold text-green-100 mb-3 flex items-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+
+      <!-- Instructions -->
+      <div v-if="installationInstructions" class="mt-5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200/60 dark:border-emerald-800/40 p-4">
+        <h3 class="text-sm font-semibold text-emerald-800 dark:text-emerald-300 mb-2.5 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           {{ installationInstructions.title }}
         </h3>
-        <div class="space-y-2">
-          <div v-for="step in installationInstructions.steps" :key="step" class="text-sm text-green-200">
+        <div class="space-y-1.5">
+          <p v-for="step in installationInstructions.steps" :key="step" class="text-sm text-emerald-700 dark:text-emerald-400 leading-relaxed">
             {{ step }}
-          </div>
-        </div>
-      </div>
-      
-      <!-- Default Instructions -->
-      <div v-else class="bg-white/20 border border-gray-400/50 rounded-xl p-4 backdrop-blur-sm">
-        <h3 class="text-sm font-semibold text-gray-600 mb-3 flex items-center">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          How it works
-        </h3>
-        <p class="text-sm text-gray-500">Your signature will automatically appear when composing emails. Click "Test in Gmail" to try it out!</p>
-        <div class="mt-4 p-4 bg-gray-50/50 border border-gray-200/50 rounded-lg">
-          <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-            </svg>
-             Installation Guide
-          </h4>
-          <div class="space-y-2 text-xs text-gray-600">
-            <p><strong>Step 1:</strong> Visit the <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="underline hover:text-blue-800">Chrome Web Store</a> and click "Add to Chrome"</p>
-            <p><strong>Step 2:</strong> Pin the extension to your toolbar by clicking the puzzle piece icon (🧩) and pinning Signature Generator Pro</p>
-            <p><strong>Step 3:</strong> Go to Gmail or Yahoo, compose a new email, and click the extension icon to apply your signature</p>
-            <p><strong>Step 4:</strong> Your signature will be automatically inserted into the email compose area - ready to send!</p>
-          </div>
-          <div class="mt-3 text-xs text-gray-500">
-            <p><strong>Pro Tip:</strong></p>
-            <ul class="list-disc list-inside">
-              <li>Create different signatures for different purposes and switch between them using the extension popup.</li>
-              <li>While uploaded images now show in the preview, use hosted image URLs for best email delivery. 
-                Uploaded images (base64) may be blocked by some email clients like Gmail and Outlook.</li>
-                <li> <strong> How to use hosted images:</strong> Upload your images to a service like Imgur, Cloudinary, or your website, then use the URL instead of file upload.</li>
-            </ul>
-          </div>
+          </p>
         </div>
       </div>
 
-  
+      <!-- Default guide -->
+      <div v-else class="mt-5 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-200/60 dark:border-gray-700/40 p-4">
+        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2">
+          <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+          </svg>
+          Quick Setup
+        </h3>
+        <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <p>Your signature auto-applies when composing emails. Click <strong class="text-gray-800 dark:text-gray-200">Test in Gmail</strong> to try it.</p>
+          <div class="mt-3 p-3 rounded-lg bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 dark:border-gray-700/30">
+            <p class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-2">Installation Steps</p>
+            <ol class="text-xs text-gray-500 dark:text-gray-400 space-y-1 list-decimal list-inside">
+              <li>Install from the <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">Chrome Web Store</a></li>
+              <li>Pin the extension to your toolbar</li>
+              <li>Compose a new email and click the extension icon</li>
+            </ol>
+            <div class="mt-2.5 pt-2.5 border-t border-gray-200/50 dark:border-gray-700/30">
+              <p class="text-xs text-gray-500 dark:text-gray-400"><strong>Tip:</strong> Use hosted image URLs (Imgur, Cloudinary) instead of file uploads for best email delivery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// Props
 interface Props {
   signatureHtml: string
   extensionSaveStatus: {
@@ -135,40 +126,27 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// Emits
 const emit = defineEmits<{
   'copyHtml': []
   'downloadSignature': []
   'testInGmail': []
 }>()
 
-// Methods
-const copyHtml = () => {
-  emit('copyHtml')
-}
-
-const downloadSignature = () => {
-  emit('downloadSignature')
-}
-
-const testInGmail = () => {
-  emit('testInGmail')
-}
+const copyHtml = () => emit('copyHtml')
+const downloadSignature = () => emit('downloadSignature')
+const testInGmail = () => emit('testInGmail')
 </script>
 
 <style scoped>
 .signature-preview {
   font-family: Arial, sans-serif;
 }
-
 .signature-preview table {
   border-collapse: collapse;
 }
-
 .signature-preview a {
   text-decoration: none;
 }
-
 .signature-preview img {
   vertical-align: middle;
 }
