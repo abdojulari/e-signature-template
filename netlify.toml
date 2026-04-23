@@ -1,10 +1,9 @@
 [build]
   publish = ".output/public"
-  command = "rm -rf node_modules package-lock.json pnpm-lock.yaml .pnpm-store .pnpm .npmrc && pnpm install --shamefully-hoist --ignore-scripts && pnpm run generate"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm run generate"
 
 [build.environment]
-  NODE_VERSION = "18"
-  PNPM_VERSION = "8"
+  NODE_VERSION = "20"
   NPM_FLAGS = "--prefer-offline --no-audit"
 
 [[redirects]]
