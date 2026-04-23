@@ -25,3 +25,8 @@ logs
 
 # Local Netlify folder
 .netlify
+
+# Chrome extension build artifacts (never commit signing keys)
+*.crx
+*.pem
+signature-pro-extension*.zip

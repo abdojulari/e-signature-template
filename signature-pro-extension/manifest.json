@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Signature Generator Pro",
-  "version": "3.0.1",
+  "version": "3.1.1",
   "description": "Create and apply professional email signatures",
   "permissions": [
     "activeTab",
@@ -17,7 +17,7 @@
     "https://Yahoo.office.com/*",
     "http://localhost:3000/*",
     "https://localhost:3000/*",
-    "https://signature-pro.ca",
+    "http://signature-pro.ca/*",
     "https://signature-pro.ca/*"
 
   ],
@@ -41,17 +41,17 @@
         "https://mail.google.com/mail/*",
         "https://accounts.google.com/*",
         "https://Yahoo.live.com/*",
-        "https://Yahoo.office.com/*",
-        "https://signature-pro.ca/*",
-        "https://signature-pro.ca/*"
+        "https://Yahoo.office.com/*"
       ],
       "js": ["content-working.js"],
-      
       "run_at": "document_end"
     },
     {
       "matches": [
-        "http://localhost:3000/*"
+        "http://localhost:3000/*",
+        "https://localhost:3000/*",
+        "http://signature-pro.ca/*",
+        "https://signature-pro.ca/*"
       ],
       "js": ["content-dashboard.js"],
       "run_at": "document_end"

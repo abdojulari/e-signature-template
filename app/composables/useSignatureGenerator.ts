@@ -245,8 +245,7 @@ export const useSignatureGenerator = () => {
     const shape = settings?.shape || 'circle'
     const iconType = settings?.iconType || 'branded'
     const borderRadius = shape === 'circle' ? '50%' : shape === 'rounded' ? '4px' : '0'
-    const iconPadding = Math.round(size * 0.2)
-    const imgSize = size - (iconPadding * 2)
+    const fontSize = Math.max(Math.round(size * 0.42), 9)
 
     const iconEntries = Object.keys(socialLinks).filter(network => socialLinks[network] && socialPlatforms[network])
 
@@ -256,10 +255,9 @@ export const useSignatureGenerator = () => {
     iconEntries.forEach(network => {
       const platform = socialPlatforms[network]
       const bgColor = iconType === 'branded' ? platform.color : (settings?.backgroundColor || platform.color)
-      const iconUrl = `${SOCIAL_ICONS_BASE_URL}/${network}.png`
-      const fallbackColor = bgColor === '#FFFC00' ? '#000000' : '#FFFFFF'
+      const textColor = bgColor === '#FFFC00' ? '#000000' : '#FFFFFF'
 
-      iconsHtml += `<td style="padding:0 3px 0 0;vertical-align:middle;"><a href="${socialLinks[network]}" target="_blank" style="display:block;text-decoration:none;" title="${platform.label}"><!--[if mso]><table cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:${bgColor};border-radius:${borderRadius};width:${size}px;height:${size}px;text-align:center;vertical-align:middle;padding:${iconPadding}px;"><![endif]--><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="background-color:${bgColor};border-radius:${borderRadius};width:${size}px;height:${size}px;text-align:center;vertical-align:middle;padding:${iconPadding}px;line-height:0;"><img src="${iconUrl}" alt="${platform.fallback}" width="${imgSize}" height="${imgSize}" style="display:block;border:0;outline:none;width:${imgSize}px;height:${imgSize}px;" /></td></tr></table><!--[if mso]></td></tr></table><![endif]--></a></td>`
+      iconsHtml += `<td style="padding:0 3px 0 0;vertical-align:middle;"><a href="${socialLinks[network]}" target="_blank" style="display:block;text-decoration:none;" title="${platform.label}"><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td style="background-color:${bgColor};border-radius:${borderRadius};width:${size}px;height:${size}px;text-align:center;vertical-align:middle;font-family:Arial,Helvetica,sans-serif;font-size:${fontSize}px;font-weight:bold;color:${textColor};line-height:${size}px;">${platform.fallback}</td></tr></table></a></td>`
     })
     iconsHtml += `</tr></table>`
 

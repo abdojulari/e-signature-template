@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     
     // Open the dashboard to help users get started
     chrome.tabs.create({
-      url: 'http://localhost:3000/dashboard'
+      url: 'https://signature-pro.ca/dashboard'
     });
   }
 });

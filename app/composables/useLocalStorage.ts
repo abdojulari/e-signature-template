@@ -130,7 +130,14 @@ export const useSignatureStorage = () => {
     primaryColor: '#4361ee',
     secondaryColor: '#333333',
     includeQRCode: false,
-    qrCodeData: ''
+    qrCodeData: '',
+    socialIconSettings: {
+      iconType: 'branded' as const,
+      size: 24,
+      shape: 'circle' as const,
+      backgroundColor: '#4f46e5',
+      iconColor: '#ffffff'
+    }
   }
 
   // Default design settings

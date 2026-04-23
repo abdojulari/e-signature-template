@@ -176,23 +176,31 @@ function applySignatureToEmail(signature) {
     if (images.length > 0) {
       console.log(`🎯 CONTENT: Signature contains ${images.length} images`);
       let base64ImageCount = 0;
+      let hostedCount = 0;
       images.forEach((img, index) => {
         if (img.src.startsWith('data:')) {
           base64ImageCount++;
-          console.warn(`🎯 CONTENT: Image ${index + 1} is base64 - WILL BE BLOCKED by most email clients (Gmail, Outlook, etc.)`);
-          // Replace base64 images with fallback text for better email compatibility
-          const altText = img.alt || 'Image';
-          const fallback = document.createElement('span');
-          fallback.style.cssText = 'display: inline-block; padding: 4px 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; color: #666; margin: 2px;';
-          fallback.textContent = `[${altText}]`;
-          img.parentNode.replaceChild(fallback, img);
+          // Only replace non-social-icon base64 images (profile photos etc.)
+          // Social icons from signature-pro.ca are hosted and won't be base64
+          if (!img.src.includes('social-icons')) {
+            console.warn(`🎯 CONTENT: Image ${index + 1} is base64 - may be blocked by email clients`);
+            const altText = img.alt || 'Image';
+            const fallback = document.createElement('span');
+            fallback.style.cssText = 'display: inline-block; padding: 4px 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; color: #666; margin: 2px;';
+            fallback.textContent = `[${altText}]`;
+            img.parentNode.replaceChild(fallback, img);
+          }
         } else if (img.src.startsWith('http')) {
-          console.log(`🎯 CONTENT: Image ${index + 1} is hosted URL - good for email compatibility`);
+          hostedCount++;
+          console.log(`🎯 CONTENT: Image ${index + 1} is hosted URL - email compatible`);
         }
       });
       
+      if (hostedCount > 0) {
+        console.log(`🎯 CONTENT: ${hostedCount} hosted images (social icons & assets) will display in all email clients`);
+      }
       if (base64ImageCount > 0) {
-        console.warn(`🎯 CONTENT: IMPORTANT: ${base64ImageCount} base64 images were replaced with text fallbacks to ensure recipients can see your signature.`);
+        console.warn(`🎯 CONTENT: ${base64ImageCount} base64 images handled for email compatibility`);
       }
     }
     

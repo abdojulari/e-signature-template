@@ -123,13 +123,13 @@
           <!-- Mini icon preview -->
           <div class="flex items-center gap-0.5 mr-1">
             <div class="w-4 h-4 rounded-full bg-[#0077B5] flex items-center justify-center">
-              <img src="/social-icons/linkedin.png" alt="in" class="w-2.5 h-2.5" />
+              <span class="text-white text-[7px] font-bold leading-none">in</span>
             </div>
             <div class="w-4 h-4 rounded-full bg-black flex items-center justify-center">
-              <img src="/social-icons/twitter.png" alt="X" class="w-2.5 h-2.5" />
+              <span class="text-white text-[7px] font-bold leading-none">X</span>
             </div>
             <div class="w-4 h-4 rounded-full bg-[#E4405F] flex items-center justify-center">
-              <img src="/social-icons/instagram.png" alt="ig" class="w-2.5 h-2.5" />
+              <span class="text-white text-[7px] font-bold leading-none">ig</span>
             </div>
           </div>
           <svg class="w-4 h-4 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
