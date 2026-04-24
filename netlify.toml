@@ -1,10 +1,13 @@
 [build]
   publish = ".output/public"
-  command = "corepack enable && pnpm install --frozen-lockfile && pnpm run generate"
+  command = "pnpm install --frozen-lockfile && pnpm run generate"
 
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--prefer-offline --no-audit"
+  # Pin the Nitro preset so the output path is deterministic on Netlify
+  # (otherwise Nuxt auto-switches to "netlify-static" and writes to ./dist).
+  NITRO_PRESET = "static"
 
 [[redirects]]
   from = "/*"
