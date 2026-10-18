@@ -836,7 +836,7 @@ export const useSignatureGenerator = () => {
     `
   }
 
-  // Compact Pro Template (based on Michael Woodward style)
+  // Compact Pro Template
   const generateCompactProTemplate = (data: SignatureData) => {
     const profileImage = data.profilePhotoUrl || null // Skip base64 for Gmail compatibility
     
@@ -865,7 +865,7 @@ export const useSignatureGenerator = () => {
               <tr>
                 <td style="font-size: ${data.fontSize || '11px'}; color: #333; padding: 0 0 4px 0;">
                   <div style="margin-bottom: 2px;"><strong>p:</strong> <a href="tel:${(data.mobilePhone || data.officePhone || '555.123.4567').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.mobilePhone || data.officePhone || '555.123.4567'}</a></div>
-                  <div style="margin-bottom: 2px;"><strong>e:</strong> <a href="mailto:${data.email || 'mi.woodward@gmail.com'}" style="color: #333; text-decoration: none;">${data.email || 'mi.woodward@gmail.com'}</a></div>
+                  <div style="margin-bottom: 2px;"><strong>e:</strong> <a href="mailto:${data.email || 'your.email@example.com'}" style="color: #333; text-decoration: none;">${data.email || 'your.email@example.com'}</a></div>
                   ${getFormattedAddress(data) ? `<div style="margin-bottom: 2px;"><strong>a:</strong> ${getFormattedAddress(data)}</div>` : ''}
                   <div><strong style="color: ${data.primaryColor || '#333'};">${data.website || 'www.yourwebsite.com'}</strong></div>
                 </td>
@@ -888,7 +888,7 @@ export const useSignatureGenerator = () => {
     `
   }
 
-  // Vibrant Template (based on Aaron Davis style)
+  // Vibrant Template
   const generateVibrantTemplate = (data: SignatureData) => {
     const profileImage = data.profilePhotoUrl || null // Skip base64 for Gmail compatibility
     
@@ -917,7 +917,7 @@ export const useSignatureGenerator = () => {
               <tr>
                 <td style="font-size: ${data.fontSize || '12px'}; color: #333; padding: 0 0 8px 0; line-height: 1.4;">
                   <div style="margin-bottom: 3px;"><a href="tel:${(data.mobilePhone || '+123-456-7890').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.mobilePhone || '+123-456-7890'}</a></div>
-                  <div style="margin-bottom: 3px;"><a href="mailto:${data.email || 'youremail@email.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.email || 'youremail@email.com'}</a></div>
+                  <div style="margin-bottom: 3px;"><a href="mailto:${data.email || 'your.email@example.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${data.email || 'your.email@example.com'}</a></div>
                   <div><a href="${data.website || 'www.yourwebsite.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none;">${(data.website || 'www.yourwebsite.com').replace(/^https?:\/\//, '')}</a></div>
                 </td>
               </tr>
@@ -939,7 +939,7 @@ export const useSignatureGenerator = () => {
     `
   }
 
-  // Executive Template (based on John Doe style)
+  // Executive Template
   const generateExecutiveTemplate = (data: SignatureData) => {
     const logoImage = data.companyLogoUrl || data.companyLogoBase64 || null
     
@@ -957,13 +957,13 @@ export const useSignatureGenerator = () => {
             <table cellpadding="0" cellspacing="0" border="0" style="font-size: ${data.fontSize || '11px'}; line-height: 1.6;">
               <tr>
                 <td style="padding: 0 0 4px 0;">
-                  <strong>Mobile:</strong> <a href="tel:${(data.mobilePhone || '+48 75 64 61 001').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.mobilePhone || '+48 75 64 61 001'}</a> | 
-                  <strong>Phone:</strong> <a href="tel:${(data.officePhone || '+48 75 64 61 001').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.officePhone || '+48 75 64 61 001'}</a>
+                  <strong>Mobile:</strong> <a href="tel:${(data.mobilePhone || '+1 555-010-0100').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.mobilePhone || '+1 555-010-0100'}</a> | 
+                  <strong>Phone:</strong> <a href="tel:${(data.officePhone || '+1 555-010-0101').replace(/[^\d+]/g, '')}" style="color: #333; text-decoration: none;">${data.officePhone || '+1 555-010-0101'}</a>
                 </td>
               </tr>
               <tr>
                 <td style="padding: 0 0 4px 0;">
-                  <strong>Email:</strong> <a href="mailto:${data.email || 'john.doe@codetwo.com'}" style="color: #333; text-decoration: none;">${data.email || 'john.doe@codetwo.com'}</a>
+                  <strong>Email:</strong> <a href="mailto:${data.email || 'your.email@example.com'}" style="color: #333; text-decoration: none;">${data.email || 'your.email@example.com'}</a>
                 </td>
               </tr>
               ${getFormattedAddress(data) ? `
@@ -981,7 +981,7 @@ export const useSignatureGenerator = () => {
               ` : '')}
               <tr>
                 <td style="padding: 4px 0 0 0;">
-                  <a href="${data.website || 'www.codetwo.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none; font-weight: bold;">${(data.website || 'www.codetwo.com').replace(/^https?:\/\//, '')}</a>
+                  <a href="${data.website || 'https://www.example.com'}" style="color: ${data.primaryColor || '#4361ee'}; text-decoration: none; font-weight: bold;">${(data.website || 'https://www.example.com').replace(/^https?:\/\//, '')}</a>
                 </td>
               </tr>
             </table>
@@ -1003,7 +1003,7 @@ export const useSignatureGenerator = () => {
     `
   }
 
-  // Handwritten Template (based on Juliana Silva style)
+  // Handwritten Template
   const generateHandwrittenTemplate = (data: SignatureData) => {
     const profileImage = data.profilePhotoUrl || null // Skip base64 for Gmail compatibility
     
@@ -1034,7 +1034,7 @@ export const useSignatureGenerator = () => {
                   </div>
                   <div style="margin-bottom: 3px; display: flex; align-items: center;">
                     <img src="https://img.icons8.com/material-outlined/16/000000/email.png" alt="Email" style="width: 12px; height: 12px; margin-right: 6px; vertical-align: middle;">
-                    <a href="mailto:${data.email || 'hello@reallygreatsite.com'}" style="color: #333; text-decoration: none;">${data.email || 'hello@reallygreatsite.com'}</a>
+                    <a href="mailto:${data.email || 'your.email@example.com'}" style="color: #333; text-decoration: none;">${data.email || 'your.email@example.com'}</a>
                   </div>
                   ${getFormattedAddress(data) ? `
                   <div style="margin-bottom: 3px; display: flex; align-items: center;">
@@ -1044,7 +1044,7 @@ export const useSignatureGenerator = () => {
                   ` : ''}
                   <div style="display: flex; align-items: center;">
                     <img src="https://img.icons8.com/material-outlined/16/000000/domain.png" alt="Website" style="width: 12px; height: 12px; margin-right: 6px; vertical-align: middle;">
-                    <a href="${data.website || 'reallygreatsite.com'}" style="color: ${data.primaryColor || '#d4a574'}; text-decoration: none;">${(data.website || 'reallygreatsite.com').replace(/^https?:\/\//, '')}</a>
+                    <a href="${data.website || 'https://www.example.com'}" style="color: ${data.primaryColor || '#d4a574'}; text-decoration: none;">${(data.website || 'https://www.example.com').replace(/^https?:\/\//, '')}</a>
                   </div>
                 </td>
                 ${data.includeQRCode ? `

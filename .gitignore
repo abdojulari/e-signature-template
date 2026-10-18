@@ -26,7 +26,14 @@ logs
 # Local Netlify folder
 .netlify
 
+# GitHub metadata (workflows, instructions, and other repo automation)
+.github
+
+# Local TLS certificates
+localhost-key.pem
+localhost.pem
+*.pem
+
 # Chrome extension build artifacts (never commit signing keys)
 *.crx
-*.pem
 signature-pro-extension*.zip

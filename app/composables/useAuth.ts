@@ -13,9 +13,7 @@ export const useAuth = () => {
 
   const config = useRuntimeConfig()
   const gmailClientId = config.public.gmailClientId
-  const gmailClientSecret = config.public.gmailClientSecret
   const yahooClientId = config.public.yahooClientId
-  const yahooClientSecret = config.public.yahooClientSecret
 
   // OAuth configuration
   const oauthConfig = {
@@ -88,94 +86,73 @@ export const useAuth = () => {
   const handleAuthCallback = async (code: string, provider: 'gmail' | 'yahoo') => {
     isLoading.value = true
     try {
+      const redirectUri = provider === 'gmail'
+        ? oauthConfig.gmail.redirectUri
+        : oauthConfig.yahoo.redirectUri
+
+      const tokenData = await $fetch<{ access_token?: string }>('/api/auth/token', {
+        method: 'POST',
+        body: {
+          provider,
+          code,
+          redirectUri
+        }
+      })
+
+      if (!tokenData.access_token) {
+        throw new Error('Failed to get access token')
+      }
+
       let userData: User
 
       if (provider === 'gmail') {
-        // Exchange code for access token and get user info from Google
-        const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
-          method: 'POST',
+        const googleUser = await $fetch<{
+          id: string
+          email: string
+          name: string
+          picture?: string
+        }>('https://www.googleapis.com/oauth2/v2/userinfo', {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Bearer ${tokenData.access_token}`,
           },
-          body: new URLSearchParams({
-            client_id: gmailClientId,
-            client_secret: gmailClientSecret,
-            code: code,
-            grant_type: 'authorization_code',
-            redirect_uri: oauthConfig.gmail.redirectUri,
-          }),
         })
 
-        const tokenData = await tokenResponse.json()
-        
-        if (tokenData.access_token) {
-          // Get user info from Google
-          const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-            headers: {
-              Authorization: `Bearer ${tokenData.access_token}`,
-            },
-          })
-          
-          const googleUser = await userResponse.json()
-          
-          userData = {
-            id: googleUser.id,
-            email: googleUser.email,
-            name: googleUser.name,
-            picture: googleUser.picture,
-            provider: 'gmail'
-          }
-        } else {
-          throw new Error('Failed to get access token')
+        userData = {
+          id: googleUser.id,
+          email: googleUser.email,
+          name: googleUser.name,
+          picture: googleUser.picture,
+          provider: 'gmail'
         }
       } else {
-        // Exchange code for access token and get user info from Yahoo
-        const tokenResponse = await fetch('https://api.login.yahoo.com/oauth2/get_token', {
-          method: 'POST',
+        const yahooUser = await $fetch<{
+          sub?: string
+          id?: string
+          email: string
+          name?: string
+          given_name?: string
+          family_name?: string
+          picture?: string
+        }>('https://api.login.yahoo.com/openid/v1/userinfo', {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Bearer ${tokenData.access_token}`,
           },
-          body: new URLSearchParams({
-            client_id: yahooClientId,
-            client_secret: yahooClientSecret,
-            code: code,
-            grant_type: 'authorization_code',
-            redirect_uri: oauthConfig.yahoo.redirectUri,
-          }),
         })
 
-        const tokenData = await tokenResponse.json()
-        
-        if (tokenData.access_token) {
-          // Get user info from Yahoo
-          const userResponse = await fetch('https://api.login.yahoo.com/openid/v1/userinfo', {
-            headers: {
-              Authorization: `Bearer ${tokenData.access_token}`,
-            },
-          })
-          
-          const yahooUser = await userResponse.json()
-          
-          userData = {
-            id: yahooUser.sub || yahooUser.id,
-            email: yahooUser.email,
-            name: yahooUser.name || (yahooUser.given_name + ' ' + yahooUser.family_name),
-            picture: yahooUser.picture,
-            provider: 'yahoo'
-          }
-        } else {
-          throw new Error('Failed to get access token from Yahoo')
+        userData = {
+          id: yahooUser.sub || yahooUser.id || '',
+          email: yahooUser.email,
+          name: yahooUser.name || `${yahooUser.given_name || ''} ${yahooUser.family_name || ''}`.trim(),
+          picture: yahooUser.picture,
+          provider: 'yahoo'
         }
       }
 
       user.value = userData
-      
-      // Store user in localStorage
+
       if (typeof window !== 'undefined') {
         localStorage.setItem('user', JSON.stringify(userData))
       }
-
-      console.log('User authenticated successfully:', userData)
     } catch (error) {
       console.error('Auth callback error:', error)
       // Fallback to mock user if real authentication fails

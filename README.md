@@ -2,7 +2,7 @@
 
 A modern, responsive email signature generator built with Nuxt 4, Reka UI, and Tailwind CSS. Create stunning professional email signatures with glassmorphism effects and install them directly in your email clients.
 
-## ✨ Features
+## Features
 
 - **Beautiful Templates**: 12 professionally designed templates including glassmorphism effects and premium executive designs
 - **OAuth Authentication**: Sign in with Gmail or Yahoo accounts
@@ -18,24 +18,23 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
   - Social media links (LinkedIn, Twitter/X, Facebook, Instagram, YouTube, TikTok, WhatsApp, and more)
   - Profile photo and company logo uploads
   - **QR Code Integration**: Generate scannable vCard QR codes for instant contact sharing
-- **Browser Extension Support**: Install extensions for Chrome, Firefox, Safari, and Edge
+- **Browser Extension Support**: Chrome extension for applying a signature in Gmail and Yahoo Mail
 - **Export Options**: Copy HTML to clipboard or download as file
 - **Responsive Design**: Works perfectly on desktop and mobile devices
 - **Glassmorphism UI**: Modern, elegant interface with glass effects
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Nuxt 4
 - **UI Library**: Reka UI
 - **Styling**: Tailwind CSS
 - **Icons**: Nuxt Icon (Heroicons)
-- **Authentication**: OAuth 2.0 (Gmail & Yahoo)
+- **Authentication**: OAuth 2.0 (Gmail and Yahoo). Client secrets stay on the server.
 - **QR Code Generation**: qrcode library for vCard contact sharing
-- **State Management**: Pinia
+- **State**: Vue composables and localStorage
 - **TypeScript**: Full type safety
-- **PWA Support**: Progressive Web App capabilities
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -56,11 +55,10 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
    ```
 
 3. **Set up environment variables**
-   Create a `.env` file in the root directory:
-   ```env
-   GMAIL_CLIENT_ID=your_gmail_client_id
-   Yahoo_CLIENT_ID=your_Yahoo_client_id
+   ```bash
+   cp .env.example .env
    ```
+   Fill in the OAuth values in `.env`. That file is gitignored. See `.env.example` for the variable names.
 
 4. **Start the development server**
    ```bash
@@ -70,7 +68,50 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 5. **Open your browser**
    Navigate to `http://localhost:3000`
 
-## 🔧 OAuth Configuration
+## Testing
+
+There is no `pnpm test` script. Use these commands to install, run, and check the app.
+
+```bash
+pnpm install
+cp .env.example .env
+pnpm dev
+```
+
+With the dev server running:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3000/
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3000/dashboard
+curl -s -X POST http://localhost:3000/api/auth/token \
+  -H 'content-type: application/json' \
+  -d '{}'
+```
+
+The home page and dashboard return `200`. The token route returns `400` with `Missing OAuth parameters` when the body is empty.
+
+Production build and local preview:
+
+```bash
+pnpm build
+pnpm preview
+```
+
+Static output used by the Netlify config:
+
+```bash
+pnpm generate
+```
+
+Regenerate Nuxt types (also runs after install):
+
+```bash
+pnpm exec nuxi prepare
+```
+
+The same scripts work with npm: `npm install`, `npm run dev`, `npm run build`, `npm run preview`, and `npm run generate`.
+
+## OAuth Configuration
 
 ### Google OAuth Setup
 
@@ -82,18 +123,15 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 6. Add authorized redirect URIs:
    - `http://localhost:3000/auth/callback` (development)
    - `https://yourdomain.com/auth/callback` (production)
-7. Copy the Client ID to your `.env` file
+7. Copy the Client ID and Client Secret to your `.env` file
 
-### Microsoft OAuth Setup
+### Yahoo OAuth Setup
 
-1. Go to [Azure Portal](https://portal.azure.com/)
-2. Register a new application
-3. Add redirect URIs:
-   - `http://localhost:3000/auth/callback` (development)
-   - `https://yourdomain.com/auth/callback` (production)
-4. Copy the Application (client) ID to your `.env` file
+1. Create an app in the Yahoo Developer Network
+2. Add the redirect URI used by the app (`https://signature-pro.ca/auth/callback` today)
+3. Copy the Client ID and Client Secret to your `.env` file
 
-## 🌐 Browser Extension Setup
+## Browser Extension Setup
 
 ### Chrome Extension
 
@@ -132,7 +170,7 @@ A modern, responsive email signature generator built with Nuxt 4, Reka UI, and T
 2. Implement the extension using Swift/Objective-C
 3. Submit to Mac App Store
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 e-signature-template/
@@ -171,21 +209,20 @@ e-signature-template/
 │   ├── content-working.js          # Content script for email clients
 │   ├── manifest.json               # Extension manifest
 │   ├── popup.js                    # Extension popup logic
-│   ├── popup-vue-compatible.html   # Extension popup UI
 │   ├── icons/                      # Extension icons
-│   └── README.md                   # Extension documentation
+│   └── popup-vue-compatible.html   # Extension popup UI
 ├── public/                         # Static assets
 │   ├── favicon.ico
 │   ├── robots.txt
 │   └── templates/                  # Template assets
 │       ├── creative-preview.svg
-│       ├── generate-previews.html
-│       └── README.md
+│       └── generate-previews.html
 ├── modules/                        # Nuxt modules
 │   └── @nuxt/
 │       └── ui.ts                   # Nuxt UI module configuration
-├── CHROME_EXTENSION_SETUP.md       # Extension setup guide
-├── extension-manifest-example.json # Example manifest
+├── server/
+│   └── api/auth/token.post.ts      # Server-side OAuth code exchange
+├── .env.example                    # Environment variable template
 ├── LICENSE                         # MIT License
 ├── nuxt.config.ts                  # Nuxt configuration
 ├── package.json                    # Dependencies & scripts
@@ -195,7 +232,7 @@ e-signature-template/
 └── README.md                       # This file
 ```
 
-## 🎨 Available Templates
+## Available Templates
 
 1. **Minimal**: Clean and simple design
 2. **Professional**: Corporate and business-ready
@@ -204,7 +241,7 @@ e-signature-template/
 5. **Modern**: Contemporary and sleek
 6. **Elegant**: Sophisticated and refined
 
-## 📱 QR Code Integration
+## QR Code Integration
 
 ### Features
 - **vCard QR Codes**: Generate scannable QR codes containing your contact information
@@ -231,7 +268,7 @@ e-signature-template/
 - Optimally sized (60-80px) for email signatures
 - Positioned strategically in each template design
 
-## 🔧 Customization
+## Customization
 
 ### Adding New Templates
 
@@ -250,7 +287,7 @@ e-signature-template/
 - Update Tailwind classes in components
 - Customize glassmorphism effects
 
-## 📱 Usage Guide
+## Usage Guide
 
 ### Creating a Signature
 
@@ -272,7 +309,7 @@ e-signature-template/
 4. Navigate to your email client
 5. Click extension icon to apply signature
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel Deployment
 
@@ -300,7 +337,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-## 🔒 Security Considerations
+## Security Considerations
 
 - **OAuth Tokens**: Store securely, never expose in client-side code
 - **HTTPS**: Always use HTTPS in production
@@ -309,7 +346,7 @@ CMD ["npm", "start"]
 - **File Uploads**: Implement proper file type and size validation
 - **Rate Limiting**: Implement API rate limiting
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -325,24 +362,68 @@ CMD ["npm", "start"]
 - Add tests for new features
 - Update documentation as needed
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Nuxt 4](https://nuxt.com/) - The Vue framework
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 - [Reka UI](https://reka-ui.com/) - Beautiful UI components
 - [Heroicons](https://heroicons.com/) - Beautiful hand-crafted SVG icons
 
-## 📞 Support
+## Support
 
-For support and questions:
-- Create an issue on GitHub
-- Email: support@signaturepro.com
-- Documentation: [docs.signaturepro.com](https://docs.signaturepro.com)
+For support and questions, open an issue in the project repository.
 
----
+## TODO
 
-Made with ❤️ by the SignaturePro team | Abdul Ojulari
+Missing or incomplete behavior in the current app:
+
+- [ ] Firefox, Safari, and Edge extensions. Those install paths only show a coming-soon message.
+- [ ] Chrome extension wiring. The app checks a hardcoded extension ID that does not match the Chrome Web Store listing, and the in-app instructions still say the extension is in development.
+- [ ] One extension package. `chrome-extension` and `signature-pro-extension` duplicate each other.
+- [ ] OAuth on the static Netlify deploy. Token exchange now runs in `server/api/auth/token.post.ts` so client secrets are not shipped to the browser. The Netlify build uses a static Nitro preset, so that route is not available in production until the host runs a server or a function.
+- [ ] Yahoo local sign-in. The Yahoo redirect URI is fixed to `https://signature-pro.ca/auth/callback`.
+- [ ] A real error when OAuth fails. The callback still signs in a demo user.
+- [ ] Microsoft / Outlook sign-in.
+- [ ] Terms of Service and Privacy Policy pages. The landing-page links are placeholders.
+- [ ] Account storage for signatures. Data is kept in `localStorage` only.
+- [ ] Home phone field. The form has mobile and office numbers only.
+- [ ] Automated tests. There is no test runner and no `pnpm test` script.
+- [ ] Pinia and PWA support. Earlier docs listed both; neither is installed.
+
+## Test coverage
+
+Nothing in the app is covered by automated tests. Add a runner, then cover these paths:
+
+- [ ] `useValidation`: required email, invalid email, email length limits, optional empty phone, phone too short, phone too long, valid phone, optional empty website, and invalid website URL.
+- [ ] `useSignatureGenerator`: each template renders the entered name, email, and phones; empty fields fall back to `example.com` placeholders; the vCard QR payload includes name, email, phones, and website.
+- [ ] `useSignatureStorage`: save and reload signature data, and discard corrupt `localStorage` JSON.
+- [ ] `useAuth`: Gmail and Yahoo sign-in URLs, a successful callback, and a failed callback. The client bundle must not contain the client secret.
+- [ ] `server/api/auth/token.post.ts`: empty body returns 400, an unknown provider returns 400, missing OAuth env returns 500, and a successful exchange returns only an access token.
+- [ ] Landing page: Gmail and Yahoo buttons render, and Terms and Privacy links are present.
+- [ ] Dashboard: signed-out visitors go home; the form blocks a missing name or email; copy and download use the generated HTML.
+- [ ] `useBrowserExtension`: Chrome reports its install state; Firefox, Safari, and Edge show the coming-soon path.
+- [ ] `useDarkMode`: the saved theme is applied on load and toggles persist.
+
+## License
+
+MIT License
+
+Copyright (c) 2026 SignaturePro
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

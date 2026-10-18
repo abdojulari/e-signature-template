@@ -92,21 +92,17 @@
           <div class="p-5 sm:p-6 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <p class="text-sm text-gray-700 dark:text-gray-300">Love this tool? A review helps us grow.</p>
-              <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-800/40 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-950/50 transition-colors w-fit">
+              <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-800/40 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-950/50 transition-colors w-fit">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                 </svg>
                 Leave a Review
               </a>
             </div>
-            <div class="pt-3 border-t border-gray-200/50 dark:border-gray-700/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="pt-3 border-t border-gray-200/50 dark:border-gray-700/30">
               <p class="text-sm text-gray-600 dark:text-gray-400">
-                Questions? <a href="mailto:abdulkabirojulari@gmail.com" class="text-indigo-600 dark:text-indigo-400 hover:underline">abdulkabirojulari@gmail.com</a>
+                Questions? Open an issue in the project repository.
               </p>
-              <a href="https://www.buymeacoffee.com/abdulkabirojulari" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 rounded-xl hover:bg-amber-100 dark:hover:bg-amber-950/50 transition-colors w-fit">
-                <span class="text-base">☕</span>
-                Buy me a coffee
-              </a>
             </div>
           </div>
         </div>

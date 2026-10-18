@@ -82,11 +82,11 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    gmailClientSecret: process.env.GMAIL_CLIENT_SECRET || '',
+    yahooClientSecret: process.env.YAHOO_CLIENT_SECRET || '',
     public: {
-      gmailClientId: process.env.GMAIL_CLIENT_ID || 'YOUR_GMAIL_CLIENT_ID',
-      gmailClientSecret: process.env.GMAIL_CLIENT_SECRET || 'YOUR_GMAIL_CLIENT_SECRET',
-      yahooClientId: process.env.YAHOO_CLIENT_ID || 'YOUR_YAHOO_CLIENT_ID',
-      yahooClientSecret: process.env.YAHOO_CLIENT_SECRET || 'YOUR_YAHOO_CLIENT_SECRET'
+      gmailClientId: process.env.GMAIL_CLIENT_ID || '',
+      yahooClientId: process.env.YAHOO_CLIENT_ID || ''
     }
   }
 })

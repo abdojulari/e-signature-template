@@ -97,7 +97,7 @@
           <div class="mt-3 p-3 rounded-lg bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 dark:border-gray-700/30">
             <p class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-2">Installation Steps</p>
             <ol class="text-xs text-gray-500 dark:text-gray-400 space-y-1 list-decimal list-inside">
-              <li>Install from the <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic?authuser=0&hl=en" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">Chrome Web Store</a></li>
+              <li>Install from the <a href="https://chromewebstore.google.com/detail/signature-generator-pro/pjmcfpndnehpblkgckmjmmapejfjoeic" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">Chrome Web Store</a></li>
               <li>Pin the extension to your toolbar</li>
               <li>Compose a new email and click the extension icon</li>
             </ol>
