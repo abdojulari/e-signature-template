@@ -15,18 +15,19 @@ export const useAuth = () => {
   const gmailClientId = config.public.gmailClientId
   const yahooClientId = config.public.yahooClientId
 
+  const redirectUri = typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''
+
   // OAuth configuration
   const oauthConfig = {
     gmail: {
       clientId: gmailClientId, // Replace with your Google OAuth client ID
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-      redirectUri: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''
+      redirectUri
     },
     yahoo: {
       clientId: yahooClientId, // Replace with your Yahoo OAuth client ID
       scope: 'openid profile email',
-      // Use consistent redirect URI - must match exactly what's configured in Yahoo Developer Network
-      redirectUri: 'https://signature-pro.ca/auth/callback'
+      redirectUri
     }
   }
 
@@ -86,10 +87,6 @@ export const useAuth = () => {
   const handleAuthCallback = async (code: string, provider: 'gmail' | 'yahoo') => {
     isLoading.value = true
     try {
-      const redirectUri = provider === 'gmail'
-        ? oauthConfig.gmail.redirectUri
-        : oauthConfig.yahoo.redirectUri
-
       const tokenData = await $fetch<{ access_token?: string }>('/api/auth/token', {
         method: 'POST',
         body: {

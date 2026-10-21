@@ -2,27 +2,6 @@
 
 A modern, responsive email signature generator built with Nuxt 4, Reka UI, and Tailwind CSS. Create stunning professional email signatures with glassmorphism effects and install them directly in your email clients.
 
-## Features
-
-- **Beautiful Templates**: 12 professionally designed templates including glassmorphism effects and premium executive designs
-- **OAuth Authentication**: Sign in with Gmail or Yahoo accounts
-- **Real-time Preview**: See your signature as you design it
-- **Customization Options**: 
-  - Multiple color schemes
-  - Font family and size selection
-  - Primary and secondary colors for gradients
-- **Comprehensive Form Fields**:
-  - Personal information (name, job title, company)
-  - Multiple phone numbers (mobile, home, office)
-  - Website and email addresses
-  - Social media links (LinkedIn, Twitter/X, Facebook, Instagram, YouTube, TikTok, WhatsApp, and more)
-  - Profile photo and company logo uploads
-  - **QR Code Integration**: Generate scannable vCard QR codes for instant contact sharing
-- **Browser Extension Support**: Chrome extension for applying a signature in Gmail and Yahoo Mail
-- **Export Options**: Copy HTML to clipboard or download as file
-- **Responsive Design**: Works perfectly on desktop and mobile devices
-- **Glassmorphism UI**: Modern, elegant interface with glass effects
-
 ## Tech Stack
 
 - **Framework**: Nuxt 4
@@ -111,25 +90,7 @@ pnpm exec nuxi prepare
 
 The same scripts work with npm: `npm install`, `npm run dev`, `npm run build`, `npm run preview`, and `npm run generate`.
 
-## OAuth Configuration
 
-### Google OAuth Setup
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing one
-3. Enable the Gmail API
-4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"
-5. Set up OAuth consent screen
-6. Add authorized redirect URIs:
-   - `http://localhost:3000/auth/callback` (development)
-   - `https://yourdomain.com/auth/callback` (production)
-7. Copy the Client ID and Client Secret to your `.env` file
-
-### Yahoo OAuth Setup
-
-1. Create an app in the Yahoo Developer Network
-2. Add the redirect URI used by the app (`https://signature-pro.ca/auth/callback` today)
-3. Copy the Client ID and Client Secret to your `.env` file
 
 ## Browser Extension Setup
 
@@ -309,42 +270,7 @@ e-signature-template/
 4. Navigate to your email client
 5. Click extension icon to apply signature
 
-## Deployment
 
-### Vercel Deployment
-
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
-
-### Netlify Deployment
-
-1. Connect repository to Netlify
-2. Set build command: `pnpm build`
-3. Set publish directory: `.output/public`
-4. Configure environment variables
-
-### Docker Deployment
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-## Security Considerations
-
-- **OAuth Tokens**: Store securely, never expose in client-side code
-- **HTTPS**: Always use HTTPS in production
-- **CORS**: Configure properly for cross-origin requests
-- **Input Validation**: Validate all user inputs
-- **File Uploads**: Implement proper file type and size validation
-- **Rate Limiting**: Implement API rate limiting
 
 ## Contributing
 
@@ -381,14 +307,12 @@ Missing or incomplete behavior in the current app:
 - [ ] Chrome extension wiring. The app checks a hardcoded extension ID that does not match the Chrome Web Store listing, and the in-app instructions still say the extension is in development.
 - [ ] One extension package. `chrome-extension` and `signature-pro-extension` duplicate each other.
 - [ ] OAuth on the static Netlify deploy. Token exchange now runs in `server/api/auth/token.post.ts` so client secrets are not shipped to the browser. The Netlify build uses a static Nitro preset, so that route is not available in production until the host runs a server or a function.
-- [ ] Yahoo local sign-in. The Yahoo redirect URI is fixed to `https://signature-pro.ca/auth/callback`.
 - [ ] A real error when OAuth fails. The callback still signs in a demo user.
-- [ ] Microsoft / Outlook sign-in.
 - [ ] Terms of Service and Privacy Policy pages. The landing-page links are placeholders.
-- [ ] Account storage for signatures. Data is kept in `localStorage` only.
-- [ ] Home phone field. The form has mobile and office numbers only.
+
 - [ ] Automated tests. There is no test runner and no `pnpm test` script.
 - [ ] Pinia and PWA support. Earlier docs listed both; neither is installed.
+- [ ] UI redesign with premium feels
 
 ## Test coverage
 
